@@ -1,0 +1,24 @@
+package com.tidal.pawpal.services.abstractions;
+
+import java.util.Map;
+
+public interface UpdateService<E extends Entity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID>{
+
+    // IMPLEMENT: should return ID or E?
+    default E modifica(ID id, Map<String, String> data) {
+
+        // DEBUG: error handling
+        if(id == null) throw new IllegalArgumentException("cannot update where id is null");
+
+        // DEBUG: if object isn't found, will throw a NoSuchElementException
+        E existingEntity = getRepository().findById(id).get();
+
+        // naming convention: all beans must have a "merger method"
+        String beanName = getEntityType().getSimpleName().toLowerCase() + "Merger";
+        E mergedEntity = getContext().getBean(beanName, getEntityType(), existingEntity, data);
+
+        return getRepository().save(mergedEntity);
+        
+    }
+
+}
