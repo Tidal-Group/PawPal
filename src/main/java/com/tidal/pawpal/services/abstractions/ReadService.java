@@ -2,7 +2,7 @@ package com.tidal.pawpal.services.abstractions;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.tidal.pawpal.models.Entity;
 
 public interface ReadService<E extends Entity, ID> extends RepositoryAccess<E, ID> {
     

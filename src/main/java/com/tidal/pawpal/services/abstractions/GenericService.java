@@ -1,7 +1,9 @@
 package com.tidal.pawpal.services.abstractions;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.tidal.pawpal.models.Entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,7 @@ public abstract class GenericService<E extends Entity, ID> implements Repository
 
     private final JpaRepository<E, ID> repository;
 
-    private final ContextAccess context;
+    private final ApplicationContext context;
 
     private final Class<E> entityType;
 

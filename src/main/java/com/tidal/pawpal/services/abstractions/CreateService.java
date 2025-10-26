@@ -2,6 +2,8 @@ package com.tidal.pawpal.services.abstractions;
 
 import java.util.Map;
 
+import com.tidal.pawpal.models.Entity;
+
 public interface CreateService<E extends Entity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID> {
 
     // IMPLEMENT: should return ID or E?

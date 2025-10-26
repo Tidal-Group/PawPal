@@ -2,6 +2,8 @@ package com.tidal.pawpal.services.abstractions;
 
 import java.util.Map;
 
+import com.tidal.pawpal.models.Entity;
+
 public interface UpdateService<E extends Entity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID>{
 
     // IMPLEMENT: should return ID or E?
@@ -15,7 +17,7 @@ public interface UpdateService<E extends Entity, ID> extends RepositoryAccess<E,
 
         // naming convention: all beans must have a "merger method"
         String beanName = getEntityType().getSimpleName().toLowerCase() + "Merger";
-        E mergedEntity = getContext().getBean(beanName, getEntityType(), existingEntity, data);
+        E mergedEntity = getEntityType().cast(getContext().getBean(beanName, getEntityType(), existingEntity, data));
 
         return getRepository().save(mergedEntity);
         
