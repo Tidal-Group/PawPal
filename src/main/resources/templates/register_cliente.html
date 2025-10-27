@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head('Registrazione Cliente - PawPal')"></head>
+
+<body>
+    <header th:replace="fragments :: header('register')"></header>
+
+    <main class="main center-form">
+        <h2>Registrazione Cliente</h2>
+
+        <form th:action="@{/auth/register_cliente}" method="post" class="auth-form">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="cognome">Cognome</label>
+            <input type="text" id="cognome" name="cognome" required>
+
+            <label for="dataNascita">Data di nascita</label>
+            <input type="date" id="dataNascita" name="dataNascita" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="check_password">Conferma Password</label>
+            <input type="password" id="check_password" name="check_password" required>
+
+            <input type="hidden" name="ruolo" value="CLIENTE">
+
+            <button type="submit" class="btn">Registrami</button>
+        </form>
+
+        <p class="muted">
+            Hai già un account?
+            <a th:href="@{/auth/login}">Accedi</a>
+        </p>
+    </main>
+
+    <footer th:replace="fragments :: footer"></footer>
+    <script th:src="@{/js/register.js}"></script>
+</body>
+</html>

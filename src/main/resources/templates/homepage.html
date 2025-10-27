@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head('Home - PawPal')"></head>
+
+<body>
+
+    <header th:replace="fragments :: navbar('home')"></header>
+
+    <div class="banner">
+        <img th:src="@{/img/banner.jpg}" alt="Banner PawPal">
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Chi siamo</h2>
+                <p>PawPal è la piattaforma dedicata a connettere proprietari di animali e veterinari, offrendo
+                    un'esperienza semplice, sicura e completa per la gestione delle cure dei vostri amici a quattro
+                    zampe.</p>
+                <p>Il nostro obiettivo è rendere più facile ogni aspetto della vita degli animali domestici: dalla
+                    ricerca del veterinario più adatto, alla prenotazione degli appuntamenti, fino alla comunicazione
+                    diretta con i professionisti.</p>
+                <p>Per i veterinari, offriamo strumenti avanzati per gestire la loro attività: dalla definizione delle
+                    disponibilità alla gestione delle prestazioni e delle specie trattate, fino alla possibilità di
+                    visualizzare recensioni e interagire con i clienti.</p>
+                <p>La nostra missione è garantire il benessere degli animali attraverso una rete di professionisti
+                    affidabili e facilmente accessibili e dove proprietari di animali e veterinari possano incontrarsi,
+                    comunicare e collaborare nel modo più semplice possibile, offrendo cure migliori e un servizio
+                    sempre più personalizzato.</p>
+            </div>
+        </section>
+
+        <section class="veterinari-in-evidenza">
+            <h2>Veterinari in evidenza</h2>
+            <div class="veterinari-list">
+                <div th:each="vet : ${veterinariInEvidenza}" class="veterinario-card">
+                    <a th:href="@{/lista_veterinari}" class="card-link">
+                        <img th:src="@{'/img/' + ${vet.foto}}" th:alt="'Foto di ' + ${vet.nome}">
+                        <h3 th:text="${vet.nome}"></h3>
+                        <p th:text="${vet.specialita}"></p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="recensioni">
+            <div class="container">
+                <h2>Recensioni dei nostri utenti</h2>
+                <div class="recensioni-list">
+                    <div th:each="rec : ${recensioniRecenti}" class="recensione-card">
+                        <p th:text="${rec.testo}"></p>
+                        <p class="utente" th:text="${rec.nomeUtente}"></p>
+                        <span class="stelle" th:each="i : ${#numbers.sequence(1, rec.stelle)}">&#9733;</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="fragments :: footer"></footer>
+    <script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head('Errore')"></head>
+
+<body>
+<header th:replace="fragments :: header('')"></header>
+
+<main class="main center-form">
+  <div class="card error-card">
+    <h2 th:text="${title} ?: 'Errore'">Errore</h2>
+    <p class="muted" th:text="${message} ?: 'Si è verificato un errore.'">
+      Si è verificato un errore.
+    </p>
+    <a class="btn" th:href="@{/}">Torna alla Home</a>
+  </div>
+</main>
+
+<footer th:replace="fragments :: footer"></footer>
+</body>
+</html>
