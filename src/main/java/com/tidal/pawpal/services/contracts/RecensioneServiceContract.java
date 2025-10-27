@@ -1,5 +1,7 @@
 package com.tidal.pawpal.services.contracts;
 
+import java.util.List;
+
 import com.tidal.pawpal.models.Recensione;
 
 import com.tidal.pawpal.services.abstractions.GenericService;
@@ -16,5 +18,10 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     public RecensioneServiceContract() {
         super(Recensione.class, Long.class);
     }
+
+    public abstract List<Recensione> cercaPerVeterinario(Long idVeterinario);
+    public abstract List<Recensione> cercaPerCliente(Long idCliente);
+
+    public abstract Double calcolaVotoMedioVeterinario(Long idVeterinario);
 
 }
