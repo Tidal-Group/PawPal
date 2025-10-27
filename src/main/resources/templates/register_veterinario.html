@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head('Registrazione Veterinario - PawPal')"></head>
+
+<body>
+    <header th:replace="fragments :: header('register')"></header>
+
+    <main class="main center-form">
+        <h2>Registrazione Veterinario</h2>
+
+        <form th:action="@{/auth/register_veterinario}" method="post" class="auth-form">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="cognome">Cognome</label>
+            <input type="text" id="cognome" name="cognome" required>
+
+            <label for="dataNascita">Data di nascita</label>
+            <input type="date" id="dataNascita" name="dataNascita" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="check_password">Conferma Password</label>
+            <input type="password" id="check_password" name="check_password" required>
+
+            <label for="citta">Città</label>
+            <input type="text" id="citta" name="citta" required>
+
+            <label for="specialistica">Specialistica</label>
+            <input type="text" id="specialistica" name="specialistica" required>
+
+            <label for="specie">Specie trattate</label>
+            <input type="text" id="specie" name="specie" placeholder="es. Cane, Gatto" required>
+
+            <label for="prestazioni">Prestazioni offerte</label>
+            <textarea id="prestazioni" name="prestazioni" rows="3" placeholder="es. Vaccinazioni, Visite generali" required></textarea>
+
+            <label for="indirizzo">Indirizzo studio</label>
+            <input type="text" id="indirizzo" name="indirizzo" placeholder="Via, numero civico, città" required>
+
+            <label for="numeroAlbo">Numero di iscrizione all’albo</label>
+            <input type="text" id="numeroAlbo" name="numeroAlbo" placeholder="es. 12345" required>
+
+            <input type="hidden" name="ruolo" value="VETERINARIO">
+
+            <button type="submit" class="btn">Registrami</button>
+        </form>
+
+        <p class="muted">
+            Hai già un account?
+            <a th:href="@{/auth/login}">Accedi</a>
+        </p>
+    </main>
+
+    <footer th:replace="fragments :: footer"></footer>
+    <script th:src="@{/js/register.js}"></script>
+</body>
+</html>
