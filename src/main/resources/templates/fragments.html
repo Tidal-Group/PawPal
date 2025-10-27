@@ -1,41 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head(title)">
     <meta charset="UTF-8">
-    <title th:replace="${title} :: text">PawPal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} ?: 'PawPal'">PawPal</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
+
+
 <body>
 
-
-<div th:fragment="headerFooter">
-    <header>
+    <header th:fragment="header(active)">
         <nav>
             <ul>
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/lista_veterinari}">Veterinari</a></li>
+                <li><a href="/" th:classappend="${active}=='home' ? ' active'">Home</a></li>
+                <li><a href="/lista_veterinari" th:classappend="${active}== 'lista_veterinari' ? 'active'">Veterinari</a></li>
                 <li><a th:href="@{/contatti}">Contatti</a></li>
                 <li><a th:href="@{/auth/login}">Login</a></li>
             </ul>
         </nav>
     </header>
 
-    
+
     <main th:fragment="content"></main>
 
-    
-    <footer>
-            
-            <div class="footer-col">
-                <h3>Contatti</h3>
-                <p>Email: info@pawpal.com</p>
-                <p>Telefono: +39 06 983754</p>
-                <p>Indirizzo: Via Mazzini 10, Roma</p>
-            </div>
+
+    <footer th:fragment="footer">
+
+        <div class="footer-col">
+            <h3>Contatti</h3>
+            <p>Email: info@pawpal.com</p>
+            <p>Telefono: +39 06 983754</p>
+            <p>Indirizzo: Via Mazzini 10, Roma</p>
+        </div>
         <p>&copy; 2025 PawPal. Tutti i diritti riservati.</p>
     </footer>
-</div>
 
-<script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
 </body>
+
 </html>

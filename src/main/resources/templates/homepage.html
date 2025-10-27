@@ -1,56 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+
+<head th:replace="fragments :: head ('Home - PawPal')" >
     <meta charset="UTF-8">
     <title>PawPal - Homepage</title>
 </head>
+
 <body>
-    <div th:replace="fragments :: headerFooter"></div>
+
+    <header th:replace="fragments :: headerFooter">
+        <nav>
+            <ul>
+                <li></li>
+            </ul>
+        </nav>
+    </header>
 
     <div class="banner">
         <img th:src="@{/img/banner.jpg}" alt="Banner PawPal">
     </div>
     <main>
         <section class="chi-siamo">
-    <div class="container">
-        <h2>Chi siamo</h2>
-        <p>
-            PawPal è la piattaforma che mette in contatto proprietari di animali e veterinari qualificati. 
-            Offriamo servizi di prenotazione appuntamenti, recensioni, e consigli personalizzati per la salute dei vostri amici a quattro zampe.
-        </p>
-        <p>
-            La nostra missione è garantire il benessere degli animali attraverso una rete di professionisti affidabili e facilmente accessibili.
-        </p>
-    </div>
-</section>
+            <div class="container">
+                <h2>Chi siamo</h2>
+                <p>
+                    PawPal è la piattaforma che mette in contatto proprietari di animali e veterinari qualificati.
+                    Offriamo servizi di prenotazione appuntamenti, recensioni, e consigli personalizzati per la salute
+                    dei vostri amici a quattro zampe.
+                </p>
+                <p>
+                    La nostra missione è garantire il benessere degli animali attraverso una rete di professionisti
+                    affidabili e facilmente accessibili.
+                </p>
+            </div>
+        </section>
 
-  <section class="veterinari-in-evidenza">
-        <h2>Veterinari in evidenza</h2>
-        <div class="veterinari-list">
-            <div th:each="vet : ${veterinariInEvidenza}" class="veterinario-card">
-                <a th:href="@{/lista_veterinari}" class="card-link">
-                    <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]">
-                    <h3 th:text="${vet.nome}"></h3>
-                    <p th:text="${vet.specialita}"></p>
-                </a>
+        <section class="veterinari-in-evidenza">
+            <h2>Veterinari in evidenza</h2>
+            <div class="veterinari-list">
+                <div th:each="vet : ${veterinariInEvidenza}" class="veterinario-card">
+                    <a th:href="@{/lista_veterinari}" class="card-link">
+                        <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]">
+                        <h3 th:text="${vet.nome}"></h3>
+                        <p th:text="${vet.specialita}"></p>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>  
-    
-    <section class="recensioni">
-    <div class="container">
-        <h2>Recensioni dei nostri utenti</h2>
-        <div class="recensioni-list">
-            <div th:each="rec : ${recensioniRecenti}" class="recensione-card">
-                <p th:text="|\"${rec.testo}\"|"></p>
-                <p class="utente" th:text="${rec.nomeUtente}"></p>
-                <p class="stelle" th:each="i : ${#numbers.sequence(1, rec.stelle)}"></p>
+        </section>
+
+        <section class="recensioni">
+            <div class="container">
+                <h2>Recensioni dei nostri utenti</h2>
+                <div class="recensioni-list">
+                    <div th:each="rec : ${recensioniRecenti}" class="recensione-card">
+                        <p th:text="|\" ${rec.testo}\"|"></p>
+                        <p class="utente" th:text="${rec.nomeUtente}"></p>
+                        <p class="stelle" th:each="i : ${#numbers.sequence(1, rec.stelle)}"></p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-</main>
+        </section>
+    </main>
 
     <script th:src="@{/js/script.js}"></script>
 </body>
+
 </html>
