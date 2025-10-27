@@ -26,8 +26,8 @@
 
                 
                 <select name="specialistica">
-                    <option value="">Tutte le specialità</option>
-                    <option th:each="s : ${specialisticaDisponibili}" 
+                    <option value="">Tutte le specialistiche</option>
+                    <option th:each="s : ${specialisticaDisponibile}" 
                             th:value="${s}" 
                             th:text="${s}"></option>
                 </select>
