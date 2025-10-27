@@ -23,7 +23,7 @@ public abstract class AuthServiceContract {
     public abstract User validaCredenziali(String username, String password);
 
     public abstract Cliente registraCliente(Map<String, String> dati);
-    public abstract Veterinario registraVeterinario(Long id, Map<String, String> dati);
+    public abstract Veterinario registraVeterinario(Map<String, String> dati);
 
     public abstract void cambiaPassword(Long id, String password);
 
