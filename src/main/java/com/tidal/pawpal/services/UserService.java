@@ -47,36 +47,63 @@ public class UserService extends UserServiceContract {
 
     @Override
     @Transactional
-    public User modificaEmail(String email) {
+    public User modificaEmail ( Long idUser, String email) {
         if (userRepository.findByEmail(email) != null) {
             throw new IllegalArgumentException("Email già in uso"); 
-            
+        } else {
+            User user = userRepository.findById(idUser).get();
+            user.setEmail(email);
+            userRepository.save(user);
+            return user;
         }
     }
     
 
     @Override
     @Transactional
-    public User modificaUsername(String username) {
+    public User modificaUsername(Long idUser, String username) {
         if (userRepository.findByUsername(username) != null) {
             throw new IllegalArgumentException("Username già in uso"); 
-       
+        } else {
+            User user = userRepository.findById(idUser).get();
+            user.setUsername(username);
+            userRepository.save(user);
+
+            return user;
         }
+        
     }
 
     @Override
     @Transactional
-    public User modificaPassword(String password) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'modificaPassword'");
+    public User modificaPassword(Long idUser, String password) {
+        User user = userRepository.findById(idUser).get();
+        user.setPassword(password);
+        userRepository.save(user);
+        return user;
     }
+
     
 
     @Override
     @Transactional
     public User modificaDatiPersona(Long idUser, Map<String, String> data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modificaDatiPersona'");
+        User user = userRepository.findById(idUser).get();
+
+        if(data.containsKey("nome")) {
+            user.setNome(data.get("nome"));
+        }
+
+        if(data.containsKey("cognome")) {
+            user.setCognome(data.get("cognome"));
+        }
+
+        if(data.containsKey("codiceFiscale")) {
+            user.setCodiceFiscale(data.get("codiceFiscale"));
+        }
+
+        userRepository.save(user);
+        return user;
     }
 
     // IMPLEMENT: error handling

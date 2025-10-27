@@ -26,9 +26,9 @@ public abstract class UserServiceContract extends GenericService<User, Long> imp
     public abstract User cercaPerCodiceFiscale(String codiceFiscale);
     public abstract User cercaPerNomeECognome(String nome, String cognome);
 
-    public abstract User modificaEmail(String email);
-    public abstract User modificaUsername(String username);
-    public abstract User modificaPassword(String password);
+    public abstract User modificaEmail(Long idUser, String email);
+    public abstract User modificaUsername(Long idUser, String username);
+    public abstract User modificaPassword(Long idUser, String password);
 
     public abstract User modificaDatiPersona(Long idUser, Map<String, String> data);
 
