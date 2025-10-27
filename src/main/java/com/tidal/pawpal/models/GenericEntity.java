@@ -3,7 +3,7 @@ package com.tidal.pawpal.models;
 import lombok.Data;
 
 @Data
-public abstract class Entity {
+public abstract class GenericEntity {
 
     // DEBUG: decidere come e dove implementare questo metodo.
     // necessario per services/abstractions/CreateService.java
