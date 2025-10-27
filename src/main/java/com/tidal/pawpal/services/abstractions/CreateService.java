@@ -2,9 +2,9 @@ package com.tidal.pawpal.services.abstractions;
 
 import java.util.Map;
 
-import com.tidal.pawpal.models.Entity;
+import com.tidal.pawpal.models.GenericEntity;
 
-public interface CreateService<E extends Entity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID> {
+public interface CreateService<E extends GenericEntity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID> {
 
     // IMPLEMENT: should return ID or E?
     default E registra(Map<String, String> data) {

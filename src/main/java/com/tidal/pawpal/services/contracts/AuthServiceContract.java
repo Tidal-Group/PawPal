@@ -21,10 +21,7 @@ public abstract class AuthServiceContract {
     protected VeterinarioServiceContract veterinarioService;
 
     public abstract User validaCredenziali(String username, String password);
-
     public abstract Cliente registraCliente(Map<String, String> dati);
     public abstract Veterinario registraVeterinario(Map<String, String> dati);
-
-    public abstract void cambiaPassword(Long id, String password);
 
 }

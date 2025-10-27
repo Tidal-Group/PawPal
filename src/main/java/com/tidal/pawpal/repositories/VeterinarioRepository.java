@@ -2,12 +2,13 @@ package com.tidal.pawpal.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.tidal.pawpal.models.Veterinario;
 @Repository
-public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> {
+public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>, JpaSpecificationExecutor<Veterinario> {
  
     @Query("SELECT v FROM Veterinario v WHERE v.user.id = ?1")
     Veterinario findBySpecie(String specie);

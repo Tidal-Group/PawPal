@@ -21,7 +21,6 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
 
     public abstract List<Recensione> cercaPerVeterinario(Long idVeterinario);
     public abstract List<Recensione> cercaPerCliente(Long idCliente);
-
     public abstract Double calcolaVotoMedioVeterinario(Long idVeterinario);
 
 }

@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tidal.pawpal.models.Entity;
+import com.tidal.pawpal.models.GenericEntity;
 
 import lombok.Getter;
 
 @Getter
-public abstract class GenericService<E extends Entity, ID> implements RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID> {
+public abstract class GenericService<E extends GenericEntity, ID> implements RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID> {
 
     @Autowired
     private JpaRepository<E, ID> repository;
