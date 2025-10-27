@@ -1,19 +1,23 @@
 package com.tidal.pawpal.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.models.Cliente;
+import com.tidal.pawpal.models.Recensione;
+import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Veterinario;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -35,13 +39,30 @@ public class DashController {
     public RecensioneServiceContract recensioneService;
 
     @GetMapping("/profilo")
-    public String showProfilo() {
-        return "profilo";
+    public String showProfilo(Model model, HttpSession session) {
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/login";
+
+        // DEBUG: Problema di sicurezza: tra i campi di utente, c'è anche la sua password
+        try {
+            User utente;
+            if(session.getAttribute("utente") instanceof Cliente cliente)
+                utente = clienteService.cercaPerId(cliente.getId());
+            else if(session.getAttribute("utente") instanceof Veterinario veterinario)
+                utente = veterinarioService.cercaPerId(veterinario.getId());
+
+            model.addAttribute("utente", utente);
+
+            return "profilo";
+        } catch(Exception exception) {
+            // IMPLEMENT CUSTOM ERROR HANDLING
+            return "redirect:/error";
+        }
+
     }
 
     @PostMapping("/profilo/modifica_dati")
     public String sendDatiProfilo(@RequestParam Map<String, String> data, HttpSession session) {
-        if(session == null) return "redirect:/auth/login";
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
 
         try {
             if(session.getAttribute("utente") instanceof Cliente cliente) {
@@ -59,14 +80,30 @@ public class DashController {
     }
 
     @GetMapping("/appuntamenti")
-    public String mostraAppuntamenti() {
-        return "appuntamenti";
+    public String mostraAppuntamenti(Model model, HttpSession session) {
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/login";
+
+        try {
+            List<Appuntamento> listaAppuntamenti;
+            if(session.getAttribute("utente") instanceof Cliente cliente)
+                listaAppuntamenti = appuntamentoService.cercaPerCliente(cliente.getId());
+            else if(session.getAttribute("utente") instanceof Veterinario veterinario)
+                listaAppuntamenti = appuntamentoService.cercaPerVeterinario(veterinario.getId());
+
+            model.addAttribute("lista_appuntamenti", listaAppuntamenti);
+
+            return "appuntamenti";
+        } catch(Exception exception) {
+            // IMPLEMENT CUSTOM ERROR HANDLING
+            return "redirect:/error";
+        }
+
     }
 
     @PostMapping("/appuntamenti/modifica_appuntamento")
     public String handleAppuntamentoUpdate(@RequestParam Map<String, String> data, HttpSession session) {
 
-        if(session == null) return "redirect:/auth/login";
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
 
         try {
             appuntamentoService.modifica(data, session.getAttribute("utente"));
@@ -81,7 +118,7 @@ public class DashController {
     @PostMapping("/appuntamenti/elimina_appuntamento")
     public String handleAppuntamentoDeletion(@RequestParam Long id, HttpSession session) {
 
-        if(session == null) return "redirect:/auth/login";
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
 
         try {
             appuntamentoService.elimina(id, session.getAttribute("utente"));
@@ -94,14 +131,31 @@ public class DashController {
     }
 
     @GetMapping("/recensioni")
-    public String showRecensioni() {
-        return "recensioni";
+    public String showRecensioni(Model model, HttpSession session) {
+
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/login";
+
+        try {
+            List<Recensione> listaRecensioni;
+            if(session.getAttribute("utente") instanceof Cliente cliente)
+                listaRecensioni = recensioneService.cercaPerCliente(cliente.getId());
+            else if(session.getAttribute("utente") instanceof Veterinario veterinario)
+                listaRecensioni = recensioneService.cercaPerVeterinario(veterinario.getId());
+
+            model.addAttribute("lista_recensioni", listaRecensioni);
+
+            return "recensioni";
+        } catch(Exception exception) {
+            // IMPLEMENT CUSTOM ERROR HANDLING
+            return "redirect:/error";
+        }
+
     }
 
     @PostMapping("/recensioni/elimina_recensione")
     public String postMethodName(@RequestParam Long id, HttpSession session) {
 
-        if(session == null) return "redirect:/auth/login";
+        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
 
         try {
             recensioneService.elimina(id, session.getAttribute("utente"));
@@ -115,7 +169,7 @@ public class DashController {
     
     @GetMapping("/linee_guida")
     public String showLineeGuida() {
-        return new String();
+        return "linee_guida";
     }
     
 
