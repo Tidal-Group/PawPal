@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title} :: text">PawPal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+
+<div th:fragment="headerFooter">
+    <header>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/lista_veterinari}">Veterinari</a></li>
+                <li><a th:href="@{/contatti}">Contatti</a></li>
+                <li><a th:href="@{/auth/login}">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <main th:fragment="content"></main>
+
+    
+    <footer>
+        <p>&copy; 2025 PawPal. Tutti i diritti riservati.</p>
+    </footer>
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
