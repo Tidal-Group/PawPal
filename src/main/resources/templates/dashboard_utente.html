@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head('Dashboard - PawPal')"></head>
+
+<body>
+    
+    <header th:replace="fragments :: dashboard-header('Dashboard Utente')"></header>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Dashboard</h3>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+
+                <!-- Link visibili sia a Cliente che a Veterinario -->
+                <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
+                <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
+
+                <!-- Link visibili solo al Cliente -->
+                <li th:if="${#strings.equalsIgnoreCase(user.role,'cliente')}">
+                    <a th:href="@{/veterinari/lista_veterinari}">Cerca Veterinari</a>
+                </li>
+
+                <!-- Link/Sezioni visibili solo al Veterinario -->
+                <li th:if="${#strings.equalsIgnoreCase(user.role,'veterinario')}">
+                    <a th:href="@{/dash/lineeguida}">Linee Guida</a>
+                </li>
+
+
+                <li class="submenu">
+                    <a href="#">Profilo</a>
+                    <ul>
+                        <li><a th:href="@{/dash/profilo}">Modifica Profilo</a></li>
+                        <li><a th:href="@{/dash/utenti/modifica_password}">Cambia Password</a></li>
+                        <li><a th:href="@{/dash/utenti/elimina_account}">Elimina Account</a></li>
+                        <li><a th:href="@{/logout}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+    </main>
+</body>
+
+</html>

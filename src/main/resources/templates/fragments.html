@@ -28,35 +28,98 @@
                         veterinario</a>
                 </div>
 
-                <div sec:authorize="hasAnyRole('CLIENTE','VETERINARIO')">
-                    <span>Ciao, <span th:text="${#authentication.name}">Utente</span></span>
-                    <a href="/dash/profilo" th:classappend="${active} == 'profilo' ? ' active' : ''">Profilo</a>
-                    <a href="/dash/appuntamenti"
-                        th:classappend="${active} == 'appuntamenti' ? ' active' : ''">Appuntamenti</a>
-                    <a href="/dash/recensioni"
-                        th:classappend="${active} == 'recensioni' ? ' active' : ''">Recensioni</a>
-                    <a href="/dash/lineeguida" th:classappend="${active} == 'lineeguida' ? ' active' : ''">Linee
-                        guida</a>
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit">Esci</button>
-                    </form>
+                <div sec:authorize="hasAnyRole('CLIENTE','VETERINARIO')" class="user-section">
+
+                    <a href="/dash" class="dashboard-link"
+                        th:classappend="${active} == 'dashboard' ? ' active' : ''">Dashboard</a>
+
+                    <div class="user-dropdown">
+                        <button id="userDropdownBtn" class="user-button">
+                            <span th:text="${#authentication.name}">Utente</span> ▼
+                        </button>
+
+                        <div id="userDropdownMenu" class="dropdown-content">
+                            <p><strong th:text="${#authentication.name}">Utente</strong></p>
+                            <p>
+                                <span th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">Cliente</span>
+                                <span
+                                    th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">Veterinario</span>
+                            </p>
+                            <hr>
+                            <a href="/dash/profilo">Impostazioni</a>
+                            <a href="/dash">Dashboard</a>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
-                <div sec:authorize="hasRole('ADMIN')">
-                    <span>Ciao, <span th:text="${#authentication.name}">Admin</span></span>
-                    <a href="/admin/utenti" th:classappend="${active} == 'utenti' ? ' active' : ''">Gestione Utenti</a>
-                    <a href="/admin/prestazioni"
-                        th:classappend="${active} == 'prestazioni' ? ' active' : ''">Prestazioni</a>
-                    <a href="/admin/specie" th:classappend="${active} == 'specie' ? ' active' : ''">Specie</a>
-                    <a href="/admin/statistiche"
-                        th:classappend="${active} == 'statistiche' ? ' active' : ''">Statistiche</a>
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit">Esci</button>
-                    </form>
+                <div sec:authorize="hasRole('ADMIN')" class="user-section">
+
+                    <a href="/admin" class="dashboard-link"
+                        th:classappend="${active} == 'dashboard' ? ' active' : ''">Dashboard</a>
+
+                    <div class="user-dropdown">
+                        <button id="adminDropdownBtn" class="user-button">
+                            <span th:text="${#authentication.name}">Admin</span> ▼
+                        </button>
+
+                        <div id="adminDropdownMenu" class="dropdown-content">
+                            <p><strong th:text="${#authentication.name}">Admin</strong></p>
+                            <p>Ruolo: Admin</p>
+                            <hr>
+                            <a href="/admin/utenti">Gestione utenti</a>
+                            <a href="/admin/prestazioni">Prestazioni</a>
+                            <a href="/admin/specie">Specie</a>
+                            <a href="/admin/statistiche">Statistiche</a>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
             </nav>
         </div>
 
+    </header>
+
+    <header th:fragment="dashboard-header(title)">
+        <div class="header-left">
+            <button class="toggle-btn" type="button" aria-label="Apri sidebar">☰</button>
+            <h2 class="header-title" th:text="${title}">Dashboard</h2>
+        </div>
+
+        <div class="header-right">
+            <a th:href="@{/}" class="btn-home">Home</a>
+
+            <div class="profile" aria-haspopup="true">
+                <button class="profile-btn" type="button" aria-expanded="false">
+                    <span th:text="${#authentication.name}">Nome Utente</span> ▾
+                </button>
+
+                <div class="profile-dropdown" role="menu" aria-hidden="true">
+                    <div class="profile-info">
+                        <div class="profile-name" th:text="${#authentication.name}">Nome Utente</div>
+                        <div class="profile-role">
+                            <span th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">Cliente</span>
+                            <span th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">Veterinario</span>
+                            <span th:if="${#authorization.expression('hasRole(''ADMIN'')')}">Amministratore</span>
+                        </div>
+                    </div>
+                    <ul class="profile-actions">
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li><a th:href="@{/dash/profilo}">Profilo</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </header>
 
     <footer th:fragment="footer">
