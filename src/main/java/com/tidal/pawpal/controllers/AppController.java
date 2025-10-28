@@ -12,9 +12,9 @@ public class AppController {
     @Value("${app.pawpal.nome:Pawpal}")
     private String appName;
 
-    // PROBABILMENTE DA TOGLIERE
     @GetMapping("/")
     public String homepage(Model model) {
+        // PROBABILMENTE DA TOGLIERE
         model.addAttribute("app-name", appName);
         return "index";
     }

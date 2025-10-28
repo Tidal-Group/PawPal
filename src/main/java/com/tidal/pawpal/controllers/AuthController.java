@@ -25,19 +25,6 @@ public class AuthController {
     public String getLoginPage() {
         return "login";
     }
-    
-    @PostMapping("/login/form")
-    public String sendLoginData(@RequestParam String username, @RequestParam String password, HttpSession session) {
-        try {
-            User user = authService.validaCredenziali(username, password);
-            session.setAttribute("utente", user);
-            session.setAttribute("ruolo", user.getRuolo());
-            return "redirect:/";
-        } catch(Exception exception) {
-            // IMPLEMENT CUSTOM ERROR HANDLING
-            return "redirect:/error";
-        }
-    }
 
     @GetMapping("/register_veterinario")
     public String getVeterinarioRegisterPage() {
@@ -70,12 +57,5 @@ public class AuthController {
             return "redirect:/error";
         }
     }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.invalidate();
-        return "redirect:/";
-    }
-    
 
 }

@@ -1,9 +1,12 @@
 package com.tidal.pawpal.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +19,11 @@ import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Veterinario;
+import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
+import com.tidal.pawpal.services.contracts.ClienteServiceContract;
+import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
+import com.tidal.pawpal.services.contracts.UserServiceContract;
+import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,6 +33,14 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/dash")
 public class DashController {
+
+    private static boolean isCliente(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("CLIENTE"));
+    }
+
+    private static boolean isVeterinario(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("VETERINARIO"));
+    }
 
     @Autowired
     public ClienteServiceContract clienteService;
@@ -38,20 +54,23 @@ public class DashController {
     @Autowired
     public RecensioneServiceContract recensioneService;
 
+    @Autowired
+    public UserServiceContract userService;
+
     @GetMapping("/profilo")
-    public String showProfilo(Model model, HttpSession session) {
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/login";
+    public String showProfilo(Model model, Principal principal) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // DEBUG: Problema di sicurezza: tra i campi di utente, c'è anche la sua password
         try {
-            User utente;
-            if(session.getAttribute("utente") instanceof Cliente cliente)
-                utente = clienteService.cercaPerId(cliente.getId());
-            else if(session.getAttribute("utente") instanceof Veterinario veterinario)
-                utente = veterinarioService.cercaPerId(veterinario.getId());
-
+            User utente = userService.cercaPerUsername(principal.getName());
+            if(isCliente(authentication))
+                utente = clienteService.cercaPerId(utente.getId());
+            else if(isVeterinario(authentication))
+                utente = veterinarioService.cercaPerId(utente.getId());
             model.addAttribute("utente", utente);
-
+            model.addAttribute("ruolo", utente.getRuolo());
             return "profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -60,23 +79,44 @@ public class DashController {
 
     }
 
-    @PostMapping("/profilo/modifica_dati")
-    public String sendDatiProfilo(@RequestParam Map<String, String> data, HttpSession session) {
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    @PostMapping("/profilo/modifica_username")
+    public String sendUsername(@RequestParam String username, Principal principal) {        
         try {
-            if(session.getAttribute("utente") instanceof Cliente cliente) {
-                Cliente clienteAggiornato = clienteService.modifica(cliente.getId(), data);
-                session.setAttribute("utente", clienteAggiornato);
-            } else if(session.getAttribute("utente") instanceof Veterinario veterinario) {
-                Veterinario veterinarioAggiornato = veterinarioService.modifica(veterinario.getId(), data);
-                session.setAttribute("utente", veterinarioAggiornato);
-            }
+            User utente = userService.cercaPerUsername(principal.getName());
+            userService.modificaUsername(utente.getId(), username);
+            return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
         }
-        return "redirect:/dash/profilo";
+    }
+
+    @PostMapping("/profilo/modifica_password")
+    public String sendPassword(@RequestParam String password, Principal principal) {        
+        try {
+            User utente = userService.cercaPerUsername(principal.getName());
+            userService.modificaPassword(utente.getId(), password);
+            return "redirect:/dash/profilo";
+        } catch(Exception exception) {
+            // IMPLEMENT CUSTOM ERROR HANDLING
+            return "redirect:/error";
+        }
+    }
+
+    @PostMapping("/profilo/modifica_dati")
+    public String sendDatiProfilo(@RequestParam Map<String, String> data, Principal principal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            User utente = userService.cercaPerUsername(principal.getName());
+            if(isCliente(authentication))
+                clienteService.modifica(utente.getId(), data);
+            else if(isVeterinario(authentication))
+                veterinarioService.modifica(utente.getId(), data);
+            return "redirect:/dash/profilo";
+        } catch(Exception exception) {
+            // IMPLEMENT CUSTOM ERROR HANDLING
+            return "redirect:/error";
+        }
     }
 
     @GetMapping("/appuntamenti")
