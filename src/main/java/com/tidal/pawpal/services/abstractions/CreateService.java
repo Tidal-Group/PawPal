@@ -6,7 +6,6 @@ import com.tidal.pawpal.models.GenericEntity;
 
 public interface CreateService<E extends GenericEntity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID> {
 
-    // IMPLEMENT: should return ID or E?
     default E registra(Map<String, String> data) {
 
         // DEBUG: error handling

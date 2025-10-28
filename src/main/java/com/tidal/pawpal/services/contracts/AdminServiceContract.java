@@ -24,6 +24,4 @@ public abstract class AdminServiceContract {
         return user instanceof Amministratore || user.getRuolo().equalsIgnoreCase("admin");
     }
 
-    
-
 }

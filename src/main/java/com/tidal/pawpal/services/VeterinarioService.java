@@ -22,6 +22,12 @@ public class VeterinarioService extends VeterinarioServiceContract {
     public VeterinarioRepository veterinarioRepository;
 
     @Override
+    public Veterinario registra(Map<String, String> data) {
+        Veterinario veterinarioVuoto = super.registra(data);
+         // IMPLEMENT: popolare le relazioni
+    }
+
+    @Override
     public List<Veterinario> cercaPerSpecie(String specie) {
         return veterinarioRepository.findBySpecie(specie);
     }
