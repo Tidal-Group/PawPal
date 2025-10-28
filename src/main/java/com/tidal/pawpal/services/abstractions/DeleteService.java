@@ -1,8 +1,8 @@
 package com.tidal.pawpal.services.abstractions;
 
-import com.tidal.pawpal.models.Entity;
+import com.tidal.pawpal.models.GenericEntity;
 
-public interface DeleteService<E extends Entity, ID> extends RepositoryAccess<E, ID> {
+public interface DeleteService<E extends GenericEntity, ID> extends RepositoryAccess<E, ID> {
 
     default void elimina(ID id) {
 

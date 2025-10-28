@@ -2,9 +2,9 @@ package com.tidal.pawpal.services.abstractions;
 
 import java.util.Map;
 
-import com.tidal.pawpal.models.Entity;
+import com.tidal.pawpal.models.GenericEntity;
 
-public interface UpdateService<E extends Entity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID>{
+public interface UpdateService<E extends GenericEntity, ID> extends RepositoryAccess<E, ID>, ContextAccess, ClassAccess<E, ID>{
 
     // IMPLEMENT: should return ID or E?
     default E modifica(ID id, Map<String, String> data) {
