@@ -29,4 +29,7 @@ public class User extends Persona {
     @Column(name = "password", nullable = false)
     private String password; 
 
+    @Column(name = "ruolo")
+    private String ruolo;
+
 }

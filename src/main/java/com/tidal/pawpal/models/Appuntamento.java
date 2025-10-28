@@ -2,32 +2,33 @@ package com.tidal.pawpal.models;
 
 import java.time.LocalDateTime;
 
-import javax.swing.text.html.parser.Entity;
-
-import org.antlr.v4.runtime.misc.NotNull;
-
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
+@Entity
+@Table(name = "appuntamenti")
 public class Appuntamento extends GenericEntity {
 
   @Id 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  
-  
-  @Column(nullable = false)
+  @Column(name = "data_Ora",nullable = false)
   private LocalDateTime dataOra;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "cliente_id", nullable = false)
+  @Column(name = "note", length = 1000)
+  private String note;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "cliente_id", nullable = true)
   private Cliente cliente;
 
   @ManyToOne(optional = false)
