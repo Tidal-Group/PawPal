@@ -401,8 +401,25 @@
                 </div>
             </form>
         </section>
+
+        <section class="logout-section" id="logout">
+            <h1>Logout</h1>
+
+            <form th:action="@{/logout}" method="post" class="form-profilo">
+                <fieldset>
+                    <h3>Esci dal tuo account</h3>
+                    <p>Premi "Esci" per terminare la sessione corrente. Verrai reindirizzato alla pagina iniziale.</p>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">Esci</button>
+                    <button type="reset" class="btn-cancel">Annulla</button>
+                </div>
+            </form>
+        </section>
     </main>
 
+    <footer th:replace="fragments :: footer"></footer>
 </body>
 
 </html>
