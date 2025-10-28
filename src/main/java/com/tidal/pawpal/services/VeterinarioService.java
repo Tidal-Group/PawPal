@@ -7,10 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
+import com.tidal.pawpal.models.Prestazione;
+ import java.util.Optional;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.VeterinarioRepository;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
+
 
 import jakarta.persistence.criteria.Predicate;
 @Service
@@ -20,27 +22,29 @@ public class VeterinarioService extends VeterinarioServiceContract {
     public VeterinarioRepository veterinarioRepository;
 
     @Override
-    public List<Veterinario> cercaPerSpecie(Long idSpecie) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerSpecie'");
+    public List<Veterinario> cercaPerSpecie(String specie) {
+        return veterinarioRepository.findBySpecie(specie);
     }
 
     @Override
-    public List<Veterinario> cercaPerPrestazione(Long idPrestazione) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerPrestazione'");
+    public List<Veterinario> cercaPerPrestazione(String prestazione) {
+        return veterinarioRepository.findByPrestazioneVeterinario(prestazione);
     }
 
     @Override
-    public List<Veterinario> cercaPerNominativo(String nome, String cognome) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerNominativo'");
+    public List<Veterinario> cercaPerNominativo(Long idUser) {
+        return veterinarioRepository.findByUserId(idUser);
     }
 
     @Override
     public List<Veterinario> cercaPerIndirizzo(String indirizzo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerIndirizzo'");
+        return veterinarioRepository.findByIndirizzo(indirizzo)
+    }
+    public List<Veterinario> cercaPerEmail(String email) {
+        return veterinarioRepository.findByEmail(email);
+    }
+    public List<Veterinario> cercaPerRating(Double rating) {
+        return veterinarioRepository.findByRecensioniRating(rating);
     }
 
     // IMPLEMENT: error handling
