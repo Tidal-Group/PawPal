@@ -24,9 +24,9 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
     @Override
     public Appuntamento registra(Map<String, String> data) {
         Appuntamento appuntamento = super.registra(data);
-        Veterinario v = veterinarioService.cercaPerId(Long.parseLong(data.get("id_veterinario")));
+        Veterinario v = veterinarioService.cercaPerId(Long.parseLong(data.get("idVeterinario")));
         appuntamento.setVeterinario(v);
-        Cliente c = clienteService.cercaPerId(Long.parseLong(data.get("id_cliente")));
+        Cliente c = clienteService.cercaPerId(Long.parseLong(data.get("idCliente")));
         appuntamento.setCliente(c);
         return appuntamento;
     }
