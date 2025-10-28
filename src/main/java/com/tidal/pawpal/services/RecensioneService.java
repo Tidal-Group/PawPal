@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Veterinario;
+import com.tidal.pawpal.repositories.RecensioneRepository;
 import com.tidal.pawpal.services.contracts.ClienteServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
@@ -21,7 +22,7 @@ public class RecensioneService extends RecensioneServiceContract {
     @Autowired
     public ClienteServiceContract clienteService;
    
-
+    private RecensioneRepository recensioneRepository;
     @Override
     public Recensione registra (Map<String, String> data) {
         Recensione recensione = super.registra(data);
@@ -33,21 +34,18 @@ public class RecensioneService extends RecensioneServiceContract {
         return recensione;
     }   
     @Override
-    public List<Recensione> cercaPerVeterinario(Long idVeterinario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerVeterinario'");
+    public List<Recensione> cercaPerVeterinario(Long Veterinario) {
+        return recensioneRepository.findByVeterinario(Veterinario);
     }
 
     @Override
     public List<Recensione> cercaPerCliente(Long idCliente) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerCliente'");
+        return recensioneRepository.findByCliente(idCliente);
     }
 
     @Override
     public Double calcolaVotoMedioVeterinario(Long idVeterinario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calcolaVotoMedioVeterinario'");
+        return recensioneRepository.calculateAverageRatingVeterinario(idVeterinario);
     }
 
 }

@@ -1,8 +1,7 @@
 package com.tidal.pawpal.services;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,31 +48,33 @@ public class VeterinarioService extends VeterinarioServiceContract {
         // fare per prestazione
         return veterinario;
     }
-
-    @Override
+    @Override //inserire nel contract
     public List<Veterinario> cercaPerSpecie(String specie) {
-        return veterinarioRepository.findBySpecie(specie);
+        return veterinarioRepository.findByNomeSpecie(specie);
+    }
+    @Override 
+    public List<Veterinario> cercaPerCitta(String citta) {
+        return veterinarioRepository.findByCitta(citta);
+    }
+
+    public List<Veterinario> cercaPerPrestazione(Long  prestazione) {
+        return veterinarioRepository.findByIdPrestazione(prestazione);
     }
 
     @Override
-    public List<Veterinario> cercaPerPrestazione(String prestazione) {
-        return veterinarioRepository.findByPrestazioneVeterinario(prestazione);
+    public List<Veterinario> cercaPerIndirizzoStudio(String indirizzo) {
+        return veterinarioRepository.findByIndirizzoStudio(indirizzo);
     }
-
-    @Override
-    public List<Veterinario> cercaPerNominativo(Long idUser) {
-        return veterinarioRepository.findByUserId(idUser);
-    }
-
-    @Override
-    public List<Veterinario> cercaPerIndirizzo(String indirizzo) {
-        return veterinarioRepository.findByIndirizzo(indirizzo)
-    }
-    public List<Veterinario> cercaPerEmail(String email) {
+  
+    @Override //inserire nel contract
+    public Veterinario cercaPerEmail(String email) {
         return veterinarioRepository.findByEmail(email);
+
     }
-    public List<Veterinario> cercaPerRating(Double rating) {
-        return veterinarioRepository.findByRecensioniRating(rating);
+    @Override //inserire nel contract
+    public Veterinario cercaPerTelefono(String telefono) {
+
+        return veterinarioRepository.findByTelefono(telefono);
     }
 
     // IMPLEMENT: error handling
@@ -114,36 +115,6 @@ public class VeterinarioService extends VeterinarioServiceContract {
         };
 
         return veterinarioRepository.findAll(specification);
-    }
-
-    @Override
-    public List<Veterinario> cercaPerSpecie(Long idSpecie) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerSpecie'");
-    }
-
-    @Override
-    public List<Veterinario> cercaPerPrestazione(Long idPrestazione) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerPrestazione'");
-    }
-
-    @Override
-    public List<Veterinario> cercaPerNominativo(String nome, String cognome) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerNominativo'");
-    }
-
-    @Override
-    public List<Veterinario> cercaPerIndirizzoStudio(String indirizzoStudio) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerIndirizzoStudio'");
-    }
-
-    @Override
-    public List<Veterinario> cercaPerCitta(String citta) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerCitta'");
     }
 
 }
