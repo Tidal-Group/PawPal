@@ -2,29 +2,22 @@ package com.tidal.pawpal.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.Map;
-
 
 import com.tidal.pawpal.models.User;
 
-import jakarta.transaction.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     User findByEmail(String email);
-
    
     User findByUsername(String username);
 
     User findByCodiceFiscale(String codiceFiscale);
 
-    
     User findByNomeAndCognome(String nome, String cognome);
 
-    @Modifying
+    /* @Modifying
     @Transactional
     @Query("UPDATE User u SET u.username = ?2 WHERE u.id = ?1")
     User updateUsernameUser(Long id, String username);
@@ -42,5 +35,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.nome = ?2, u.cognome = ?3, u.codiceFiscale = ?4 WHERE u.id = ?1")
-    User updateDatiPersona(Long id, Map <String, String> dati);
+    User updateDatiPersona(Long id, Map <String, String> dati); */
+
 } 

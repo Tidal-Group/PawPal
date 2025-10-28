@@ -10,6 +10,6 @@ import com.tidal.pawpal.models.Specie;
 @Repository
 public interface SpecieRepository extends JpaRepository<Specie, Long> {
 
-    Specie findByNomeSpecie(String nomeSpecie);
+    Specie findByNome(String nome);
 
 }

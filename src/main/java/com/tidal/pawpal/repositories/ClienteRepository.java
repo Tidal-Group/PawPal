@@ -6,17 +6,9 @@ import com.tidal.pawpal.models.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-
-    Cliente findByUserId(Long userId);
-
-
    
     Cliente findByEmail(String email);
-
     
     Cliente findByTelefono(String telefono);
-
-
-
 
 }
