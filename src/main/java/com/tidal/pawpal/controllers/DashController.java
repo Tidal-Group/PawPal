@@ -1,8 +1,10 @@
 package com.tidal.pawpal.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,19 +29,22 @@ import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
 import jakarta.servlet.http.HttpSession;
 
-
-
-
 @Controller
 @RequestMapping("/dash")
 public class DashController {
 
     private static boolean isCliente(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("CLIENTE"));
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"));
     }
 
     private static boolean isVeterinario(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("VETERINARIO"));
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_VETERINARIO"));
+    }
+
+    private void acceptAuthenticated(Principal principal, BiConsumer<Authentication, User> consumer) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User utente = userService.cercaPerUsername(principal.getName());
+        consumer.accept(authentication, utente);
     }
 
     @Autowired
@@ -57,33 +62,38 @@ public class DashController {
     @Autowired
     public UserServiceContract userService;
 
+    @GetMapping("/")
+    public String showDashboard() {
+        return "dashboard";
+    }
+
     @GetMapping("/profilo")
     public String showProfilo(Model model, Principal principal) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         // DEBUG: Problema di sicurezza: tra i campi di utente, c'è anche la sua password
         try {
-            User utente = userService.cercaPerUsername(principal.getName());
-            if(isCliente(authentication))
-                utente = clienteService.cercaPerId(utente.getId());
-            else if(isVeterinario(authentication))
-                utente = veterinarioService.cercaPerId(utente.getId());
-            model.addAttribute("utente", utente);
-            model.addAttribute("ruolo", utente.getRuolo());
+
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                if(isCliente(authentication))
+                    utente = clienteService.cercaPerId(utente.getId());
+                else if(isVeterinario(authentication))
+                    utente = veterinarioService.cercaPerId(utente.getId());
+                model.addAttribute("utente", utente);
+                model.addAttribute("ruolo", utente.getRuolo());
+            });
+
             return "profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
         }
-
     }
 
     @PostMapping("/profilo/modifica_username")
     public String sendUsername(@RequestParam String username, Principal principal) {        
         try {
-            User utente = userService.cercaPerUsername(principal.getName());
-            userService.modificaUsername(utente.getId(), username);
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                userService.modificaUsername(utente.getId(), username);
+            });
             return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -94,8 +104,9 @@ public class DashController {
     @PostMapping("/profilo/modifica_password")
     public String sendPassword(@RequestParam String password, Principal principal) {        
         try {
-            User utente = userService.cercaPerUsername(principal.getName());
-            userService.modificaPassword(utente.getId(), password);
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                userService.modificaPassword(utente.getId(), password);
+            });
             return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -105,13 +116,13 @@ public class DashController {
 
     @PostMapping("/profilo/modifica_dati")
     public String sendDatiProfilo(@RequestParam Map<String, String> data, Principal principal) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
-            User utente = userService.cercaPerUsername(principal.getName());
-            if(isCliente(authentication))
-                clienteService.modifica(utente.getId(), data);
-            else if(isVeterinario(authentication))
-                veterinarioService.modifica(utente.getId(), data);
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                if(isCliente(authentication))
+                    clienteService.modifica(utente.getId(), data);
+                else if(isVeterinario(authentication))
+                    veterinarioService.modifica(utente.getId(), data);
+            });
             return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -120,48 +131,38 @@ public class DashController {
     }
 
     @GetMapping("/appuntamenti")
-    public String mostraAppuntamenti(Model model, HttpSession session) {
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/login";
-
+    public String mostraAppuntamenti(Model model, Principal principal) {
         try {
-            List<Appuntamento> listaAppuntamenti;
-            if(session.getAttribute("utente") instanceof Cliente cliente)
-                listaAppuntamenti = appuntamentoService.cercaPerCliente(cliente.getId());
-            else if(session.getAttribute("utente") instanceof Veterinario veterinario)
-                listaAppuntamenti = appuntamentoService.cercaPerVeterinario(veterinario.getId());
-
-            model.addAttribute("lista_appuntamenti", listaAppuntamenti);
-
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                List<Appuntamento> listaAppuntamenti = new ArrayList<>();
+                if(isCliente(authentication))
+                    listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
+                else if(isVeterinario(authentication))
+                    listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
+                model.addAttribute("lista_appuntamenti", listaAppuntamenti); 
+            });
             return "appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
         }
-
     }
 
     @PostMapping("/appuntamenti/modifica_appuntamento")
-    public String handleAppuntamentoUpdate(@RequestParam Map<String, String> data, HttpSession session) {
-
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    public String handleAppuntamentoUpdate(@RequestParam Map<String, String> data) {
         try {
-            appuntamentoService.modifica(data, session.getAttribute("utente"));
+            appuntamentoService.modifica(Long.parseLong(data.get("id")), data);
             return "redirect:/dash/appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
         }
-
     }
 
     @PostMapping("/appuntamenti/elimina_appuntamento")
-    public String handleAppuntamentoDeletion(@RequestParam Long id, HttpSession session) {
-
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    public String handleAppuntamentoDeletion(@RequestParam Long id) {
         try {
-            appuntamentoService.elimina(id, session.getAttribute("utente"));
+            appuntamentoService.elimina(id);
             return "redirect:/dash/appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -171,19 +172,16 @@ public class DashController {
     }
 
     @GetMapping("/recensioni")
-    public String showRecensioni(Model model, HttpSession session) {
-
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/login";
-
+    public String showRecensioni(Model model, Principal principal) {
         try {
-            List<Recensione> listaRecensioni;
-            if(session.getAttribute("utente") instanceof Cliente cliente)
-                listaRecensioni = recensioneService.cercaPerCliente(cliente.getId());
-            else if(session.getAttribute("utente") instanceof Veterinario veterinario)
-                listaRecensioni = recensioneService.cercaPerVeterinario(veterinario.getId());
-
-            model.addAttribute("lista_recensioni", listaRecensioni);
-
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                List<Recensione> listaRecensioni = new ArrayList<>();
+                if(isCliente(authentication))
+                    listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
+                else if(isVeterinario(authentication))
+                    listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
+                model.addAttribute("lista_recensioni", listaRecensioni);
+            });
             return "recensioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -193,18 +191,14 @@ public class DashController {
     }
 
     @PostMapping("/recensioni/elimina_recensione")
-    public String postMethodName(@RequestParam Long id, HttpSession session) {
-
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    public String postMethodName(@RequestParam Long id) {
         try {
-            recensioneService.elimina(id, session.getAttribute("utente"));
+            recensioneService.elimina(id);
             return "redirect:/dash/recensioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
         }
-
     }
     
     @GetMapping("/linee_guida")
