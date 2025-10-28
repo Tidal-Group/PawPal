@@ -13,16 +13,16 @@ import com.tidal.pawpal.models.Veterinario;
 @Repository
 public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>, JpaSpecificationExecutor<Veterinario> {
     
-    @Query("SELECT v FROM Veterinario v JOIN v.specie s WHERE s.nome = :specie")
-    List<Veterinario> findBySpecie(@Param("specie") String specie);
+    @Query("SELECT v FROM Veterinario v JOIN v.specieTrattate s WHERE s.nomeSpecie = :specie")
+    List<Veterinario> findByNomeSpecie(@Param("specie") String specie);
 
-    @Query("SELECT v FROM Veterinario v JOIN v.prestazione p WHERE p.nome = :prestazione")
-    List<Veterinario> findByPrestazione(@Param("prestazione") String prestazione);
+    @Query("SELECT v FROM Veterinario v JOIN v.prestazioniOfferte p WHERE p.id = :id_prestazione")
+    List<Veterinario> findByIdPrestazione(@Param("id_prestazione") Long idPrestazione);
 
-    @Query("SELECT v FROM Veterinario v WHERE v.indirizzo = :indirizzo")
-    List<Veterinario> findByIndirizzo(@Param("indirizzo") String indirizzo);
+    @Query("SELECT v FROM Veterinario v WHERE v.indirizzoStudio = :indirizzo")
+    List<Veterinario> findByIndirizzoStudio(@Param("indirizzo") String indirizzo);
 
-    @Query("SELECT v FROM Veterinario v WHERE LOWER(v.indirizzo) LIKE CONCAT('%', LOWER(:citta), '%')")
+    @Query("SELECT v FROM Veterinario v WHERE LOWER(v.indirizzoStudio) LIKE CONCAT('%', LOWER(:citta), '%')")
     List<Veterinario> findByCitta(String citta);
 
     Veterinario findByEmail(String email);

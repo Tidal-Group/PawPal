@@ -12,10 +12,10 @@ import com.tidal.pawpal.models.Appuntamento;
 @Repository
 public interface AppuntamentoRepository extends JpaRepository<Appuntamento, Long> {
 
-    @Query("SELECT a FROM Appuntamento a JOIN a.veterinari v WHERE v.id = :id_veterinario")
+    @Query("SELECT a FROM Appuntamento a JOIN a.veterinario v WHERE v.id = :id_veterinario")
     List<Appuntamento> findByVeterinario(@Param("id_veterinario") Long veterinarioId);
 
-    @Query("SELECT a FROM Appuntamento a JOIN a.clienti v WHERE v.id = :id_cliente")
+    @Query("SELECT a FROM Appuntamento a JOIN a.cliente c WHERE c.id = :id_cliente")
     List<Appuntamento> findByCliente(@Param("id_cliente") Long clienteId);
 
 }
