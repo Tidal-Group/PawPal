@@ -12,6 +12,41 @@
     </div>
 
     <main>
+
+        <section class="search-veterinari">
+            <div class="container">
+                <h2>Trova il veterinario più adatto alle tue esigenze vicino a te</h2>
+                <form th:action="@{/lista_veterinari}" method="get" class="search-form">
+
+                    <div class="form-group">
+                        <label for="citta">Città</label>
+                        <input type="text" id="citta" name="citta" placeholder="Inserisci la città">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specializzazione">Specializzazione</label>
+                        <select id="specializzazione" name="specializzazione">
+                            <option value="">-- Seleziona --</option>
+                            <option th:each="spec : ${specializzazioni}" th:value="${spec}" th:text="${spec}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="animale">Animale</label>
+                        <select id="animale" name="animale">
+                            <option value="">-- Seleziona --</option>
+                            <option th:each="anim : ${specie}" th:value="${anim}" th:text="${anim}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">Cerca</button>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
         <section class="hero">
             <div class="container">
                 <h2>Chi siamo</h2>
@@ -28,6 +63,27 @@
                     affidabili e facilmente accessibili e dove proprietari di animali e veterinari possano incontrarsi,
                     comunicare e collaborare nel modo più semplice possibile, offrendo cure migliori e un servizio
                     sempre più personalizzato.</p>
+            </div>
+        </section>
+
+        <section class="specializzazioni-in-evidenza">
+            <div class="container">
+                <h2>Specializzazioni in evidenza</h2>
+                <p class="subtitle">Di quale specialista ha bisogno il tuo animale?</p>
+                <div class="specializzazioni-list">
+                    <div th:each="spec : ${specializzazioniInEvidenza}" class="specializzazione-card">
+                        <a th:href="@{'/lista_veterinari?specializzazione=' + ${spec}}" class="card-link">
+                            <div class="icon">
+                                <img th:src="@{'/img/specializzazioni/' + ${spec.toLowerCase()} + '.png'}"
+                                    th:alt="'Icona ' + ${spec}">
+                            </div>
+                            <h3 th:text="${spec}"></h3>
+                        </a>
+                    </div>
+                </div>
+                <div class="more-specializzazioni">
+                    <a th:href="@{/lista_veterinari}" class="btn">Scopri tutte le specializzazioni</a>
+                </div>
             </div>
         </section>
 
@@ -56,6 +112,7 @@
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer th:replace="fragments :: footer"></footer>

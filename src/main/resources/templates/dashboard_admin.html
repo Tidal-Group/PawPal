@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head('Dashboard Amministratore - PawPal')"></head>
+
+<body>
+
+    <header th:replace="fragments :: dashboard-header('Dashboard Admin')"></header>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Dashboard</h3>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a th:href="@{/}"><i class="sidebar-elements"></i> Home</a></li>
+                <li><a th:href="@{/admin/utenti}"><i class="sidebar-elements"></i> Gestione Utenti</a></li>
+                <li><a th:href="@{/admin/prestazioni}"><i class="sidebar-elements"></i> Gestione Prenotazioni</a></li>
+                <li><a th:href="@{/admin/specie}"><i class="sidebar-elements"></i> Gestione Specie</a></li>
+                <li class="submenu">
+                    <a href="#"><i class="sidebar-elements"></i> Profilo</a>
+                    <ul class="submenu">
+                        <li><a th:href="@{/dash/profilo}"><i class="sidebar-elements"></i> Modifica</a></li>
+                        <li><a th:href="@{/dash/profilo}"><i class="sidebar-elements"></i> Cambia Password</a></li>
+                        <li><a th:href="@{/logout}"><i class="sidebar-elements"></i> Logout</a></li>
+                    </ul>
+                </li>
+
+                <li><a th:href="@{/admin/statistiche}"><i class="sidebar-elements"></i> Statistiche</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</body>
+
+</html>
