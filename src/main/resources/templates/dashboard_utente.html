@@ -42,11 +42,106 @@
     </div>
 
     <main class="main-content">
+
+        <section class="dashboard-section">
+            <h2>I tuoi Appuntamenti</h2>
+
+
+            <form class="filter-form" th:action="@{/dash/appuntamenti}" method="get">
+                <input type="date" name="data" placeholder="Filtra per data">
+                <input type="text" name="veterinario" placeholder="Cerca per veterinario">
+                <button type="submit" class="btn">Filtra</button>
+            </form>
+
+
+            <table class="table-appuntamenti">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Ora</th>
+                        <th th:text="${#strings.equalsIgnoreCase(user.role,'veterinario')} ? 'Cliente' : 'Veterinario'">
+                        </th>
+                        <th>Specie</th>
+                        <th>Motivo</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="app : ${appuntamenti}">
+                        <td th:text="${app.data}"></td>
+                        <td th:text="${app.ora}"></td>
+                        <td
+                            th:text="${#strings.equalsIgnoreCase(user.role,'veterinario')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
+                        </td>
+                        <td th:text="${app.specie}"></td>
+                        <td th:text="${app.motivo}"></td>
+                        <td th:text="${app.stato}"></td>
+
+                        <td>
+
+                            <div th:if="${#strings.equalsIgnoreCase(user.role,'veterinario')}">
+                                <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
+                                    <input type="hidden" name="_method" value="put" />
+                                    <input type="hidden" name="id" th:value="${app.id}" />
+                                    <button type="submit" class="btn btn-primary">Modifica</button>
+                                </form>
+
+                                <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
+                                    <input type="hidden" name="_method" value="delete" />
+                                    <input type="hidden" name="id" th:value="${app.id}" />
+                                    <button type="submit" class="btn btn-danger">Elimina</button>
+                                </form>
+                            </div>
+
+
+                            <div th:if="${#strings.equalsIgnoreCase(user.role,'cliente')}">
+                                <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
+                                    <input type="hidden" name="_method" value="delete" />
+                                    <input type="hidden" name="id" th:value="${app.id}" />
+                                    <button type="submit" class="btn btn-warning">Annulla</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div th:if="${#lists.isEmpty(appuntamenti)}" class="no-data">
+                <p>Nessun appuntamento trovato.</p>
+            </div>
+
+            <!-- Prenotazione (solo cliente) -->
+            <div th:if="${#strings.equalsIgnoreCase(user.role,'cliente')}" class="nuovo-appuntamento">
+                <h3>Prenota un nuovo appuntamento</h3>
+                <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
+                    <label for="veterinario">Veterinario</label>
+                    <select name="veterinario" id="veterinario" required>
+                        <option value="">Seleziona...</option>
+                        <option th:each="v : ${veterinariDisponibili}" th:value="${v.id}" th:text="${v.nome}"></option>
+                    </select>
+
+                    <label for="data">Data</label>
+                    <input type="date" name="data" id="data" required>
+
+                    <label for="ora">Ora</label>
+                    <input type="time" name="ora" id="ora" required>
+
+                    <label for="motivo">Motivo</label>
+                    <textarea name="motivo" id="motivo" rows="3" placeholder="Descrivi il motivo..."
+                        required></textarea>
+
+                    <button type="submit" class="btn">Prenota</button>
+                </form>
+            </div>
+        </section>
+
         <section class="modifica-profilo">
             <h1>Modifica profilo</h1>
 
             <form th:action="@{/dash/profilo/modifica_dati}" method="post" class="form-profilo">
-                
+
                 <fieldset>
                     <legend>Informazioni Personali</legend>
 
@@ -66,7 +161,7 @@
                         th:value="${#strings.defaultString(user.codiceFiscale,'')}" />
                 </fieldset>
 
-                
+
                 <fieldset>
                     <legend>Informazioni Account</legend>
 
@@ -126,7 +221,7 @@
                                 <button type="button" class="remove-prestazione">Rimuovi prestazione</button>
                             </div>
 
-                            
+
                             <div class="prestazione-add">
                                 <h4>Aggiungi prestazione</h4>
                                 <label>Nome</label>
@@ -145,7 +240,7 @@
                             </div>
                         </div>
 
-                       
+
                         <div class="disponibilita-section">
                             <label>Disponibilità</label>
 
@@ -174,7 +269,7 @@
                                 <button type="button" class="remove-disponibilita">Rimuovi</button>
                             </div>
 
-                        
+
                             <div class="disponibilita-add">
                                 <label>Giorno</label>
                                 <select id="newDispGiorno" name="nuovaDisponibilita.giorno">
@@ -200,7 +295,7 @@
                     </fieldset>
                 </section>
 
-                
+
                 <div class="form-actions">
                     <button type="submit">Salva modifiche</button>
                     <a th:href="@{/dash}" class="btn-cancel">Annulla</a>
