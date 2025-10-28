@@ -2,7 +2,7 @@ package com.tidal.pawpal.services.contracts;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Cliente;
@@ -11,17 +11,13 @@ import com.tidal.pawpal.models.Veterinario;
 // Façade
 public abstract class AuthServiceContract {
 
-    @Autowired
-    protected UserServiceContract userService;
-
-    @Autowired
-    protected ClienteServiceContract clienteService;
-
-    @Autowired
-    protected VeterinarioServiceContract veterinarioService;
-
+    @PreAuthorize("permitAll")
     public abstract User validaCredenziali(String username, String password);
+
+    @PreAuthorize("permitAll")
     public abstract Cliente registraCliente(Map<String, String> dati);
+
+    @PreAuthorize("permitAll")
     public abstract Veterinario registraVeterinario(Map<String, String> dati);
 
 }

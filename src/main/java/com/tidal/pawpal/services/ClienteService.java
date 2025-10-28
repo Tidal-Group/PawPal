@@ -9,20 +9,18 @@ import com.tidal.pawpal.services.contracts.ClienteServiceContract;
 
 @Service
 public class ClienteService extends ClienteServiceContract {
+
     @Autowired
     private ClienteRepository clienteRepository;
 
     @Override
     public Cliente cercaPerEmail(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerEmail'");
+        return clienteRepository.findByEmail(email);
     }
 
     @Override
     public Cliente cercaPerTelefono(String telefono) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerTelefono'");
+        return clienteRepository.findByTelefono(telefono);
     }
-
     
 }

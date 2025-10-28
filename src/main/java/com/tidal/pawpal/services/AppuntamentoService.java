@@ -9,38 +9,41 @@ import org.springframework.stereotype.Service;
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Veterinario;
+import com.tidal.pawpal.repositories.AppuntamentoRepository;
 import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
 import com.tidal.pawpal.services.contracts.ClienteServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
+
 @Service
 public class AppuntamentoService extends AppuntamentoServiceContract {
 
     @Autowired
-    public VeterinarioServiceContract veterinarioService;
+    private AppuntamentoRepository appuntamentoRepository;
 
     @Autowired
-    public ClienteServiceContract clienteService;
+    private VeterinarioServiceContract veterinarioService;
+
+    @Autowired
+    private ClienteServiceContract clienteService;
 
     @Override
     public Appuntamento registra(Map<String, String> data) {
-        Appuntamento appuntamento = super.registra(data);
-        Veterinario v = veterinarioService.cercaPerId(Long.parseLong(data.get("idVeterinario")));
-        appuntamento.setVeterinario(v);
-        Cliente c = clienteService.cercaPerId(Long.parseLong(data.get("idCliente")));
-        appuntamento.setCliente(c);
-        return appuntamento;
+        return super.registra(data, (appuntamento) -> {
+            Veterinario veterinario = veterinarioService.cercaPerId(Long.parseLong(data.get("idVeterinario")));
+            appuntamento.setVeterinario(veterinario);
+            Cliente cliente = clienteService.cercaPerId(Long.parseLong(data.get("idCliente")));
+            appuntamento.setCliente(cliente);
+        });
     }
 
     @Override
     public List<Appuntamento> cercaPerVeterinario(Long idVeterinario) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerVeterinario'");
+        return appuntamentoRepository.findByVeterinario(idVeterinario);
     }
 
     @Override
     public List<Appuntamento> cercaPerCliente(Long idCliente) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerCliente'");
+        return appuntamentoRepository.findByCliente(idCliente);
     }
 
 }

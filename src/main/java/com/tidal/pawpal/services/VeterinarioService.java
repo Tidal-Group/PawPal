@@ -1,79 +1,71 @@
 package com.tidal.pawpal.services;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import com.tidal.pawpal.models.Prestazione;
-import com.tidal.pawpal.models.Specie;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.VeterinarioRepository;
+import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
 import com.tidal.pawpal.services.contracts.SpecieServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
-
 import jakarta.persistence.criteria.Predicate;
+
 @Service
 public class VeterinarioService extends VeterinarioServiceContract {
 
-    private List<Long> convertStringToListOfLongs(String idsString) {
-        return Arrays.stream(idsString.split(","))
-                     .map(String::trim)
-                     .filter(s -> !s.isEmpty())
-                     .map(Long::valueOf)
-                     .collect(Collectors.toList());
+    @Autowired
+    private VeterinarioRepository veterinarioRepository;
+
+    @Autowired
+    private SpecieServiceContract specieService;
+
+    @Autowired
+    private PrestazioneServiceContract prestazioneService;
+
+    @PreAuthorize("permitAll")
+    public Veterinario registra(List<Long> listaIdSpecie, List<Long> listaIdPrestazione, Map<String, String> data) {
+        return super.registra(data, (veterinario) -> {
+            for(Long id : listaIdSpecie)
+                veterinario.getSpecieTrattate().add(specieService.cercaPerId(id));
+            for(Long id : listaIdPrestazione)
+                veterinario.getPrestazioniOfferte().add(prestazioneService.cercaPerId(id));
+        });
     }
-
-    @Autowired
-    public VeterinarioRepository veterinarioRepository;
-
-    @Autowired
-    public SpecieServiceContract specieService;
 
     @Override
-    public Veterinario registra(Map<String, String> data) {
-        Veterinario veterinario = super.registra(data);
-        List<Long> listaIdSpecie = convertStringToListOfLongs(data.get("listaIdSpecie"));
-        for(Long id : listaIdSpecie) {
-            veterinario.getSpecieTrattate().add(specieService.cercaPerId(id));
-        }
-        // fare per disponibilita
-        // fare per prestazione
-        return veterinario;
-    }
-    @Override //inserire nel contract
-    public List<Veterinario> cercaPerSpecie(String specie) {
-        return veterinarioRepository.findByNomeSpecie(specie);
-    }
-    @Override 
-    public List<Veterinario> cercaPerCitta(String citta) {
-        return veterinarioRepository.findByCitta(citta);
+    public List<Veterinario> cercaPerSpecie(String nomeSpecie) {
+        return veterinarioRepository.findByNomeSpecie(nomeSpecie);
     }
 
-    public List<Veterinario> cercaPerPrestazione(Long  prestazione) {
-        return veterinarioRepository.findByIdPrestazione(prestazione);
+    @Override
+    public List<Veterinario> cercaPerPrestazione(Long idPrestazione) {
+        return veterinarioRepository.findByIdPrestazione(idPrestazione);
     }
 
     @Override
     public List<Veterinario> cercaPerIndirizzoStudio(String indirizzo) {
         return veterinarioRepository.findByIndirizzoStudio(indirizzo);
     }
+
+    @Override 
+    public List<Veterinario> cercaPerCitta(String citta) {
+        return veterinarioRepository.findByCitta(citta);
+    }
   
-    @Override //inserire nel contract
+    @Override
     public Veterinario cercaPerEmail(String email) {
         return veterinarioRepository.findByEmail(email);
 
     }
-    @Override //inserire nel contract
+    @Override
     public Veterinario cercaPerTelefono(String telefono) {
-
         return veterinarioRepository.findByTelefono(telefono);
     }
 
@@ -105,10 +97,9 @@ public class VeterinarioService extends VeterinarioServiceContract {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("cognome")), "%" + cognome + "%"));
             }
 
-            // DEBUG: modificare logica -> ricerca per città?
-            if(filtri.containsKey("indirizzo")) {
-                String indirizzo = filtri.get("indirizzo").toLowerCase();
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("indirizzo")), "%" + indirizzo + "%"));
+            if(filtri.containsKey("citta")) {
+                String citta = filtri.get("citta").toLowerCase();
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("indirizzo")), "%" + citta + "%"));
             }
             
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

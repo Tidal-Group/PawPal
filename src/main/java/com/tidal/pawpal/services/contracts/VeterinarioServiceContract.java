@@ -2,6 +2,9 @@ package com.tidal.pawpal.services.contracts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.services.abstractions.CreateService;
@@ -20,12 +23,61 @@ public abstract class VeterinarioServiceContract extends GenericService<Veterina
         super(Veterinario.class, Long.class);
     }
 
+    @Override
+    @PreAuthorize("permitAll")
+    public Veterinario registra(Map<String, String> data, Consumer<Veterinario> consumer) {
+        return CreateService.super.registra(data, consumer);
+    }
+
+    @Override
+    @PreAuthorize("permitAll")
+    public Veterinario registra(Map<String, String> data) {
+        return CreateService.super.registra(data);
+    }
+
+    @Override
+    @PreAuthorize("permitAll")
+    public List<Veterinario> elencaTutti() {
+        return ReadService.super.elencaTutti();
+    }
+
+    @Override
+    @PreAuthorize("permitAll")
+    public Veterinario cercaPerId(Long id) {
+        return ReadService.super.cercaPerId(id);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public Veterinario modifica(Long id, Map<String, String> data) {
+        return UpdateService.super.modifica(id, data);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public void elimina(Long id) {
+        DeleteService.super.elimina(id);
+    }
+
+    @PreAuthorize("permitAll")
     public abstract List<Veterinario> cercaConFiltri(Map<String, String> filtri);
 
-    public abstract List<Veterinario> cercaPerSpecie(Long idSpecie);
+    @PreAuthorize("permitAll")
+    public abstract List<Veterinario> cercaPerSpecie(String nomeSpecie);
+
+    @PreAuthorize("permitAll")
     public abstract List<Veterinario> cercaPerPrestazione(Long idPrestazione);
-    public abstract List<Veterinario> cercaPerNominativo(String nome, String cognome);
+
+    @PreAuthorize("permitAll")
     public abstract List<Veterinario> cercaPerIndirizzoStudio(String indirizzoStudio);
+
+    @PreAuthorize("permitAll")
     public abstract List<Veterinario> cercaPerCitta(String citta);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public abstract Veterinario cercaPerEmail(String email);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public abstract Veterinario cercaPerTelefono(String telefono);
 
 }

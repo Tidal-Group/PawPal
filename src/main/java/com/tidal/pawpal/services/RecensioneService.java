@@ -13,26 +13,29 @@ import com.tidal.pawpal.repositories.RecensioneRepository;
 import com.tidal.pawpal.services.contracts.ClienteServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
+
 @Service
 public class RecensioneService extends RecensioneServiceContract {
+
     @Autowired
-    public RecensioneServiceContract recensioneService;
+    private VeterinarioServiceContract veterinarioService;
+
     @Autowired
-    public VeterinarioServiceContract veterinarioService;
-    @Autowired
-    public ClienteServiceContract clienteService;
+    private ClienteServiceContract clienteService;
    
+    @Autowired
     private RecensioneRepository recensioneRepository;
+
     @Override
     public Recensione registra (Map<String, String> data) {
-        Recensione recensione = super.registra(data);
+        return super.registra(data, (recensione) -> {
+            Veterinario veterinario = veterinarioService.cercaPerId(Long.parseLong(data.get("idVeterinario")));
+            recensione.setVeterinario(veterinario);
+            Cliente cliente = clienteService.cercaPerId(Long.parseLong(data.get("idCliente")));
+            recensione.setCliente(cliente);
+        });
+    }
 
-    Veterinario v = veterinarioService.cercaPerId(Long.parseLong(data.get("idVeterinario")));
-        recensione.setVeterinario(v);
-    Cliente c = clienteService.cercaPerId(Long.parseLong(data.get("idCliente")));
-        recensione.setCliente(c);
-        return recensione;
-    }   
     @Override
     public List<Recensione> cercaPerVeterinario(Long Veterinario) {
         return recensioneRepository.findByVeterinario(Veterinario);
