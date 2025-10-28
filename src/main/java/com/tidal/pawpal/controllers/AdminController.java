@@ -1,9 +1,13 @@
 package com.tidal.pawpal.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +31,20 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private static boolean isCliente(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"));
+    }
+
+    private static boolean isVeterinario(Authentication authentication) {
+        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_VETERINARIO"));
+    }
+
+    private void acceptAuthenticated(Principal principal, BiConsumer<Authentication, User> consumer) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User utente = userService.cercaPerUsername(principal.getName());
+        consumer.accept(authentication, utente);
+    }
+
     @Autowired
     public UserServiceContract userService;
 
@@ -37,24 +55,22 @@ public class AdminController {
     public SpecieServiceContract specieService;
 
     @GetMapping("utenti")
-    public String showUtenti(@RequestParam Map<String, String> params, Model model, HttpSession session) {
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    public String showUtenti(@RequestParam Map<String, String> params, Model model) {
         try {
-            // IMPLEMENT: UserService verificherà che la richiesta provenga da un account con permessi da admin
-            List<User> listaUtenti = userService.cercaConFiltri(params, session.getAttribute("utente"));
+            List<User> listaUtenti = userService.cercaConFiltri(params);
             model.addAttribute("lista_utenti", listaUtenti);
             return "admin_utenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
         }
-
     }
 
     @PostMapping("/utenti/inserisci_utente")
     public String handleUtenteInsertion(@RequestParam Map<String, String> data) {
         try {
+            // DEBUG: potrebbe servire far fare queste operazioni direttamente a
+            // AuthService o a ClienteService e VeterinarioService
             User utente = userService.registra(data);
             // riaggiorna la lista
             // DEBUG: inefficiente, perché rieffettua la query ogni volta
@@ -68,6 +84,8 @@ public class AdminController {
     @PostMapping("/utenti/modifica_utente")
     public String handleUtenteUpdate(@RequestParam Map<String, String> data) {
         try {
+            // DEBUG: potrebbe servire far fare queste operazioni direttamente a
+            // AuthService o a ClienteService e VeterinarioService
             User utente = userService.modifica(Long.parseLong(data.get("id")), data);
             // riaggiorna la lista
             // DEBUG: inefficiente, perché rieffettua la query ogni volta
@@ -81,6 +99,8 @@ public class AdminController {
     @PostMapping("/utenti/elimina_utente")
     public String handleUtenteUpdate(@RequestParam Long id) {
         try {
+            // DEBUG: potrebbe servire far fare queste operazioni direttamente a
+            // AuthService o a ClienteService e VeterinarioService
             userService.elimina(id);
             // riaggiorna la lista
             // DEBUG: inefficiente, perché rieffettua la query ogni volta
@@ -93,12 +113,10 @@ public class AdminController {
     
 
     @GetMapping("prestazioni")
-    public String showPrestazioni(@RequestParam Map<String, String> params, Model model, HttpSession session) {
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    public String showPrestazioni(@RequestParam Map<String, String> params, Model model) {
         try {
             // IMPLEMENT: PrestazioneService verificherà che la richiesta provenga da un account con permessi da admin
-            List<Prestazione> listaPrestazioni = prestazioneService.cercaConFiltri(params, session.getAttribute("utente"));
+            List<Prestazione> listaPrestazioni = prestazioneService.cercaConFiltri(params);
             model.addAttribute("lista_prestazioni", listaPrestazioni);
             return "admin_prestazioni";
         } catch(Exception exception) {
@@ -148,12 +166,10 @@ public class AdminController {
     }
 
     @GetMapping("specie")
-    public String showSpecie(@RequestParam Map<String, String> params, Model model, HttpSession session) {
-        if(session == null || session.getAttribute("utente") == null) return "redirect:/auth/login";
-
+    public String showSpecie(@RequestParam Map<String, String> params, Model model) {
         try {
             // IMPLEMENT: PrestazioneService verificherà che la richiesta provenga da un account con permessi da admin
-            List<Specie> listaSpecie = specieService.cercaConFiltri(params, session.getAttribute("utente"));
+            List<Specie> listaSpecie = specieService.cercaConFiltri(params);
             model.addAttribute("lista_specie", listaSpecie);
             return "admin_specie";
         } catch(Exception exception) {
