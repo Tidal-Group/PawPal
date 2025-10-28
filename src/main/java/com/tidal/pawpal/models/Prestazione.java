@@ -29,10 +29,12 @@ public class Prestazione extends GenericEntity {
     @Column(name = "prezzo")
     private BigDecimal prezzo;
 
+     @Column(name = "durata_Visita")
+    private int durataVisita;
+
     @ManyToMany(mappedBy = "prestazioniOfferte")
     private List<Veterinario> veterinari;
 
-    @Column(name = "durata_Visita")
-    private int durataVisita;
+   
 
 }

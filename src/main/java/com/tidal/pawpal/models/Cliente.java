@@ -1,9 +1,8 @@
 package com.tidal.pawpal.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -19,9 +18,9 @@ import lombok.ToString;
 public class Cliente extends User {
 
     @OneToMany(mappedBy = "cliente")
-    private List<Recensione> recensioni = new ArrayList<>();
+    private List<Recensione> recensioni;
 
     @OneToMany(mappedBy = "cliente")
-    private List<Appuntamento> appuntamenti = new ArrayList<>();
+    private List<Appuntamento> appuntamenti;
 
 }
