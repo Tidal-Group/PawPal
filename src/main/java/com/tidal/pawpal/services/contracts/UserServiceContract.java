@@ -21,6 +21,7 @@ public abstract class UserServiceContract extends GenericService<User, Long> imp
     }
 
     public abstract List<User> cercaConFiltri(Map<String, String> filtri);
+    
     public abstract User cercaPerEmail(String email);
     public abstract User cercaPerUsername(String username);
     public abstract User cercaPerCodiceFiscale(String codiceFiscale);

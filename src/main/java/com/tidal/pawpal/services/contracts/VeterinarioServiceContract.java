@@ -21,9 +21,11 @@ public abstract class VeterinarioServiceContract extends GenericService<Veterina
     }
 
     public abstract List<Veterinario> cercaConFiltri(Map<String, String> filtri);
+
     public abstract List<Veterinario> cercaPerSpecie(Long idSpecie);
     public abstract List<Veterinario> cercaPerPrestazione(Long idPrestazione);
     public abstract List<Veterinario> cercaPerNominativo(String nome, String cognome);
-    public abstract List<Veterinario> cercaPerIndirizzo(String indirizzo);
+    public abstract List<Veterinario> cercaPerIndirizzoStudio(String indirizzoStudio);
+    public abstract List<Veterinario> cercaPerCitta(String citta);
 
 }

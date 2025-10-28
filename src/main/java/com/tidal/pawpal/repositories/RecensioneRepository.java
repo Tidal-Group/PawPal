@@ -17,6 +17,7 @@ public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
     @Query("SELECT r FROM Recensione r JOIN r.cliente c WHERE c.id = :id_cliente")
     List<Recensione> findByCliente(@Param("id_cliente") Long idCliente);
 
-    List<Recensione> findByVoto(Integer voto);
+    @Query("SELECT avg(r.voto) FROM Recensione r JOIN r.veterinario v WHERE v.id = :id_veterinario")
+    Double calculateAverageRatingVeterinario(@Param("id_veterinario") Long idVeterinario);
 
 }

@@ -1,8 +1,5 @@
 package com.tidal.pawpal.services.contracts;
 
-import java.util.List;
-import java.util.Map;
-
 import com.tidal.pawpal.models.Cliente;
 
 import com.tidal.pawpal.services.abstractions.GenericService;
@@ -21,5 +18,8 @@ public abstract class ClienteServiceContract extends GenericService<Cliente, Lon
     public ClienteServiceContract() {
         super(Cliente.class, Long.class);
     }
+
+    public abstract Cliente cercaPerEmail(String email);
+    public abstract Cliente cercaPerTelefono(String telefono);
 
 }

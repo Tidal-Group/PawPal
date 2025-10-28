@@ -26,5 +26,6 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>,
     List<Veterinario> findByCitta(String citta);
 
     Veterinario findByEmail(String email);
+    Veterinario findByTelefono(String telefono);
 
 }
