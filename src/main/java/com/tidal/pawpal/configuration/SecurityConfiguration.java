@@ -21,6 +21,7 @@ public class SecurityConfiguration {
             .requestMatchers("/", "/403", "/error", "/auth/**", "/contatti/**").permitAll()
             // researching veterinari should be permitted to everybody
             .requestMatchers("/veterinari/lista_veterinari").permitAll()
+            .requestMatchers("/veterinari/inserisci_appuntamento", "/veterinari/inserisci_recensione").hasRole("CLIENTE")
             .requestMatchers("/dash/**").hasAnyRole("CLIENTE", "VETERINARIO")
             .requestMatchers("/admin/**").hasAnyRole("ADMIN")
             .anyRequest().authenticated()
