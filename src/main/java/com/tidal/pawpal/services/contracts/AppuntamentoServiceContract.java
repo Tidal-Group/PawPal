@@ -1,6 +1,9 @@
 package com.tidal.pawpal.services.contracts;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.services.abstractions.CreateService;
@@ -19,7 +22,15 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
         super(Appuntamento.class, Long.class);
     }
 
+    @Override
+    public Appuntamento registra(Map<String, String> data) {
+        return CreateService.super.registra(data);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     public abstract List<Appuntamento> cercaPerVeterinario(Long idVeterinario);
+
+    @PreAuthorize("isAuthenticated()")
     public abstract List<Appuntamento> cercaPerCliente(Long idCliente);
 
 }
