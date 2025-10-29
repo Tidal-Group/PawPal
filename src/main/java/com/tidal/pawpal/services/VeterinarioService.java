@@ -28,11 +28,11 @@ public class VeterinarioService extends VeterinarioServiceContract {
     @Autowired
     private VeterinarioRepository veterinarioRepository;
 
-    @Autowired
-    private AppuntamentoServiceContract appuntamentoService;
+    // @Autowired
+    // private AppuntamentoServiceContract appuntamentoService;
 
-    @Autowired
-    private RecensioneServiceContract recensioneService;
+    // @Autowired
+    // private RecensioneServiceContract recensioneService;
 
     @Autowired
     private SpecieServiceContract specieService;
@@ -50,18 +50,19 @@ public class VeterinarioService extends VeterinarioServiceContract {
         });
     }
 
-    @Override
-    @Transactional
-    public void elimina(Long id) {
-        super.elimina(id, (veterinario) -> {
-            List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerVeterinario(id);
-            listaAppuntamenti.forEach((appuntamento) -> appuntamento.setVeterinario(null));
-            appuntamentoService.getRepository().saveAll(listaAppuntamenti);
-            List<Recensione> listaRecensioni = recensioneService.cercaPerVeterinario(id);
-            listaRecensioni.forEach((recensione) -> recensione.setVeterinario(null));
-            recensioneService.getRepository().saveAll(listaRecensioni);
-        });
-    }
+    // DEBUG: circular referencing
+    // @Override
+    // @Transactional
+    // public void elimina(Long id) {
+    //     super.elimina(id, (veterinario) -> {
+    //         List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerVeterinario(id);
+    //         listaAppuntamenti.forEach((appuntamento) -> appuntamento.setVeterinario(null));
+    //         appuntamentoService.getRepository().saveAll(listaAppuntamenti);
+    //         List<Recensione> listaRecensioni = recensioneService.cercaPerVeterinario(id);
+    //         listaRecensioni.forEach((recensione) -> recensione.setVeterinario(null));
+    //         recensioneService.getRepository().saveAll(listaRecensioni);
+    //     });
+    // }
 
     @Override
     public List<Veterinario> cercaPerSpecie(String nomeSpecie) {

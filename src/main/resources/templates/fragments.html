@@ -30,7 +30,7 @@
 
                 <div sec:authorize="hasAnyRole('CLIENTE','VETERINARIO')" class="user-section">
 
-                    <a href="/dash" class="dashboard-link"
+                    <a th:href="@{/dash}" class="dashboard-link"
                         th:classappend="${active} == 'dashboard' ? ' active' : ''">Dashboard</a>
 
                     <div class="user-dropdown">

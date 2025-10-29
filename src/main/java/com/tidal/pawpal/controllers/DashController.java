@@ -58,8 +58,12 @@ public class DashController {
     @Autowired
     public UserServiceContract userService;
 
-    @GetMapping("/")
-    public String showDashboard() {
+    @GetMapping("")
+    public String showDashboard(Principal principal, Model model) {
+        acceptAuthenticated(principal, (authentication, utente) -> {
+            model.addAttribute("user", utente);
+        });
+
         return "dashboard_utente";
     }
 

@@ -5,7 +5,6 @@
 </head>
 
 <body>
-
     <header th:replace="fragments :: dashboard-header('Dashboard Utente')"></header>
 
     <div class="sidebar">
@@ -20,7 +19,7 @@
                 <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
                 <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
 
-                <li th:if="${#strings.equalsIgnoreCase(user.role,'VETERINARIO')}">
+                <li th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
                     <a th:href="@{/dash/lineeguida}">Linee Guida</a>
                 </li>
 
@@ -55,7 +54,7 @@
                     <tr>
                         <th>Data</th>
                         <th>Ora</th>
-                        <th th:text="${#strings.equalsIgnoreCase(user.role,'veterinario')} ? 'Cliente' : 'Veterinario'">
+                        <th th:text="${#authorization.expression('hasRole(''VETERINARIO'')')} ? 'Cliente' : 'Veterinario'">
                         </th>
                         <th>Specie</th>
                         <th>Motivo</th>
@@ -69,7 +68,7 @@
                         <td th:text="${app.data}"></td>
                         <td th:text="${app.ora}"></td>
                         <td
-                            th:text="${#strings.equalsIgnoreCase(user.role,'veterinario')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
+                            th:text="${#authorization.expression('hasRole(''VETERINARIO'')')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
                         </td>
                         <td th:text="${app.specie}"></td>
                         <td th:text="${app.motivo}"></td>
@@ -77,7 +76,7 @@
 
                         <td>
 
-                            <div th:if="${#strings.equalsIgnoreCase(user.role,'veterinario')}">
+                            <div th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
                                 <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
                                     <input type="hidden" name="_method" value="put" />
                                     <input type="hidden" name="id" th:value="${app.id}" />
@@ -92,7 +91,7 @@
                             </div>
 
 
-                            <div th:if="${#strings.equalsIgnoreCase(user.role,'cliente')}">
+                            <div th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">
                                 <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
                                     <input type="hidden" name="_method" value="delete" />
                                     <input type="hidden" name="id" th:value="${app.id}" />
@@ -109,7 +108,7 @@
             </div>
 
             <!-- Prenotazione (solo cliente) -->
-            <div th:if="${#strings.equalsIgnoreCase(user.role,'cliente')}" class="nuovo-appuntamento">
+            <div th:if="${#authorization.expression('hasRole(''CLIENTE'')')}" class="nuovo-appuntamento">
                 <h3>Prenota un nuovo appuntamento</h3>
                 <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
                     <label for="veterinario">Veterinario</label>
@@ -137,7 +136,7 @@
             <h2>Recensioni</h2>
 
             <!-- CLIENTE: cronologia delle recensioni scritte -->
-            <div th:if="${#strings.equalsIgnoreCase(user.role,'CLIENTE')}">
+            <div th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">
                 <h3>Le tue recensioni</h3>
 
                 <div th:if="${#lists.isEmpty(recensioniScritte)}">
@@ -177,7 +176,7 @@
             </div>
 
             <!-- VETERINARIO: cronologia delle recensioni ricevute + possibilità di rispondere -->
-            <div th:if="${#strings.equalsIgnoreCase(user.role,'VETERINARIO')}">
+            <div th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
                 <h3>Recensioni ricevute</h3>
 
                 <div th:if="${#lists.isEmpty(recensioniRicevute)}">
@@ -258,7 +257,7 @@
                     <input id="email" name="email" type="email" th:value="${#strings.defaultString(user.email,'')}" />
                 </fieldset>
 
-                <section th:if="${#strings.equalsIgnoreCase(user.role,'VETERINARIO')}">
+                <section th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
                     <fieldset>
                         <h3>Informazioni professionali</h3>
 

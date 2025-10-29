@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 
 import com.tidal.pawpal.models.Amministratore;
@@ -24,6 +25,7 @@ import com.tidal.pawpal.models.Veterinario;
 public class EntityContext {
     
     @Bean
+    @Primary
     @Scope("prototype")
     public Persona persona(Map<String,String> map){
         Persona p = new Persona();
@@ -40,6 +42,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public User user(Map<String,String> map) {
         User u = new User();
@@ -56,6 +59,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     public Amministratore amministratore(Map<String,String> map) {
         Amministratore a = new Amministratore();
         a.fromMap(map, true);
@@ -63,6 +67,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Veterinario veterinario(Map<String,String> map) {
         Veterinario v = new Veterinario();
@@ -90,6 +95,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Cliente cliente(Map<String,String> map) {
         Cliente c = new Cliente();
@@ -111,6 +117,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Appuntamento appuntamento(Map<String,String> map) {
         Appuntamento a = new Appuntamento();
@@ -127,6 +134,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Recensione recensione(Map<String,String> map) {
         Recensione r = new Recensione();
@@ -143,6 +151,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Disponibilita disponibilita(Map<String,String> map) {
         Disponibilita d = new Disponibilita();
@@ -159,6 +168,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Prestazione prestazione(Map<String,String> map) {
         Prestazione p = new Prestazione();
@@ -178,6 +188,7 @@ public class EntityContext {
     }
 
     @Bean
+    @Primary
     @Scope("prototype")
     public Specie specie(Map<String,String> map) {
         Specie s = new Specie();

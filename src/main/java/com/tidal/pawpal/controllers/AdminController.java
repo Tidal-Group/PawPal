@@ -54,7 +54,7 @@ public class AdminController {
     @Autowired
     public SpecieServiceContract specieService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showDashboard() {
         return "dashboard_admin";
     }
@@ -76,7 +76,7 @@ public class AdminController {
         try {
             // DEBUG: potrebbe servire far fare queste operazioni direttamente a
             // AuthService o a ClienteService e VeterinarioService
-            User utente = userService.registra(data);
+            // User utente = userService.registra(data);
             // riaggiorna la lista
             // DEBUG: inefficiente, perché rieffettua la query ogni volta
             return "redirect:/admin/utenti";
@@ -106,7 +106,7 @@ public class AdminController {
         try {
             // DEBUG: potrebbe servire far fare queste operazioni direttamente a
             // AuthService o a ClienteService e VeterinarioService
-            userService.elimina(id);
+            // userService.elimina(id);
             // riaggiorna la lista
             // DEBUG: inefficiente, perché rieffettua la query ogni volta
             return "redirect:/admin/utenti";
@@ -121,8 +121,8 @@ public class AdminController {
     public String showPrestazioni(@RequestParam Map<String, String> params, Model model) {
         try {
             // IMPLEMENT: PrestazioneService verificherà che la richiesta provenga da un account con permessi da admin
-            List<Prestazione> listaPrestazioni = prestazioneService.cercaConFiltri(params);
-            model.addAttribute("lista_prestazioni", listaPrestazioni);
+            // List<Prestazione> listaPrestazioni = prestazioneService.cercaConFiltri(params);
+            // model.addAttribute("lista_prestazioni", listaPrestazioni);
             return "admin_prestazioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -158,7 +158,7 @@ public class AdminController {
     }
 
     @PostMapping("/prestazioni/elimina_prestazione")
-    public String handlePrestazioneUpdate(@RequestParam Long id) {
+    public String handlePrestazioneDeletion(@RequestParam Long id) {
         try {
             prestazioneService.elimina(id);
             // riaggiorna la lista
@@ -174,8 +174,8 @@ public class AdminController {
     public String showSpecie(@RequestParam Map<String, String> params, Model model) {
         try {
             // IMPLEMENT: PrestazioneService verificherà che la richiesta provenga da un account con permessi da admin
-            List<Specie> listaSpecie = specieService.cercaConFiltri(params);
-            model.addAttribute("lista_specie", listaSpecie);
+            // List<Specie> listaSpecie = specieService.cercaConFiltri(params);
+            // model.addAttribute("lista_specie", listaSpecie);
             return "admin_specie";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
@@ -185,7 +185,7 @@ public class AdminController {
     }
 
     @PostMapping("/specie/inserisci_specie")
-    public String handlePrestazioneInsertion(@RequestParam Map<String, String> data) {
+    public String handleSpecieInsertion(@RequestParam Map<String, String> data) {
         try {
             Specie specie = specieService.registra(data);
             // riaggiorna la lista
@@ -198,7 +198,7 @@ public class AdminController {
     }
 
     @PostMapping("/specie/modifica_specie")
-    public String handlePrestazioneUpdate(@RequestParam Map<String, String> data) {
+    public String handleSpecieUpdate(@RequestParam Map<String, String> data) {
         try {
             Specie specie = specieService.modifica(Long.parseLong(data.get("id")), data);
             // riaggiorna la lista
@@ -211,7 +211,7 @@ public class AdminController {
     }
 
     @PostMapping("/specie/elimina_specie")
-    public String handlePrestazioneUpdate(@RequestParam Long id) {
+    public String handleSpecieDeletion(@RequestParam Long id) {
         try {
             specieService.elimina(id);
             // riaggiorna la lista

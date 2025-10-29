@@ -21,24 +21,25 @@ public class ClienteService extends ClienteServiceContract {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    @Autowired
-    private AppuntamentoServiceContract appuntamentoService;
+    // @Autowired
+    // private AppuntamentoServiceContract appuntamentoService;
 
-    @Autowired
-    private RecensioneServiceContract recensioneService;
+    // @Autowired
+    // private RecensioneServiceContract recensioneService;
 
-    @Override
-    @Transactional
-    public void elimina(Long id) {
-        super.elimina(id, (cliente) -> {
-            List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerCliente(id);
-            listaAppuntamenti.forEach((appuntamento) -> appuntamento.setCliente(null));
-            appuntamentoService.getRepository().saveAll(listaAppuntamenti);
-            List<Recensione> listaRecensioni = recensioneService.cercaPerCliente(id);
-            listaRecensioni.forEach((recensione) -> recensione.setCliente(null));
-            recensioneService.getRepository().saveAll(listaRecensioni);
-        });
-    }
+    // DEBUG: circular referencing
+    // @Override
+    // @Transactional
+    // public void elimina(Long id) {
+    //     super.elimina(id, (cliente) -> {
+    //         List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerCliente(id);
+    //         listaAppuntamenti.forEach((appuntamento) -> appuntamento.setCliente(null));
+    //         appuntamentoService.getRepository().saveAll(listaAppuntamenti);
+    //         List<Recensione> listaRecensioni = recensioneService.cercaPerCliente(id);
+    //         listaRecensioni.forEach((recensione) -> recensione.setCliente(null));
+    //         recensioneService.getRepository().saveAll(listaRecensioni);
+    //     });
+    // }
 
     @Override
     public Cliente cercaPerEmail(String email) {

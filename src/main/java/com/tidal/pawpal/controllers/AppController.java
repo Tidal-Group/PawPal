@@ -16,7 +16,7 @@ public class AppController {
     public String homepage(Model model) {
         // PROBABILMENTE DA TOGLIERE
         model.addAttribute("app-name", appName);
-        return "index";
+        return "homepage";
     }
 
     @GetMapping("/403")

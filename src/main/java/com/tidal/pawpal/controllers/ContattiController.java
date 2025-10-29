@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/contatti")
 public class ContattiController {
 
-    @GetMapping("/")
+    @GetMapping("")
     public String getContatti() {
         return "contatti";
     }
