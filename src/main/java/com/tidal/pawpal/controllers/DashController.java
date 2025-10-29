@@ -66,6 +66,17 @@ public class DashController {
                 listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
             else if(isVeterinario(authentication))
                 listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
+            List<Recensione> listaRecensioni = new ArrayList<>();
+            if(isCliente(authentication))
+                listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
+            else if(isVeterinario(authentication))
+            listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
+            if(isCliente(authentication))
+                utente = clienteService.cercaPerId(utente.getId());
+            else if(isVeterinario(authentication))
+                utente = veterinarioService.cercaPerId(utente.getId());
+            model.addAttribute("user", utente);
+            model.addAttribute("lista_recensioni", listaRecensioni);
             model.addAttribute("lista_appuntamenti", listaAppuntamenti);
             model.addAttribute("ruolo", utente.getRuolo());
         });

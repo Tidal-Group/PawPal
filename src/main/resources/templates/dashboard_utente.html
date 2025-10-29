@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments :: head('Dashboard - PawPal')">
 </head>
@@ -20,7 +20,7 @@
                 <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
                 <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
 
-                <li th:if="${#authorization.hasRole('VETERINARIO')}">
+                <li th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
                     <a th:href="@{/dash/lineeguida}">Linee Guida</a>
                 </li>
 
@@ -56,7 +56,7 @@
                     <tr>
                         <th>Data</th>
                         <th>Ora</th>
-                        <th th:text="${#authorization.hasRole('VETERINARIO')} ? 'Cliente' : 'Veterinario'">
+                        <th th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
                         </th>
                         <th>Specie</th>
                         <th>Motivo</th>
@@ -70,7 +70,7 @@
                         <td th:text="${app.data}"></td>
                         <td th:text="${app.ora}"></td>
                         <td
-                            th:text="${#authorization.hasRole('VETERINARIO')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
+                            th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
                         </td>
                         <td th:text="${app.specie}"></td>
                         <td th:text="${app.motivo}"></td>
@@ -78,7 +78,7 @@
 
                         <td>
 
-                            <div th:if="${#authorization.hasRole('VETERINARIO')}">
+                            <div th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
                                 <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
                                     <input type="hidden" name="_method" value="put" />
                                     <input type="hidden" name="id" th:value="${app.id}" />
@@ -92,25 +92,19 @@
                                 </form>
                             </div>
 
-
-                            <div th:if="${#authorization.hasRole('VETERINARIO')}">
-                                <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
-                                    <input type="hidden" name="_method" value="delete" />
-                                    <input type="hidden" name="id" th:value="${app.id}" />
-                                    <button type="submit" class="btn btn-warning">Annulla</button>
-                                </form>
-                            </div>
                         </td>
                     </tr>
+
                 </tbody>
+
             </table>
 
-            <div th:if="${#lists.isEmpty(appuntamenti)}" class="no-data">
+            <div th:if="${#lists.isEmpty(lista_appuntamenti)}" class="no-data">
                 <p>Nessun appuntamento trovato.</p>
             </div>
 
             <!-- Prenotazione (solo cliente) -->
-            <div th:if="${#authorization.hasRole('CLIENTE')}" class="nuovo-appuntamento">
+            <!-- <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}" class="nuovo-appuntamento">
                 <h3>Prenota un nuovo appuntamento</h3>
                 <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
                     <label for="veterinario">Veterinario</label>
@@ -131,22 +125,22 @@
 
                     <button type="submit" class="btn">Prenota</button>
                 </form>
-            </div>
+            </div> -->
         </section>
 
         <section class="recensioni-section">
             <h2>Recensioni</h2>
 
             <!-- CLIENTE: cronologia delle recensioni scritte -->
-            <div th:if="${#authorization.hasRole('CLIENTE')}">
+            <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}">
                 <h3>Le tue recensioni</h3>
 
-                <div th:if="${#lists.isEmpty(recensioniScritte)}">
+                <div th:if="${#lists.isEmpty(lista_recensioni)}">
                     <p>Nessuna recensione inviata.</p>
                 </div>
 
-                <ul th:if="${!#lists.isEmpty(recensioniScritte)}" class="recensioni-list">
-                    <li th:each="rec : ${recensioniScritte}" class="recensione-item">
+                <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
+                    <li th:each="rec : ${lista_recensioni}" class="recensione-item">
                         <div class="rec-header">
                             <strong class="rec-vet">
                                 <span
@@ -167,7 +161,7 @@
                         <div class="rec-actions">
                             <a th:href="@{/dash/recensioni/modifica/{id}(id=${rec.id})}" class="btn">Modifica</a>
 
-                            <form th:action="@{/dash/recensioni/elimina}" method="post" style="display:inline">
+                            <form th:action="@{/dash/recensioni/elimina_recensione}" method="post" style="display:inline">
                                 <input type="hidden" name="_method" value="delete" />
                                 <input type="hidden" name="id" th:value="${rec.id}" />
                                 <button type="submit" class="btn btn-danger">Elimina</button>
@@ -178,15 +172,15 @@
             </div>
 
             <!-- VETERINARIO: cronologia delle recensioni ricevute + possibilità di rispondere -->
-            <div th:if="${#authorization.hasRole('VETERINARIO')}">
+            <div th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
                 <h3>Recensioni ricevute</h3>
 
-                <div th:if="${#lists.isEmpty(recensioniRicevute)}">
+                <div th:if="${#lists.isEmpty(lista_recensioni)}">
                     <p>Nessuna recensione ricevuta.</p>
                 </div>
 
-                <ul th:if="${!#lists.isEmpty(recensioniRicevute)}" class="recensioni-list">
-                    <li th:each="rec : ${recensioniRicevute}" class="recensione-item">
+                <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
+                    <li th:each="rec : ${lista_recensioni}" class="recensione-item">
                         <div class="rec-header">
                             <strong class="rec-from"
                                 th:text="${rec.cliente != null ? rec.cliente.nome : 'Cliente'}">Nome Cliente</strong>
@@ -208,7 +202,7 @@
                         </div>
 
                         <!-- Form per inviare/modificare la risposta (invia a controller che gestisce creazione/aggiornamento) -->
-                        <form th:action="@{/dash/recensioni/rispondi}" method="post" class="reply-form">
+                        <!-- <form th:action="@{/dash/recensioni/rispondi}" method="post" class="reply-form">
                             <input type="hidden" name="recensioneId" th:value="${rec.id}" />
                             <label th:for="${'reply__' + ${rec.id}}">Rispondi</label>
                             <textarea th:id="${'reply__' + ${rec.id}}" th:name="testoRisposta" rows="3"
@@ -217,7 +211,7 @@
                                 <button type="submit" class="btn">Invia risposta</button>
                                 <button type="reset" class="btn-cancel">Annulla</button>
                             </div>
-                        </form>
+                        </form> -->
                     </li>
                 </ul>
             </div>
@@ -259,13 +253,13 @@
                     <input id="email" name="email" type="email" th:value="${#strings.defaultString(user.email,'')}" />
                 </fieldset>
 
-                <section th:if="${#authorization.hasRole('VETERINARIO')}">
+                <section th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
                     <fieldset>
                         <h3>Informazioni professionali</h3>
 
                         <label for="indirizzo">Indirizzo</label>
                         <input id="indirizzo" name="indirizzo" type="text"
-                            th:value="${#strings.defaultString(user.indirizzo,'')}" />
+                            th:value="${#strings.defaultString(user.indirizzoStudio,'')}" />
 
                         <label for="specializzazione">Specializzazione</label>
                         <input id="specializzazione" name="specializzazione" type="text"
@@ -276,10 +270,10 @@
                             th:text="${#strings.defaultString(user.descrizione,'')}"
                             placeholder="Descrivi chi sei e di cosa ti occupi"></textarea>
 
-                        <div class="specie-section">
+                        <!-- <div class="specie-section">
                             <h4>Specie</h4>
                             <ul>
-                                <li th:each="spec, sStat : ${user.specie}">
+                                <li th:each="spec, sStat : ${user.specieTrattate}">
                                     <input type="text" th:name="'specie[' + ${sStat.index} + ']'" th:value="${spec}" />
                                     <button type="button" class="remove-specie">Rimuovi</button>
                                 </li>
@@ -288,9 +282,9 @@
                                 <input type="text" id="newSpecie" placeholder="Aggiungi specie">
                                 <button type="button" class="add-specie">Aggiungi specie</button>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="prestazioni-section">
+                        <!-- <div class="prestazioni-section">
                             <h4>Prestazioni</h4>
 
                             <div th:each="prest, pStat : ${user.prestazioni}" class="prestazione-item">
@@ -327,7 +321,7 @@
                                     placeholder="Descrivi brevemente di cosa si tratta..."></textarea>
                                 <button type="button" class="add-prestazione">Aggiungi prestazione</button>
                             </div>
-                        </div>
+                        </div> -->
 
                     </fieldset>
                 </section>
@@ -400,6 +394,7 @@
                     <button type="submit" class="btn-danger">Elimina account</button>
                     <button type="reset" class="btn-cancel">Annulla</button>
                 </div>
+
             </form>
         </section>
 
