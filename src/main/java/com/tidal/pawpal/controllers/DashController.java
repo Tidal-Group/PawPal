@@ -60,6 +60,15 @@ public class DashController {
 
     @GetMapping("")
     public String showDashboard(Principal principal, Model model) {
+        acceptAuthenticated(principal, (authentication, utente) -> {
+            List<Appuntamento> listaAppuntamenti = new ArrayList<>();
+            if(isCliente(authentication))
+                listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
+            else if(isVeterinario(authentication))
+                listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
+            model.addAttribute("lista_appuntamenti", listaAppuntamenti);
+            model.addAttribute("ruolo", utente.getRuolo());
+        });
         return "dashboard_utente";
     }
 

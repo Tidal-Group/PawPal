@@ -20,7 +20,7 @@
                 <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
                 <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
 
-                <li th:if="${#authorization.expression('hasRole('VETERINARIO')')}">
+                <li th:if="${#authorization.hasRole('VETERINARIO')}">
                     <a th:href="@{/dash/lineeguida}">Linee Guida</a>
                 </li>
 
@@ -56,7 +56,7 @@
                     <tr>
                         <th>Data</th>
                         <th>Ora</th>
-                        <th th:text="${#authorization.expression('hasRole(''VETERINARIO'')')} ? 'Cliente' : 'Veterinario'">
+                        <th th:text="${#authorization.hasRole('VETERINARIO')} ? 'Cliente' : 'Veterinario'">
                         </th>
                         <th>Specie</th>
                         <th>Motivo</th>
@@ -66,11 +66,11 @@
                 </thead>
 
                 <tbody>
-                    <tr th:each="app : ${appuntamenti}">
+                    <tr th:each="app : ${lista_appuntamenti}">
                         <td th:text="${app.data}"></td>
                         <td th:text="${app.ora}"></td>
                         <td
-                            th:text="${#authorization.expression('hasRole(''VETERINARIO'')')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
+                            th:text="${#authorization.hasRole('VETERINARIO')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
                         </td>
                         <td th:text="${app.specie}"></td>
                         <td th:text="${app.motivo}"></td>
@@ -78,7 +78,7 @@
 
                         <td>
 
-                            <div th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
+                            <div th:if="${#authorization.hasRole('VETERINARIO')}">
                                 <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
                                     <input type="hidden" name="_method" value="put" />
                                     <input type="hidden" name="id" th:value="${app.id}" />
@@ -93,7 +93,7 @@
                             </div>
 
 
-                            <div th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">
+                            <div th:if="${#authorization.hasRole('VETERINARIO')}">
                                 <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
                                     <input type="hidden" name="_method" value="delete" />
                                     <input type="hidden" name="id" th:value="${app.id}" />
@@ -110,7 +110,7 @@
             </div>
 
             <!-- Prenotazione (solo cliente) -->
-            <div th:if="${#authorization.expression('hasRole(''CLIENTE'')')}" class="nuovo-appuntamento">
+            <div th:if="${#authorization.hasRole('CLIENTE')}" class="nuovo-appuntamento">
                 <h3>Prenota un nuovo appuntamento</h3>
                 <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
                     <label for="veterinario">Veterinario</label>
@@ -138,7 +138,7 @@
             <h2>Recensioni</h2>
 
             <!-- CLIENTE: cronologia delle recensioni scritte -->
-            <div th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">
+            <div th:if="${#authorization.hasRole('CLIENTE')}">
                 <h3>Le tue recensioni</h3>
 
                 <div th:if="${#lists.isEmpty(recensioniScritte)}">
@@ -178,7 +178,7 @@
             </div>
 
             <!-- VETERINARIO: cronologia delle recensioni ricevute + possibilità di rispondere -->
-            <div th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
+            <div th:if="${#authorization.hasRole('VETERINARIO')}">
                 <h3>Recensioni ricevute</h3>
 
                 <div th:if="${#lists.isEmpty(recensioniRicevute)}">
@@ -259,7 +259,7 @@
                     <input id="email" name="email" type="email" th:value="${#strings.defaultString(user.email,'')}" />
                 </fieldset>
 
-                <section th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
+                <section th:if="${#authorization.hasRole('VETERINARIO')}">
                     <fieldset>
                         <h3>Informazioni professionali</h3>
 
