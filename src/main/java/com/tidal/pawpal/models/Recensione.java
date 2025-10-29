@@ -29,11 +29,11 @@ public class Recensione extends GenericEntity {
     @Column(name = "data_Recensione")
     private LocalDate dataRecensione = LocalDate.now();
 
-    @ManyToOne(optional = true) 
+    @ManyToOne(optional = true)
     @JoinColumn(name = "cliente_id", nullable = true)
     private Cliente cliente;
 
-    @ManyToOne(optional = false) 
+    @ManyToOne(optional = false)
     @JoinColumn(name = "veterinario_id", nullable = false)
     private Veterinario veterinario;
 }

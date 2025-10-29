@@ -2,7 +2,6 @@ package com.tidal.pawpal.models;
 
 import java.util.List;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;

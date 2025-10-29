@@ -16,7 +16,6 @@ import lombok.Data;
 @Table(name = "specie")
 public class Specie extends GenericEntity {
 
-    
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

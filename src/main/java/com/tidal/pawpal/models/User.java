@@ -15,9 +15,6 @@ import lombok.ToString;
 @PrimaryKeyJoinColumn(name = "user_id")   
 public class User extends Persona {
 
-    
-    
-
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
