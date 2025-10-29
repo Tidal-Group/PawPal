@@ -54,7 +54,12 @@ public class AdminController {
     @Autowired
     public SpecieServiceContract specieService;
 
-    @GetMapping("utenti")
+    @GetMapping("/")
+    public String showDashboard() {
+        return "dashboard_admin";
+    }
+
+    @GetMapping("/utenti")
     public String showUtenti(@RequestParam Map<String, String> params, Model model) {
         try {
             List<User> listaUtenti = userService.cercaConFiltri(params);

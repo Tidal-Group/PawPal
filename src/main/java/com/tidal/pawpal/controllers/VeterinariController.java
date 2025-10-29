@@ -22,10 +22,6 @@ import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
 import com.tidal.pawpal.services.contracts.UserServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
-import jakarta.servlet.http.HttpSession;
-
-
-
 @Controller
 @RequestMapping("/veterinari")
 public class VeterinariController {
@@ -64,6 +60,7 @@ public class VeterinariController {
             return "veterinari";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -72,13 +69,14 @@ public class VeterinariController {
     public String sendAppuntamentoData(@RequestParam Map<String, String> data, Principal principal) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
-                // IMPLEMENT: che dati servono per registrare l'appuntamento?
-                // come può il service sapere qual è il cliente e quale il veterinario?
-                appuntamentoService.registra(data, utente.getId());
+                // nel frontend, passare l'idCliente con {#authentication.id}
+                // passare anche l'id del veterinario selezionato come idVeterinario
+                appuntamentoService.registra(data);
             });
             return "redirect:/dash/appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -87,13 +85,14 @@ public class VeterinariController {
     public String sendRecensioneData(@RequestParam Map<String, String> data, Principal principal) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
-                // IMPLEMENT: che dati servono per registrare l'appuntamento?
-                // come può il service sapere qual è il cliente e quale il veterinario?
-                recensioneService.registra(data, utente.getId());
+                // nel frontend, passare l'idCliente con {#authentication.id}
+                // passare anche l'id del veterinario selezionato come idVeterinario
+                recensioneService.registra(data);
             });
             return "redirect:/dash/recensioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
