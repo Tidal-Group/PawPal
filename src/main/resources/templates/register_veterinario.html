@@ -9,15 +9,19 @@
     <main class="main center-form">
         <h2>Registrazione Veterinario</h2>
 
-        <form th:action="@{/auth/register_veterinario}" method="post" class="auth-form">
+        <form th:action="@{/auth/register_veterinario/form}" method="post" class="auth-form">
+
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" required>
 
             <label for="cognome">Cognome</label>
             <input type="text" id="cognome" name="cognome" required>
 
-            <label for="dataNascita">Data di nascita</label>
-            <input type="date" id="dataNascita" name="dataNascita" required>
+            <label for="codiceFiscale">Codice Fiscale</label>
+            <input type="text" id="codiceFiscale" name="codiceFiscale" maxlength="16" required>
+
+            <label for="telefono">Telefono</label>
+            <input type="text" id="telefono" name="telefono" required>
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
@@ -31,13 +35,13 @@
             <label for="check_password">Conferma Password</label>
             <input type="password" id="check_password" name="check_password" required>
 
-            <label for="specializzazione">Specialistica</label>
+            <label for="specializzazione">Specializzazione</label>
             <input type="text" id="specializzazione" name="specializzazione" required>
 
             <label>Specie trattate</label>
             <div class="specie-container">
-                <div th:each="spec : ${specie}" class="form-check">
-                    <input type="checkbox" class="form-check-input" name="listaIdSpecie" th:value="${spec.id}"
+                <div th:each="spec : ${lista_specie}" class="form-check">
+                    <input type="checkbox" class="form-check-input" name="specie" th:value="${spec.id}"
                         th:id="'specie_' + ${spec.id}" />
                     <label class="form-check-label" th:for="'specie_' + ${spec.id}">
                         <span th:text="${spec.nomeSpecie}">Nome Specie</span>
@@ -47,22 +51,27 @@
 
             <label>Prestazioni offerte</label>
             <div class="prestazioni-container">
-                <div th:each="prest : ${prestazioni}" class="form-check">
-                    <input type="checkbox" class="form-check-input" name="listaIdPrestazioni" th:value="${prest.id}"
+                <div th:each="prest : ${lista_prestazioni}" class="form-check">
+                    <input type="checkbox" class="form-check-input" name="prestazioni" th:value="${prest.id}"
                         th:id="'prestazione_' + ${prest.id}" />
                     <label class="form-check-label" th:for="'prestazione_' + ${prest.id}">
-                        <span th:text="${prest.nomePrestazione}">Nome Prestazione</span>
+                        <span th:text="${prest.descrizione}">Nome Prestazione</span>
                     </label>
                 </div>
             </div>
 
 
             <label for="indirizzoStudio">Indirizzo studio</label>
-            <input type="text" id="indirizzoStudio" name="indirizzoStudio" placeholder="Via, numero civico, città"
-                required>
+            <input type="text" id="indirizzoStudio" name="indirizzoStudio" placeholder="Via, numero civico, città" required>
 
-            <label for="iscrizioneAlbo">Numero di iscrizione all’albo</label>
+            <label for="iscrizioneAlbo">Numero di iscrizione all&#39;albo</label>
             <input type="text" id="iscrizioneAlbo" name="iscrizioneAlbo" placeholder="es. 12345" required>
+
+            <label for="disponibilita">Disponibilit&#224;</label>
+            <input type="text" id="disponibilita" name="disponibilita" placeholder="es. Lun-Ven 9:00-18:00" required>
+
+            <label for="descrizione">Descrizione</label>
+            <textarea name="descrizione" id="descrizione" maxlength="140"></textarea>
 
             <input type="hidden" name="ruolo" value="VETERINARIO">
 

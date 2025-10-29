@@ -22,7 +22,13 @@
 
                     <div class="form-group">
                         <label for="citta">Città</label>
-                        <input type="text" id="citta" name="citta" placeholder="Inserisci la città">
+                        <select name="citta" id="citta">
+                            <option value="milano">Milano</option>
+                            <option value="roma">Roma</option>
+                            <option value="napoli">Napoli</option>
+                            <option value="torino">Torino</option>
+                            <option value="catania">Catania</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -37,7 +43,7 @@
                         <label for="specie">Animale</label>
                         <select id="specie" name="idSpecie">
                             <option value="">-- Seleziona --</option>
-                            <option th:each="spec : ${specie}" th:value="${spec.id}" th:text="${spec.nomeSpecie}"></option>
+                            <option th:each="spec : ${lista_specie}" th:value="${spec.id}" th:text="${spec.nomeSpecie}"></option>
                         </select>
                     </div>
 
@@ -46,10 +52,13 @@
                     </div>
 
                 </form>
+
             </div>
+
         </section>
 
         <section class="hero">
+
             <div class="container">
                 <h2>Chi siamo</h2>
                 <p>PawPal è la piattaforma dedicata a connettere proprietari di animali e veterinari, offrendo
@@ -66,13 +75,19 @@
                     comunicare e collaborare nel modo più semplice possibile, offrendo cure migliori e un servizio
                     sempre più personalizzato.</p>
             </div>
+
         </section>
 
         <section class="specializzazioni-in-evidenza">
+
             <div class="container">
+
                 <h2>Specializzazioni in evidenza</h2>
+
                 <p class="subtitle">Di quale specialista ha bisogno il tuo animale?</p>
+
                 <div class="specializzazioni-list">
+
                     <div th:each="spec : ${specializzazioniInEvidenza}" class="specializzazione-card">
                         <a th:href="@{'/lista_veterinari?specializzazione=' + ${spec}}" class="card-link">
                             <div class="icon">
@@ -119,6 +134,7 @@
 
     <footer th:replace="fragments :: footer"></footer>
     <script th:src="@{/js/script.js}"></script>
+    
 </body>
 
 </html>

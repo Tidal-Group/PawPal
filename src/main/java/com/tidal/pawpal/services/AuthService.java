@@ -1,5 +1,6 @@
 package com.tidal.pawpal.services;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import com.tidal.pawpal.services.CustomUserDetailsService.SecuredUser;
 import com.tidal.pawpal.services.contracts.AuthServiceContract;
 import com.tidal.pawpal.services.contracts.ClienteServiceContract;
 import com.tidal.pawpal.services.contracts.UserServiceContract;
-import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
 // Façade
 @Service
@@ -33,7 +33,7 @@ public class AuthService extends AuthServiceContract {
     private ClienteServiceContract clienteService;
 
     @Autowired
-    private VeterinarioServiceContract veterinarioService;
+    private VeterinarioService veterinarioService;
 
     @Override
     public User validaCredenziali(String username, String password) {
@@ -53,8 +53,8 @@ public class AuthService extends AuthServiceContract {
     }
 
     @Override
-    public Veterinario registraVeterinario(Map<String, String> dati) {
-        return veterinarioService.registra(dati);
+    public Veterinario registraVeterinario(List<Long> listaIdSpecie, List<Long> listaIdPrestazioni, Map<String, String> dati) {
+        return veterinarioService.registra(listaIdSpecie, listaIdPrestazioni, dati);
     }
     
 }
