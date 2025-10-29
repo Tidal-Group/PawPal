@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="fragments :: head('Registrazione Veterinario - PawPal')"></head>
 
 <body>
@@ -30,23 +31,38 @@
             <label for="check_password">Conferma Password</label>
             <input type="password" id="check_password" name="check_password" required>
 
-            <label for="citta">Città</label>
-            <input type="text" id="citta" name="citta" required>
+            <label for="specializzazione">Specialistica</label>
+            <input type="text" id="specializzazione" name="specializzazione" required>
 
-            <label for="specialistica">Specialistica</label>
-            <input type="text" id="specialistica" name="specialistica" required>
+            <label>Specie trattate</label>
+            <div class="specie-container">
+                <div th:each="spec : ${specie}" class="form-check">
+                    <input type="checkbox" class="form-check-input" name="listaIdSpecie" th:value="${spec.id}"
+                        th:id="'specie_' + ${spec.id}" />
+                    <label class="form-check-label" th:for="'specie_' + ${spec.id}">
+                        <span th:text="${spec.nomeSpecie}">Nome Specie</span>
+                    </label>
+                </div>
+            </div>
 
-            <label for="specie">Specie trattate</label>
-            <input type="text" id="specie" name="specie" placeholder="es. Cane, Gatto" required>
+            <label>Prestazioni offerte</label>
+            <div class="prestazioni-container">
+                <div th:each="prest : ${prestazioni}" class="form-check">
+                    <input type="checkbox" class="form-check-input" name="listaIdPrestazioni" th:value="${prest.id}"
+                        th:id="'prestazione_' + ${prest.id}" />
+                    <label class="form-check-label" th:for="'prestazione_' + ${prest.id}">
+                        <span th:text="${prest.nomePrestazione}">Nome Prestazione</span>
+                    </label>
+                </div>
+            </div>
 
-            <label for="prestazioni">Prestazioni offerte</label>
-            <textarea id="prestazioni" name="prestazioni" rows="3" placeholder="es. Vaccinazioni, Visite generali" required></textarea>
 
-            <label for="indirizzo">Indirizzo studio</label>
-            <input type="text" id="indirizzo" name="indirizzo" placeholder="Via, numero civico, città" required>
+            <label for="indirizzoStudio">Indirizzo studio</label>
+            <input type="text" id="indirizzoStudio" name="indirizzoStudio" placeholder="Via, numero civico, città"
+                required>
 
-            <label for="numeroAlbo">Numero di iscrizione all’albo</label>
-            <input type="text" id="numeroAlbo" name="numeroAlbo" placeholder="es. 12345" required>
+            <label for="iscrizioneAlbo">Numero di iscrizione all’albo</label>
+            <input type="text" id="iscrizioneAlbo" name="iscrizioneAlbo" placeholder="es. 12345" required>
 
             <input type="hidden" name="ruolo" value="VETERINARIO">
 
@@ -62,4 +78,5 @@
     <footer th:replace="fragments :: footer"></footer>
     <script th:src="@{/js/register.js}"></script>
 </body>
+
 </html>
