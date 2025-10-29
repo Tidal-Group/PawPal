@@ -18,19 +18,204 @@
                 <li><a th:href="@{/admin/utenti}"><i class="sidebar-elements"></i> Gestione Utenti</a></li>
                 <li><a th:href="@{/admin/prestazioni}"><i class="sidebar-elements"></i> Gestione Prenotazioni</a></li>
                 <li><a th:href="@{/admin/specie}"><i class="sidebar-elements"></i> Gestione Specie</a></li>
-                <li class="submenu">
-                    <a href="#"><i class="sidebar-elements"></i> Profilo</a>
-                    <ul class="submenu">
-                        <li><a th:href="@{/dash/profilo}"><i class="sidebar-elements"></i> Modifica</a></li>
-                        <li><a th:href="@{/dash/profilo}"><i class="sidebar-elements"></i> Cambia Password</a></li>
-                        <li><a th:href="@{/logout}"><i class="sidebar-elements"></i> Logout</a></li>
-                    </ul>
-                </li>
-
-                <li><a th:href="@{/admin/statistiche}"><i class="sidebar-elements"></i> Statistiche</a></li>
+                <li><a th:href="@{/logout}"><i class="sidebar-elements"></i> Logout</a></li>
             </ul>
         </nav>
     </div>
+
+    <main class="main-content">
+
+        <!-- Gestione Utenti -->
+        <section id="gestione-utenti" class="admin-section">
+            <h1>Gestione Utenti</h1>
+
+            <!-- Filter / ricerca -->
+            <form class="filter-form" th:action="@{/admin/utenti}" method="get">
+                <input type="text" name="q" placeholder="Cerca per nome/email" th:value="${param.q}" />
+                <select name="role">
+                    <option value="">Tutti i ruoli</option>
+                    <option value="CLIENTE" th:selected="${param.role=='CLIENTE'}">Cliente</option>
+                    <option value="VETERINARIO" th:selected="${param.role=='VETERINARIO'}">Veterinario</option>
+                    <option value="ADMIN" th:selected="${param.role=='ADMIN'}">Admin</option>
+                </select>
+                <select name="status">
+                    <option value="">Tutti</option>
+                    <option value="ACTIVE" th:selected="${param.status=='ACTIVE'}">Attivi</option>
+                    <option value="BLOCKED" th:selected="${param.status=='BLOCKED'}">Bloccati</option>
+                    <option value="PENDING" th:selected="${param.status=='PENDING'}">In verifica</option>
+                </select>
+                <button type="submit" class="btn">Filtra</button>
+
+                <!-- link per aggiungere nuovo utente -->
+                <a th:href="@{/admin/utenti/inserisci_utente}" class="btn">Aggiungi Utente</a>
+            </form>
+
+            <table class="table-admin">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Ruolo</th>
+                        <th>Stato</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="u : ${utenti}">
+                        <td th:text="${u.id}">1</td>
+                        <td th:text="${u.nome} + ' ' + ${u.cognome}">Mario Rossi</td>
+                        <td th:text="${u.email}">mario@example.com</td>
+                        <td th:text="${u.role}">VETERINARIO</td>
+                        <td th:text="${u.stato}">ACTIVE</td>
+                        <td>
+                            <!-- Modifica (apre form/modale nella logica dell'app) -->
+                            <a th:href="@{/admin/utenti/modifica_utente/{id}(id=${u.id})}" class="btn">Modifica</a>
+
+                            <!-- Verifica/Accetta veterinario (solo se in pending) -->
+                            <form th:if="${u.role == 'VETERINARIO' and u.stato == 'PENDING'}"
+                                th:action="@{/admin/utenti/modifica_utente}" method="post" style="display:inline">
+                                <input type="hidden" name="_method" value="put" />
+                                <input type="hidden" name="id" th:value="${u.id}" />
+                                <input type="hidden" name="stato" value="ACTIVE" />
+                                <button type="submit" class="btn">Accetta</button>
+                            </form>
+
+                            <!-- Blocca/sblocca -->
+                            <form th:action="@{/admin/utenti/modifica_utente}" method="post" style="display:inline">
+                                <input type="hidden" name="_method" value="put" />
+                                <input type="hidden" name="id" th:value="${u.id}" />
+                                <input type="hidden" name="stato"
+                                    th:value="${u.stato == 'BLOCKED' ? 'ACTIVE' : 'BLOCKED'}" />
+                                <button type="submit" th:text="${u.stato == 'BLOCKED' ? 'Sblocca' : 'Blocca'}"
+                                    class="btn"></button>
+                            </form>
+
+                            <!-- Elimina -->
+                            <form th:action="@{/admin/utenti/elimina_utente}" method="post" style="display:inline"
+                                onsubmit="return confirm('Eliminare utente?');">
+                                <input type="hidden" name="_method" value="delete" />
+                                <input type="hidden" name="id" th:value="${u.id}" />
+                                <button type="submit" class="btn btn-danger">Elimina</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(utenti)}">
+                        <td colspan="6">Nessun utente trovato.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Gestione Prenotazioni / Prestazioni -->
+        <section id="gestione-prestazioni" class="admin-section">
+            <h1>Gestione Prestazioni</h1>
+
+            <form class="filter-form" th:action="@{/admin/prestazioni}" method="get">
+                <input type="text" name="q" placeholder="Cerca per nome" th:value="${param.q}" />
+                <button type="submit" class="btn">Filtra</button>
+                <a th:href="@{/admin/prestazioni/inserisci_prestazione}" class="btn">Aggiungi Prestazione</a>
+            </form>
+
+            <table class="table-admin">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Prezzo</th>
+                        <th>Durata (min)</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${prestazioni}">
+                        <td th:text="${p.id}">1</td>
+                        <td th:text="${p.nome}">Visita base</td>
+                        <td th:text="${p.prezzo}">30.00</td>
+                        <td th:text="${p.durata}">30</td>
+                        <td>
+                            <a th:href="@{/admin/prestazioni/modifica_prestazione/{id}(id=${p.id})}"
+                                class="btn">Modifica</a>
+
+                            <form th:action="@{/admin/prestazioni/elimina_prestazione}" method="post"
+                                style="display:inline" onsubmit="return confirm('Eliminare prestazione?');">
+                                <input type="hidden" name="_method" value="delete" />
+                                <input type="hidden" name="id" th:value="${p.id}" />
+                                <button type="submit" class="btn btn-danger">Elimina</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(prestazioni)}">
+                        <td colspan="5">Nessuna prestazione trovata.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Gestione Specie -->
+        <section id="gestione-specie" class="admin-section">
+            <h1>Gestione Specie</h1>
+
+            <form class="filter-form" th:action="@{/admin/specie}" method="get">
+                <input type="text" name="q" placeholder="Cerca specie" th:value="${param.q}" />
+                <button type="submit" class="btn">Filtra</button>
+                <a th:href="@{/admin/specie/inserisci_specie}" class="btn">Aggiungi Specie</a>
+            </form>
+
+            <table class="table-admin">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome specie</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="s : ${specie}">
+                        <td th:text="${s.id}">1</td>
+                        <td th:text="${s.nome}">Cane</td>
+                        <td>
+                            <a th:href="@{/admin/specie/modifica_specie/{id}(id=${s.id})}" class="btn">Modifica</a>
+
+                            <form th:action="@{/admin/specie/elimina_specie}" method="post" style="display:inline"
+                                onsubmit="return confirm('Eliminare specie?');">
+                                <input type="hidden" name="_method" value="delete" />
+                                <input type="hidden" name="id" th:value="${s.id}" />
+                                <button type="submit" class="btn btn-danger">Elimina</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(specie)}">
+                        <td colspan="3">Nessuna specie trovata.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="form-actions">
+                    <button type="submit">Salva modifiche</button>
+                    <a th:href="@{/dash/profilo}" class="btn-cancel">Annulla</a>
+                </div>
+            </form>
+        </section>
+
+         <section class="logout-section" id="logout">
+            <h1>Logout</h1>
+
+            <form th:action="@{/logout}" method="post" class="form-profilo">
+                <fieldset>
+                    <h3>Esci dall'account da amministratore</h3>
+                    <p>Premi "Esci" per terminare la sessione corrente. Verrai reindirizzato alla pagina iniziale.</p>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">Esci</button>
+                    <button type="reset" class="btn-cancel">Annulla</button>
+                </div>
+            </form>
+        </section>
+
+    </main>
 
 </body>
 
