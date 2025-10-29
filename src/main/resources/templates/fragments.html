@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title th:text="${title}">PawPal</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
@@ -13,97 +15,183 @@
 
     <header th:fragment="navbar(active)">
 
-        <a class="logo" th:href="@{/}"><img src="" alt=""></a>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
-        <div class="topbar">
+            <div class="container-fluid">
 
-            <nav class="nav">
+                <!-- LOGO -->
+                <a class="navbar-brand" th:href="@{/}">
+                    <img src="" alt="">
+                </a>
 
-                <a th:href="@{/}" th:classappend="${active} == 'home' ? ' active' : ''">Home</a>
+                <!-- BOTTONE COLLAPSE -->
+                <button 
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon">Prova</span>
+                </button>
 
-                <a th:href="@{/veterinari/lista_veterinari}" th:classappend="${active} == 'lista_veterinari' ? ' active' : ''">Veterinari</a>
-                
-                <a th:href="@{/contatti}" th:classappend="${active} == 'contatti' ? ' active' : ''">Contatti</a>
 
-                <div sec:authorize="isAnonymous()">
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
-                    <a th:href="@{/auth/login}" th:classappend="${active} == 'login' ? ' active' : ''">Login</a>
+                    <!-- LINK A SINISTRA -->
 
-                    <a th:href="@{/auth/register_cliente}" th:classappend="${active} == 'register_cliente' ? ' active' : ''">Registrati come cliente</a>
-                    
-                    <a th:href="@{/auth/register_veterinario}" th:classappend="${active} == 'register_veterinario' ? ' active' : ''">Registrati come veterinario</a>
+                    <ul class="navbar-nav">
 
-                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}" th:classappend="${active} == 'home' ? ' active' : ''">Home</a>
+                        </li>
 
-                <div sec:authorize="hasAnyRole('CLIENTE','VETERINARIO')" class="user-section">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/veterinari/lista_veterinari}" th:classappend="${active} == 'lista_veterinari' ? ' active' : ''">Veterinari</a>
+                        </li>
 
-                    <a th:href="@{/dash}" class="dashboard-link" th:classappend="${active} == 'dashboard' ? ' active' : ''">Dashboard</a>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/contatti}" th:classappend="${active} == 'contatti' ? ' active' : ''">Contatti</a>
+                        </li>
 
-                    <div class="user-dropdown">
-                        <button id="userDropdownBtn" class="user-button">
-                            <span th:text="${#authentication.name}">Utente</span> ▼
-                        </button>
+                    </ul>
 
-                        <div id="userDropdownMenu" class="dropdown-content">
-                            <p><strong th:text="${#authentication.name}">Utente</strong></p>
+                    <!-- LINK A DESTRA -->
 
-                            <p>
-                                <span th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">Cliente</span>
-                                <span th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">Veterinario</span>
-                            </p>
+                    <ul class="navbar-nav ms-auto">
 
-                            <hr>
+                        <!-- <ANONIMO> -->
+                        <div sec:authorize="isAnonymous()" style="display: contents;">
 
-                            <a th:href="@{/dash/profilo}">Profilo</a>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/auth/login}" th:classappend="${active} == 'login' ? ' active' : ''">Login</a>
+                            </li>
 
-                            <a th:href="@{/dash}">Dashboard</a>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/auth/register_cliente}" th:classappend="${active} == 'register_cliente' ? ' active' : ''">Registrati come cliente</a>
+                            </li>
 
-                            <form th:action="@{/logout}" method="post">
-                                <button type="submit">Logout</button>
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div sec:authorize="hasRole('ADMIN')" class="user-section">
-
-                    <a th:href="@{/admin}" class="dashboard-link">Dashboard</a>
-
-                    <div class="user-dropdown">
-
-                        <button id="adminDropdownBtn" class="user-button">
-                            <span th:text="${#authentication.name}">Admin</span> ▼
-                        </button>
-
-                        <div id="adminDropdownMenu" class="dropdown-content">
-
-                            <p><strong th:text="${#authentication.name}">Admin</strong></p>
-                            <p>Ruolo: Admin</p>
-
-                            <hr>
-
-                            <a th:href="@{/admin/utenti}">Gestione utenti</a>
-
-                            <a th:href="@{/admin/prestazioni}">Prestazioni</a>
-
-                            <a th:href="@{/admin/specie}">Specie</a>
-
-                            <form th:action="@{/logout}" method="post">
-                                <button type="submit">Logout</button>
-                            </form>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/auth/register_veterinario}" th:classappend="${active} == 'register_veterinario' ? ' active' : ''">Registrati come veterinario</a>
+                            </li>
 
                         </div>
+                        <!-- </ANONIMO> -->
 
-                    </div>
+                        <!-- <CLIENTE-VETERINARIO> -->
+                        <div sec:authorize="hasAnyRole('CLIENTE','VETERINARIO')" style="display: contents;">
+
+                            <li class="nav-item dropdown">
+
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span th:text="${#authentication.name}">Utente</span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <p class="dropdown-item">
+                                            <span th:if="${#authorization.expression('hasRole(''CLIENTE'')')}"><strong><em>Cliente</em></strong></span>
+                                            <span th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}"><strong><em>Veterinario</em></strong></span>
+                                        </p>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dash/profilo}">Profilo</a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dash/appuntamenti}">Appuntamenti</a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dash/recensioni}">Recensioni</a>
+                                    </li>
+
+                                    <li th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
+                                        <a class="dropdown-item" th:href="@{/dash/linee_guida}">Linee guida</a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <form id="navbar_logout_form" th:action="@{/logout}" method="post" style="display: contents;">
+                                            <a class="dropdown-item" href="#" onclick="document.getElementById('navbar_logout_form').submit()">Logout</a>
+                                        </form>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/dash}">Dashboard</a>
+                            </li>
+
+                        </div>
+                        <!-- </CLIENTE-VETERINARIO> -->
+
+                        <!-- <ADMIN> -->
+                        <div sec:authorize="hasRole('ADMIN')" style="display: contents;">
+
+                            <li class="nav-item dropdown">
+
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span th:text="${#authentication.name}">Admin</span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <p class="dropdown-item">
+                                            <span><strong><em>Admin</em></strong></span>
+                                        </p>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/admin/utenti}">Utenti</a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/admin/prestazioni}">Prestazioni</a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/admin/specie}">Specie</a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <form id="navbar_logout_form" th:action="@{/logout}" method="post" style="display: contents;">
+                                            <a class="dropdown-item" href="#" onclick="document.getElementById('navbar_logout_form').submit()">Logout</a>
+                                        </form>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/admin}">Dashboard</a>
+                            </li>
+
+                        </div>
+                        <!-- </ADMIN> -->
+
+                    </ul>
 
                 </div>
 
-            </nav>
+            </div>
 
-        </div>
+        </nav>
 
     </header>
 
