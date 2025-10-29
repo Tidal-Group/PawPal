@@ -6,17 +6,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
-import com.tidal.pawpal.services.contracts.SpecieServiceContract;
+import com.tidal.pawpal.services.PrestazioneService;
+import com.tidal.pawpal.services.SpecieService;
 
 @Controller
 public class AppController {
 
     @Autowired
-    private PrestazioneServiceContract prestazioneService;
+    private PrestazioneService prestazioneService;
 
     @Autowired
-    private SpecieServiceContract specieService;
+    private SpecieService specieService;
 
     // PROBABILMENTE DA TOGLIERE
     @Value("${app.pawpal.nome:Pawpal}")

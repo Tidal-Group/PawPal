@@ -9,14 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.tidal.pawpal.models.Appuntamento;
-import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.VeterinarioRepository;
-import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
-import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
-import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
-import com.tidal.pawpal.services.contracts.SpecieServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
 import jakarta.persistence.criteria.Predicate;
@@ -35,11 +29,12 @@ public class VeterinarioService extends VeterinarioServiceContract {
     // private RecensioneServiceContract recensioneService;
 
     @Autowired
-    private SpecieServiceContract specieService;
+    private SpecieService specieService;
 
     @Autowired
-    private PrestazioneServiceContract prestazioneService;
+    private PrestazioneService prestazioneService;
 
+    @Transactional
     @PreAuthorize("permitAll")
     public Veterinario registra(List<Long> listaIdSpecie, List<Long> listaIdPrestazione, Map<String, String> data) {
         return super.registra(data, (veterinario) -> {
@@ -52,7 +47,6 @@ public class VeterinarioService extends VeterinarioServiceContract {
 
     // DEBUG: circular referencing
     // @Override
-    // @Transactional
     // public void elimina(Long id) {
     //     super.elimina(id, (veterinario) -> {
     //         List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerVeterinario(id);

@@ -11,8 +11,6 @@ import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.AppuntamentoRepository;
 import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
-import com.tidal.pawpal.services.contracts.ClienteServiceContract;
-import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
 @Service
 public class AppuntamentoService extends AppuntamentoServiceContract {
@@ -21,10 +19,10 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
     private AppuntamentoRepository appuntamentoRepository;
 
     @Autowired
-    private VeterinarioServiceContract veterinarioService;
+    private VeterinarioService veterinarioService;
 
     @Autowired
-    private ClienteServiceContract clienteService;
+    private ClienteService clienteService;
 
     @Override
     public Appuntamento registra(Map<String, String> data) {

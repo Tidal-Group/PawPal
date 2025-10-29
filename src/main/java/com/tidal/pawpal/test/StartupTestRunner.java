@@ -59,20 +59,20 @@ public class StartupTestRunner implements CommandLineRunner {
             // System.out.println("IL CLIENTE E' QUESTO: " + clienteService.cercaPerTelefono("3334445555"));
             // List<Long> specie = new ArrayList<>();
             // List<Long> prestazioni = new ArrayList<>();
-            Map<String, String> data = new HashMap<>();
-            List<Long> specie = new ArrayList<>();
-            List<Long> prestazioni = new ArrayList<>();
-            specie.add(1L);
-            prestazioni.add(1L);
-            data.put("nome", "Dr. Test Veterinario");
-            data.put("cognome", "Rossi");
-            data.put("email", "dr.rssi@test.com");
-            data.put("username", "drrossi");
-            data.put("password", "password123");
-            data.put("specializzazione", "Cardiologia");
-            data.put("indirizzoStudio", "Via Roma 123, Milano");
-            System.out.println("IL VETERINARIO E' QUESTO: " + veterinarioService.registra(specie, prestazioni, data));
-            System.out.println("--- Esecuzione Codice Test Protetto Terminata con Successo ---");
+            // Map<String, String> data = new HashMap<>();
+            // List<Long> specie = new ArrayList<>();
+            // List<Long> prestazioni = new ArrayList<>();
+            // specie.add(1L);
+            // prestazioni.add(1L);
+            // data.put("nome", "Dr. Test Veterinario");
+            // data.put("cognome", "Rossi");
+            // data.put("email", "dr.rssi@test.com");
+            // data.put("username", "drrossi");
+            // data.put("password", "password123");
+            // data.put("specializzazione", "Cardiologia");
+            // data.put("indirizzoStudio", "Via Roma 123, Milano");
+            // System.out.println("IL VETERINARIO E' QUESTO: " + veterinarioService.registra(specie, prestazioni, data));
+            // System.out.println("--- Esecuzione Codice Test Protetto Terminata con Successo ---");
             
         } catch (Exception e) {
             e.printStackTrace();

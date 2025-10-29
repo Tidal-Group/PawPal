@@ -14,6 +14,8 @@ import com.tidal.pawpal.services.abstractions.GenericService;
 import com.tidal.pawpal.services.abstractions.ReadService;
 import com.tidal.pawpal.services.abstractions.UpdateService;
 
+import jakarta.transaction.Transactional;
+
 public abstract class PrestazioneServiceContract extends GenericService<Prestazione, Long> implements
     CreateService<Prestazione, Long>, 
     ReadService<Prestazione, Long>,
@@ -25,12 +27,14 @@ public abstract class PrestazioneServiceContract extends GenericService<Prestazi
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public Prestazione registra(Map<String, String> data, Consumer<Prestazione> consumer) {
         return CreateService.super.registra(data, consumer);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public Prestazione registra(Map<String, String> data) {
         return CreateService.super.registra(data);
@@ -49,18 +53,21 @@ public abstract class PrestazioneServiceContract extends GenericService<Prestazi
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public Prestazione modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public void elimina(Long id, Consumer<Prestazione> consumer) {
         DeleteService.super.elimina(id, consumer);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public void elimina(Long id) {
         DeleteService.super.elimina(id);

@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.User;
-import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
-import com.tidal.pawpal.services.contracts.ClienteServiceContract;
-import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
-import com.tidal.pawpal.services.contracts.UserServiceContract;
-import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
+import com.tidal.pawpal.services.AppuntamentoService;
+import com.tidal.pawpal.services.ClienteService;
+import com.tidal.pawpal.services.RecensioneService;
+import com.tidal.pawpal.services.UserService;
+import com.tidal.pawpal.services.VeterinarioService;
 
 @Controller
 @RequestMapping("/dash")
@@ -44,19 +44,19 @@ public class DashController {
     }
 
     @Autowired
-    public ClienteServiceContract clienteService;
+    public ClienteService clienteService;
 
     @Autowired
-    public VeterinarioServiceContract veterinarioService;
+    public VeterinarioService veterinarioService;
 
     @Autowired
-    public AppuntamentoServiceContract appuntamentoService;
+    public AppuntamentoService appuntamentoService;
 
     @Autowired
-    public RecensioneServiceContract recensioneService;
+    public RecensioneService recensioneService;
 
     @Autowired
-    public UserServiceContract userService;
+    public UserService userService;
 
     @GetMapping("")
     public String showDashboard(Principal principal, Model model) {

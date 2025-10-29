@@ -16,8 +16,6 @@ import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.services.CustomUserDetailsService.SecuredUser;
 import com.tidal.pawpal.services.contracts.AuthServiceContract;
-import com.tidal.pawpal.services.contracts.ClienteServiceContract;
-import com.tidal.pawpal.services.contracts.UserServiceContract;
 
 // Façade
 @Service
@@ -27,10 +25,10 @@ public class AuthService extends AuthServiceContract {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserServiceContract userService;
+    private UserService userService;
 
     @Autowired
-    private ClienteServiceContract clienteService;
+    private ClienteService clienteService;
 
     @Autowired
     private VeterinarioService veterinarioService;

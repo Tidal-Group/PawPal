@@ -9,9 +9,11 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper=true)
 @ToString(callSuper = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)  

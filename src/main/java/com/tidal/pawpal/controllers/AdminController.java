@@ -18,13 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.models.Specie;
 import com.tidal.pawpal.models.User;
-
-import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
-import com.tidal.pawpal.services.contracts.SpecieServiceContract;
-import com.tidal.pawpal.services.contracts.UserServiceContract;
-
-import jakarta.servlet.http.HttpSession;
-
+import com.tidal.pawpal.services.PrestazioneService;
+import com.tidal.pawpal.services.SpecieService;
+import com.tidal.pawpal.services.UserService;
 
 
 @Controller
@@ -46,13 +42,13 @@ public class AdminController {
     }
 
     @Autowired
-    public UserServiceContract userService;
+    public UserService userService;
 
     @Autowired
-    public PrestazioneServiceContract prestazioneService;
+    public PrestazioneService prestazioneService;
 
     @Autowired
-    public SpecieServiceContract specieService;
+    public SpecieService specieService;
 
     @GetMapping("")
     public String showDashboard() {

@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Veterinario;
-import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
-import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
-import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
-import com.tidal.pawpal.services.contracts.SpecieServiceContract;
-import com.tidal.pawpal.services.contracts.UserServiceContract;
-import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
+import com.tidal.pawpal.services.AppuntamentoService;
+import com.tidal.pawpal.services.PrestazioneService;
+import com.tidal.pawpal.services.RecensioneService;
+import com.tidal.pawpal.services.SpecieService;
+import com.tidal.pawpal.services.UserService;
+import com.tidal.pawpal.services.VeterinarioService;
 
 @Controller
 @RequestMapping("/veterinari")
@@ -43,22 +43,22 @@ public class VeterinariController {
     }
 
     @Autowired
-    private VeterinarioServiceContract veterinarioService;
+    private VeterinarioService veterinarioService;
 
     @Autowired
-    private AppuntamentoServiceContract appuntamentoService;
+    private AppuntamentoService appuntamentoService;
 
     @Autowired
-    private RecensioneServiceContract recensioneService;
+    private RecensioneService recensioneService;
 
     @Autowired
-    private SpecieServiceContract specieService;
+    private SpecieService specieService;
 
     @Autowired
-    private PrestazioneServiceContract prestazioneService;
+    private PrestazioneService prestazioneService;
 
     @Autowired
-    private UserServiceContract userService;
+    private UserService userService;
     
     @GetMapping("/lista_veterinari")
     public String showListaVeterinari(@RequestParam Map<String, String> data, Model model) {
