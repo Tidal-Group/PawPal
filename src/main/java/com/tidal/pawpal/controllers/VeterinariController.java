@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
+import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
 import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
+import com.tidal.pawpal.services.contracts.SpecieServiceContract;
 import com.tidal.pawpal.services.contracts.UserServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
@@ -41,22 +43,30 @@ public class VeterinariController {
     }
 
     @Autowired
-    public VeterinarioServiceContract veterinarioService;
+    private VeterinarioServiceContract veterinarioService;
 
     @Autowired
-    public AppuntamentoServiceContract appuntamentoService;
+    private AppuntamentoServiceContract appuntamentoService;
 
     @Autowired
-    public RecensioneServiceContract recensioneService;
+    private RecensioneServiceContract recensioneService;
 
     @Autowired
-    public UserServiceContract userService;
+    private SpecieServiceContract specieService;
+
+    @Autowired
+    private PrestazioneServiceContract prestazioneService;
+
+    @Autowired
+    private UserServiceContract userService;
     
     @GetMapping("/lista_veterinari")
     public String showListaVeterinari(@RequestParam Map<String, String> data, Model model) {
         try {
             List<Veterinario> listaVeterinari = veterinarioService.cercaConFiltri(data);
             model.addAttribute("lista_veterinari", listaVeterinari);
+            model.addAttribute("lista_specie", specieService.elencaTutti());
+            model.addAttribute("lista_prestazioni", prestazioneService.elencaTutti());
             return "veterinari";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
