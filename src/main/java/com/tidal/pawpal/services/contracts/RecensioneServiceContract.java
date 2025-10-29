@@ -12,6 +12,9 @@ import com.tidal.pawpal.services.abstractions.GenericService;
 
 import com.tidal.pawpal.services.abstractions.CreateService;
 import com.tidal.pawpal.services.abstractions.ReadService;
+
+import jakarta.transaction.Transactional;
+
 import com.tidal.pawpal.services.abstractions.DeleteService;
 
 public abstract class RecensioneServiceContract extends GenericService<Recensione, Long> implements
@@ -24,12 +27,14 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('CLIENTE')")
     public Recensione registra(Map<String, String> data, Consumer<Recensione> consumer) {
         return CreateService.super.registra(data, consumer);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('CLIENTE')")
     public Recensione registra(Map<String, String> data) {
         return CreateService.super.registra(data);
@@ -48,6 +53,7 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     // DEBUG: SICUREZZA! Si possono eliminare le recensioni di tutti!
     public void elimina(Long id, Consumer<Recensione> consumer) {
@@ -55,6 +61,7 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     // DEBUG: SICUREZZA! Si possono eliminare le recensioni di tutti!
     public void elimina(Long id) {

@@ -13,6 +13,8 @@ import com.tidal.pawpal.services.abstractions.GenericService;
 import com.tidal.pawpal.services.abstractions.ReadService;
 import com.tidal.pawpal.services.abstractions.UpdateService;
 
+import jakarta.transaction.Transactional;
+
 public abstract class ClienteServiceContract extends GenericService<Cliente, Long> implements
     CreateService<Cliente, Long>, 
     ReadService<Cliente, Long>,
@@ -24,12 +26,14 @@ public abstract class ClienteServiceContract extends GenericService<Cliente, Lon
     }
 
     @Override
+    @Transactional
     @PreAuthorize("permitAll")
     public Cliente registra(Map<String, String> data, Consumer<Cliente> consumer) {
         return CreateService.super.registra(data, consumer);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("permitAll")
     public Cliente registra(Map<String, String> data) {
         return CreateService.super.registra(data);
@@ -48,18 +52,21 @@ public abstract class ClienteServiceContract extends GenericService<Cliente, Lon
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public Cliente modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public void elimina(Long id, Consumer<Cliente> consumer) {
         DeleteService.super.elimina(id, consumer);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public void elimina(Long id) {
         DeleteService.super.elimina(id);

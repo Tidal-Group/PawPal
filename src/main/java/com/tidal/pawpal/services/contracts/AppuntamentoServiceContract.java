@@ -13,6 +13,8 @@ import com.tidal.pawpal.services.abstractions.GenericService;
 import com.tidal.pawpal.services.abstractions.ReadService;
 import com.tidal.pawpal.services.abstractions.UpdateService;
 
+import jakarta.transaction.Transactional;
+
 public abstract class AppuntamentoServiceContract extends GenericService<Appuntamento, Long> implements
     CreateService<Appuntamento, Long>, 
     ReadService<Appuntamento, Long>,
@@ -24,12 +26,14 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('CLIENTE')")
     public Appuntamento registra(Map<String, String> data, Consumer<Appuntamento> consumer) {
         return CreateService.super.registra(data, consumer);
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasRole('CLIENTE')")
     public Appuntamento registra(Map<String, String> data) {
         return CreateService.super.registra(data);
@@ -48,6 +52,7 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAnyRole('CLIENTE', 'VETERINARIO')")
     // DEBUG: SICUREZZA! Si possono modificare gli appuntamenti di tutti!
     public Appuntamento modifica(Long id, Map<String, String> data) {
@@ -55,6 +60,7 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     }
 
     @Override
+    @Transactional
     @PreAuthorize("isAuthenticated()")
     // DEBUG: SICUREZZA! Si possono eliminare gli appuntamenti di tutti!
     public void elimina(Long id, Consumer<Appuntamento> consumer) {
@@ -62,6 +68,7 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     }
 
     @Override
+    @Transactional
     @PreAuthorize("isAuthenticated()")
     // DEBUG: SICUREZZA! Si possono eliminare gli appuntamenti di tutti!
     public void elimina(Long id) {

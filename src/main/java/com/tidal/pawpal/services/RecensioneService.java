@@ -10,21 +10,19 @@ import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.RecensioneRepository;
-import com.tidal.pawpal.services.contracts.ClienteServiceContract;
-import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
 
 @Service
 public class RecensioneService extends RecensioneServiceContract {
 
     @Autowired
-    private VeterinarioServiceContract veterinarioService;
+    private RecensioneRepository recensioneRepository;
 
     @Autowired
-    private ClienteServiceContract clienteService;
-   
+    private VeterinarioService veterinarioService;
+
     @Autowired
-    private RecensioneRepository recensioneRepository;
+    private ClienteService clienteService;
 
     @Override
     public Recensione registra (Map<String, String> data) {

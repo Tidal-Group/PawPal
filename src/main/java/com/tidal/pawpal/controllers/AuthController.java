@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tidal.pawpal.services.contracts.AuthServiceContract;
-import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
-import com.tidal.pawpal.services.contracts.SpecieServiceContract;
+import com.tidal.pawpal.services.AuthService;
+import com.tidal.pawpal.services.PrestazioneService;
+import com.tidal.pawpal.services.SpecieService;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
-    public AuthServiceContract authService;
+    public AuthService authService;
 
     @Autowired
-    public SpecieServiceContract specieService;
+    public SpecieService specieService;
 
     @Autowired
-    public PrestazioneServiceContract prestazioneService;
+    public PrestazioneService prestazioneService;
 
     @GetMapping("/login")
     public String getLoginPage() {
