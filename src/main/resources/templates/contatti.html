@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head('Contatti - PawPal')">
+</head>
+
+<body>
+    <header th:replace="fragments :: dashboard-header('Contatti')"></header>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Dashboard</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a th:href="@{/dash/home}">Home</a></li>
+                <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
+                <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
+                <li><a th:href="@{/dash/contatti}">Contatti</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        <section class="contatti-section">
+            <h1>Contattaci</h1>
+
+            <div class="contatti-info">
+                <p><strong>Email:</strong> info@pawpal.com</p>
+                <p><strong>Telefono:</strong> +39 06 298734</p>
+                <p><strong>Indirizzo:</strong> Via Mazzini 10, 00100 Roma</p>
+            </div>
+
+            <div class="contatti-form">
+                <h2>Invia un messaggio</h2>
+                <form th:action="@{/dash/contatti/invia}" method="post">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Il tuo nome">
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="La tua email">
+
+                    <label for="oggetto">Oggetto</label>
+                    <input type="text" id="oggetto" name="oggetto" required placeholder="Oggetto del messaggio">
+
+                    <label for="messaggio">Messaggio</label>
+                    <textarea id="messaggio" name="messaggio" rows="5" required
+                        placeholder="Scrivi qui il tuo messaggio..."></textarea>
+
+                    <button type="submit" class="btn">Invia</button>
+                </form>
+            </div>
+
+            <div class="contatti-mappa">
+                <h2>Dove siamo</h2>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2968.9341634527273!2d12.462639800000002!3d41.915774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f60f33eb2d567%3A0xe132e2175b7f8a0a!2sV.le%20Giuseppe%20Mazzini%2C%2000195%20Roma%20RM!5e0!3m2!1sit!2sit!4v1761737327352!5m2!1sit!2sit" 
+            width="100%" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
