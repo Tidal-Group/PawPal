@@ -1,33 +1,33 @@
 package com.tidal.pawpal.test;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import com.tidal.pawpal.models.Amministratore;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.tidal.pawpal.services.SpecieService;
+import com.tidal.pawpal.models.Amministratore;
 import com.tidal.pawpal.services.CustomUserDetailsService.SecuredUser;
-import com.tidal.pawpal.services.contracts.ClienteServiceContract;
-import com.tidal.pawpal.services.contracts.SpecieServiceContract;
+import com.tidal.pawpal.services.VeterinarioService;
 
 @Component
 public class StartupTestRunner implements CommandLineRunner {
 
-    private final SpecieServiceContract specieService;
-
-
     // private final ClienteServiceContract clienteService;
-
-
-    // // Iniezione tramite Costruttore
+    // TESTARE
+    @Autowired
+    private VeterinarioService veterinarioService;
+    // Iniezione tramite Costruttore
     // public StartupTestRunner(ClienteServiceContract clienteService) {
     //     this.clienteService = clienteService;
     // }
-    public StartupTestRunner(SpecieServiceContract specieService) {
-        this.specieService = specieService;
-    }
+    // //COSTRUTTORE PER TESTARE
 
     @Override
     public void run(String... args) throws Exception {
@@ -55,8 +55,23 @@ public class StartupTestRunner implements CommandLineRunner {
 
 
             // System.out.println("IL CLIENTE E' QUESTO: " + clienteService.cercaPerEmail("giovannifranco2000@gmail.com"));
-           System.out.println("la nuova specie è : "+specieService.cercaPerNomeSpecie("CANE")); 
-            
+
+            // System.out.println("IL CLIENTE E' QUESTO: " + clienteService.cercaPerTelefono("3334445555"));
+            // List<Long> specie = new ArrayList<>();
+            // List<Long> prestazioni = new ArrayList<>();
+            Map<String, String> data = new HashMap<>();
+            List<Long> specie = new ArrayList<>();
+            List<Long> prestazioni = new ArrayList<>();
+            specie.add(1L);
+            prestazioni.add(1L);
+            data.put("nome", "Dr. Test Veterinario");
+            data.put("cognome", "Rossi");
+            data.put("email", "dr.rssi@test.com");
+            data.put("username", "drrossi");
+            data.put("password", "password123");
+            data.put("specializzazione", "Cardiologia");
+            data.put("indirizzoStudio", "Via Roma 123, Milano");
+            System.out.println("IL VETERINARIO E' QUESTO: " + veterinarioService.registra(specie, prestazioni, data));
             System.out.println("--- Esecuzione Codice Test Protetto Terminata con Successo ---");
             
         } catch (Exception e) {
