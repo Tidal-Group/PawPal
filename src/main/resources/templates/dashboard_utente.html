@@ -8,6 +8,7 @@
     <header th:replace="fragments :: dashboard-header('Dashboard Utente')"></header>
 
     <div class="sidebar">
+
         <div class="sidebar-header">
             <h3>Dashboard</h3>
         </div>
@@ -19,7 +20,7 @@
                 <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
                 <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
 
-                <li th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
+                <li th:if="${#authorization.expression('hasRole('VETERINARIO')')}">
                     <a th:href="@{/dash/lineeguida}">Linee Guida</a>
                 </li>
 
@@ -34,6 +35,7 @@
                 </li>
             </ul>
         </nav>
+
     </div>
 
     <main class="main-content">
