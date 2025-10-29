@@ -56,7 +56,7 @@ public class AdminController {
 
     @GetMapping("/")
     public String showDashboard() {
-        return "admin";
+        return "dashboard_admin";
     }
 
     @GetMapping("/utenti")

@@ -60,7 +60,7 @@ public class DashController {
 
     @GetMapping("/")
     public String showDashboard() {
-        return "dashboard";
+        return "dashboard_utente";
     }
 
     @GetMapping("/profilo")

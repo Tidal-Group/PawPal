@@ -35,6 +35,11 @@ public class AuthController {
     public String sendRegisterVeterinarioData(@RequestParam Map<String, String> veterinarioData) {
         try {
             authService.registraVeterinario(veterinarioData);
+            // inviare specie come "specie"
+            // inviare prestazioni come "prestazioni"
+
+            // recuperare come listaIdSpecie
+            // recuperare come listaIdPrestazioni
             return "redirect:/login";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
