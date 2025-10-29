@@ -33,28 +33,12 @@ public class EntityContext {
         return p;
     }
 
-    @Bean("personaMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Persona personaMerger(Persona p, Map<String, String> map) {
-        p.fromMap(map, false);
-        return p;
-    }
-
     @Bean
     @Primary
     @Scope("prototype")
     public User user(Map<String,String> map) {
         User u = new User();
         u.fromMap(map, true);
-        return u;
-    }
-
-    @Bean("userMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public User userMerger(User u, Map<String, String> map) {
-        u.fromMap(map, false);
         return u;
     }
 
@@ -86,14 +70,6 @@ public class EntityContext {
         return v;
     }
 
-    @Bean("veterinarioMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Veterinario veterinarioMerger(Veterinario v, Map<String, String> map) {
-        v.fromMap(map, false);
-        return v;
-    }
-
     @Bean
     @Primary
     @Scope("prototype")
@@ -108,28 +84,12 @@ public class EntityContext {
         return c;
     }
 
-    @Bean("clienteMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Cliente clienteMerger(Cliente c, Map<String, String> map) {
-        c.fromMap(map, false);
-        return c;
-    }
-
     @Bean
     @Primary
     @Scope("prototype")
     public Appuntamento appuntamento(Map<String,String> map) {
         Appuntamento a = new Appuntamento();
         a.fromMap(map, true);
-        return a;
-    }
-
-    @Bean("appuntamentoMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Appuntamento appuntamentoMerger(Appuntamento a, Map<String, String> map) {
-        a.fromMap(map, false);
         return a;
     }
 
@@ -142,28 +102,12 @@ public class EntityContext {
         return r;
     }
 
-    @Bean("recensioneMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Recensione recensioneMerger(Recensione r, Map<String, String> map) {
-        r.fromMap(map, false);
-        return r;
-    }
-
     @Bean
     @Primary
     @Scope("prototype")
     public Disponibilita disponibilita(Map<String,String> map) {
         Disponibilita d = new Disponibilita();
         d.fromMap(map, true);
-        return d;
-    }
-
-    @Bean("disponibilitaMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Disponibilita disponibilitaMerger(Disponibilita d, Map<String, String> map) {
-        d.fromMap(map, false);
         return d;
     }
 
@@ -179,14 +123,6 @@ public class EntityContext {
         return p;
     }
 
-    @Bean("prestazioneMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Prestazione prestazioneMerger(Prestazione p, Map<String, String> map) {
-        p.fromMap(map, false);
-        return p;
-    }
-
     @Bean
     @Primary
     @Scope("prototype")
@@ -196,14 +132,6 @@ public class EntityContext {
 
         if (s.getVeterinari() == null) s.setVeterinari(new ArrayList<>());
 
-        return s;
-    }
-
-    @Bean("specieMerger")
-    @Qualifier("merger")
-    @Scope("prototype")
-    public Specie specieMerger(Specie s, Map<String, String> map) {
-        s.fromMap(map, false);
         return s;
     }
     

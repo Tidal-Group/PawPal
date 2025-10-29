@@ -138,12 +138,14 @@ public class DashController {
                 if(isCliente(authentication))
                     clienteService.modifica(utente.getId(), data);
                 else if(isVeterinario(authentication))
+                    System.out.println("hello");
                     veterinarioService.modifica(utente.getId(), data);
             });
-            return "redirect:/dash/profilo";
+            return "redirect:/dash#modifica_profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
-            exception.printStackTrace();
+            System.out.println(exception.getMessage());
+            // exception.printStackTrace();
             return "redirect:/error";
         }
     }

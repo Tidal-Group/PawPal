@@ -17,10 +17,12 @@ public interface UpdateService<E extends GenericEntity, ID> extends RepositoryAc
         E existingEntity = getRepository().findById(id).orElseThrow(() -> new NotFoundException());
 
         // naming convention: all beans must have a "merger method"
-        String beanName = getEntityType().getSimpleName().toLowerCase() + "Merger";
-        E mergedEntity = getEntityType().cast(getContext().getBean(beanName, getEntityType(), existingEntity, data));
+        // String beanName = getEntityType().getSimpleName().toLowerCase() + "Merger";
+        // E mergedEntity = getEntityType().cast(getContext().getBean(beanName, getEntityType(), existingEntity, data));
 
-        return getRepository().save(mergedEntity);
+        existingEntity.fromMap(data, false);
+
+        return getRepository().save(existingEntity);
         
     }
 
