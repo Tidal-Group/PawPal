@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,15 +21,13 @@ public class StartupTestRunner implements CommandLineRunner {
 
     // private final ClienteServiceContract clienteService;
     // TESTARE
-    private final VeterinarioService veterinarioService;
+    @Autowired
+    private VeterinarioService veterinarioService;
     // Iniezione tramite Costruttore
     // public StartupTestRunner(ClienteServiceContract clienteService) {
     //     this.clienteService = clienteService;
     // }
     // //COSTRUTTORE PER TESTARE
-     public StartupTestRunner(VeterinarioService veterinarioService) {
-        this.veterinarioService = veterinarioService;
-    }
 
     @Override
     public void run(String... args) throws Exception {
