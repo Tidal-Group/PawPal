@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -29,12 +30,11 @@ public class Prestazione extends GenericEntity {
     @Column(name = "prezzo")
     private BigDecimal prezzo;
 
-     @Column(name = "durata_Visita")
+    @Column(name = "durata_Visita")
     private int durataVisita;
 
     @ManyToMany(mappedBy = "prestazioniOfferte")
+    @ToString.Exclude
     private List<Veterinario> veterinari;
-
-   
 
 }

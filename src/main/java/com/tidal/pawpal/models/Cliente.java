@@ -17,9 +17,11 @@ import lombok.ToString;
 public class Cliente extends User {
 
     @OneToMany(mappedBy = "cliente")
+    @ToString.Exclude
     private List<Recensione> recensioni;
 
     @OneToMany(mappedBy = "cliente")
+    @ToString.Exclude
     private List<Appuntamento> appuntamenti;
 
 }
