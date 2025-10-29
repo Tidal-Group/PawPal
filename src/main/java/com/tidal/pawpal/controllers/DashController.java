@@ -17,17 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tidal.pawpal.models.Appuntamento;
-import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.User;
-import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
 import com.tidal.pawpal.services.contracts.ClienteServiceContract;
 import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
 import com.tidal.pawpal.services.contracts.UserServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/dash")
@@ -71,7 +67,6 @@ public class DashController {
     public String showProfilo(Model model, Principal principal) {
         // DEBUG: Problema di sicurezza: tra i campi di utente, c'è anche la sua password
         try {
-
             acceptAuthenticated(principal, (authentication, utente) -> {
                 if(isCliente(authentication))
                     utente = clienteService.cercaPerId(utente.getId());
@@ -80,10 +75,10 @@ public class DashController {
                 model.addAttribute("utente", utente);
                 model.addAttribute("ruolo", utente.getRuolo());
             });
-
             return "profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -97,6 +92,7 @@ public class DashController {
             return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -110,6 +106,7 @@ public class DashController {
             return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -126,6 +123,7 @@ public class DashController {
             return "redirect:/dash/profilo";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -139,11 +137,13 @@ public class DashController {
                     listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
                 else if(isVeterinario(authentication))
                     listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
-                model.addAttribute("lista_appuntamenti", listaAppuntamenti); 
+                model.addAttribute("lista_appuntamenti", listaAppuntamenti);
+                model.addAttribute("ruolo", utente.getRuolo());
             });
             return "appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -166,6 +166,7 @@ public class DashController {
             return "redirect:/dash/appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
 
@@ -181,10 +182,12 @@ public class DashController {
                 else if(isVeterinario(authentication))
                     listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
                 model.addAttribute("lista_recensioni", listaRecensioni);
+                model.addAttribute("ruolo", utente.getRuolo());
             });
             return "recensioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
 
@@ -197,6 +200,7 @@ public class DashController {
             return "redirect:/dash/recensioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }
