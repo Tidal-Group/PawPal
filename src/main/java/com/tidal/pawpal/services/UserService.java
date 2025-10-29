@@ -1,13 +1,20 @@
 package com.tidal.pawpal.services;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.exceptions.ExistingEmailException;
+import com.tidal.pawpal.exceptions.ExistingUsernameException;
+import com.tidal.pawpal.models.Persona;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.repositories.UserRepository;
 import com.tidal.pawpal.services.contracts.UserServiceContract;
@@ -20,10 +27,6 @@ public class UserService extends UserServiceContract {
 
     @Autowired
     private UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public User cercaPerEmail(String email) {
@@ -38,72 +41,11 @@ public class UserService extends UserServiceContract {
     @Override
     public User cercaPerCodiceFiscale(String codiceFiscale) {
         return userRepository.findByCodiceFiscale(codiceFiscale);
-    } 
+    }
 
     @Override
     public User cercaPerNomeECognome(String nome, String cognome) {
         return userRepository.findByNomeAndCognome(nome, cognome);
-    }
-
-    @Override
-    @Transactional
-    public User modificaEmail ( Long idUser, String email) {
-        if (userRepository.findByEmail(email) != null) {
-            throw new IllegalArgumentException("Email già in uso"); 
-        } else {
-            User user = userRepository.findById(idUser).get();
-            user.setEmail(email);
-            userRepository.save(user);
-            return user;
-        }
-    }
-    
-
-    @Override
-    @Transactional
-    public User modificaUsername(Long idUser, String username) {
-        if (userRepository.findByUsername(username) != null) {
-            throw new IllegalArgumentException("Username già in uso"); 
-        } else {
-            User user = userRepository.findById(idUser).get();
-            user.setUsername(username);
-            userRepository.save(user);
-
-            return user;
-        }
-        
-    }
-
-    @Override
-    @Transactional
-    public User modificaPassword(Long idUser, String password) {
-        User user = userRepository.findById(idUser).get();
-        user.setPassword(password);
-        userRepository.save(user);
-        return user;
-    }
-
-    
-
-    @Override
-    @Transactional
-    public User modificaDatiPersona(Long idUser, Map<String, String> data) {
-        User user = userRepository.findById(idUser).get();
-
-        if(data.containsKey("nome")) {
-            user.setNome(data.get("nome"));
-        }
-
-        if(data.containsKey("cognome")) {
-            user.setCognome(data.get("cognome"));
-        }
-
-        if(data.containsKey("codiceFiscale")) {
-            user.setCodiceFiscale(data.get("codiceFiscale"));
-        }
-
-        userRepository.save(user);
-        return user;
     }
 
     // IMPLEMENT: error handling
@@ -143,6 +85,50 @@ public class UserService extends UserServiceContract {
         };
 
         return userRepository.findAll(specification);
+
+    }
+
+    @Override
+    @Transactional
+    public User modificaEmail (Long idUser, String email) {
+        if(userRepository.findByEmail(email) != null) throw new ExistingEmailException();
+        Map<String, String> data = new HashMap<>();
+        data.put("email", email);
+        return modifica(idUser, data);
+    }
+    
+    @Override
+    @Transactional
+    public User modificaUsername(Long idUser, String username) {
+        if(userRepository.findByUsername(username) != null) throw new ExistingUsernameException();
+        Map<String, String> data = new HashMap<>();
+        data.put("username", username);
+        return modifica(idUser, data);
+    }
+
+    @Override
+    @Transactional
+    public User modificaPassword(Long idUser, String password) {
+        Map<String, String> data = new HashMap<>();
+        data.put("password", password);
+        return modifica(idUser, data);
+    }    
+
+    @Override
+    @Transactional
+    public User modificaDatiPersona(Long idUser, Map<String, String> data) {
+        Map<String, String> whiteMap = new HashMap<>();
+
+        List<String> personaFieldNames = Arrays
+                                         .stream(Persona.class.getDeclaredFields())
+                                         .map(Field::getName)
+                                         .collect(Collectors.toList());
+
+        data.entrySet().forEach((entry) -> {
+            if(personaFieldNames.contains(entry.getKey())) whiteMap.put(entry.getKey(), entry.getValue());
+        });
+
+        return modifica(idUser, whiteMap);
     }
 
 }

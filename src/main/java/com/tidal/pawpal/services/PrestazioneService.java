@@ -1,10 +1,12 @@
 package com.tidal.pawpal.services;
 
-import java.util.List;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tidal.pawpal.models.Prestazione;
+import com.tidal.pawpal.repositories.PrestazioneRepository;
 import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
 
 
@@ -12,10 +14,12 @@ import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
 
 public class PrestazioneService extends PrestazioneServiceContract {
 
+    @Autowired
+    private PrestazioneRepository prestazioneRepository;
+
     @Override
-    public List<Prestazione> cercaPerRangePrezzo(Double prezzoMin, Double prezzoMax) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cercaPerRangePrezzo'");
+    public Set<Prestazione> cercaPerRangePrezzo(Double prezzoMin, Double prezzoMax) {
+        return prestazioneRepository.findByRangePrezzo(prezzoMin, prezzoMax);
     }
 
 }

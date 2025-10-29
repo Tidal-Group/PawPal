@@ -2,6 +2,7 @@ package com.tidal.pawpal.services.contracts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -23,14 +24,54 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     }
 
     @Override
+    @PreAuthorize("hasRole('CLIENTE')")
+    public Appuntamento registra(Map<String, String> data, Consumer<Appuntamento> consumer) {
+        return CreateService.super.registra(data, consumer);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('CLIENTE')")
     public Appuntamento registra(Map<String, String> data) {
         return CreateService.super.registra(data);
     }
 
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Appuntamento> elencaTutti() {
+        return ReadService.super.elencaTutti();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public Appuntamento cercaPerId(Long id) {
+        return ReadService.super.cercaPerId(id);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole('CLIENTE', 'VETERINARIO')")
+    // DEBUG: SICUREZZA! Si possono modificare gli appuntamenti di tutti!
+    public Appuntamento modifica(Long id, Map<String, String> data) {
+        return UpdateService.super.modifica(id, data);
+    }
+
+    @Override
     @PreAuthorize("isAuthenticated()")
+    // DEBUG: SICUREZZA! Si possono eliminare gli appuntamenti di tutti!
+    public void elimina(Long id, Consumer<Appuntamento> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    // DEBUG: SICUREZZA! Si possono eliminare gli appuntamenti di tutti!
+    public void elimina(Long id) {
+        DeleteService.super.elimina(id);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIO')")
     public abstract List<Appuntamento> cercaPerVeterinario(Long idVeterinario);
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     public abstract List<Appuntamento> cercaPerCliente(Long idCliente);
 
 }
