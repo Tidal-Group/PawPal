@@ -7,17 +7,26 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.tidal.pawpal.services.SpecieService;
 import com.tidal.pawpal.services.CustomUserDetailsService.SecuredUser;
 import com.tidal.pawpal.services.contracts.ClienteServiceContract;
+import com.tidal.pawpal.services.contracts.SpecieServiceContract;
 
 @Component
 public class StartupTestRunner implements CommandLineRunner {
 
-    private final ClienteServiceContract clienteService;
+    private final SpecieServiceContract specieService;
 
-    // Iniezione tramite Costruttore
-    public StartupTestRunner(ClienteServiceContract clienteService) {
-        this.clienteService = clienteService;
+
+    // private final ClienteServiceContract clienteService;
+
+
+    // // Iniezione tramite Costruttore
+    // public StartupTestRunner(ClienteServiceContract clienteService) {
+    //     this.clienteService = clienteService;
+    // }
+    public StartupTestRunner(SpecieServiceContract specieService) {
+        this.specieService = specieService;
     }
 
     @Override
@@ -45,8 +54,8 @@ public class StartupTestRunner implements CommandLineRunner {
             System.out.println("--- Esecuzione Codice Test Protetto Iniziata ---");
 
 
-            System.out.println("IL CLIENTE E' QUESTO: " + clienteService.cercaPerEmail("giovannifranco2000@gmail.com"));
-            
+            // System.out.println("IL CLIENTE E' QUESTO: " + clienteService.cercaPerEmail("giovannifranco2000@gmail.com"));
+           System.out.println("la nuova specie è : "+specieService.cercaPerNomeSpecie("CANE")); 
             
             System.out.println("--- Esecuzione Codice Test Protetto Terminata con Successo ---");
             

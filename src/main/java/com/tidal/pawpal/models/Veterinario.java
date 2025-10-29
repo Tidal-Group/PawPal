@@ -51,7 +51,8 @@ public class Veterinario extends User {
     @OneToMany(mappedBy = "veterinario")
     private List<Appuntamento> appuntamenti;
 
-    @ManyToMany(cascade = {CascadeType.ALL}) // AGGIUNTA NUOVA
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @ToString.Exclude // AGGIUNTA NUOVA
     @JoinTable(name = "veterinario_specie",
         joinColumns = @JoinColumn(name = "veterinario_id"),
         inverseJoinColumns = @JoinColumn(name = "specie_id"))
