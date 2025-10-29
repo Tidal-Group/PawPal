@@ -33,9 +33,9 @@
 
                     <div class="form-group">
                         <label for="animale">Animale</label>
-                        <select id="animale" name="animale">
+                        <select id="animale" name="idSpecie">
                             <option value="">-- Seleziona --</option>
-                            <option th:each="anim : ${specie}" th:value="${anim}" th:text="${anim}"></option>
+                            <option th:each="anim : ${specie}" th:value="${anim.id}" th:text="${anim.nomeSpecie}"></option>
                         </select>
                     </div>
 
