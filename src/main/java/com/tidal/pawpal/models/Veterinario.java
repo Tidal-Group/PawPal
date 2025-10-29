@@ -43,22 +43,26 @@ public class Veterinario extends User {
     private String indirizzoStudio;
 
     @OneToMany(mappedBy = "veterinario")
+    @ToString.Exclude
     private List<Disponibilita> disponibilita;
 
     @OneToMany(mappedBy = "veterinario")
+    @ToString.Exclude
     private List<Recensione> recensioni;
 
     @OneToMany(mappedBy = "veterinario")
+    @ToString.Exclude
     private List<Appuntamento> appuntamenti;
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    @ToString.Exclude // AGGIUNTA NUOVA
+    @ToString.Exclude
     @JoinTable(name = "veterinario_specie",
         joinColumns = @JoinColumn(name = "veterinario_id"),
         inverseJoinColumns = @JoinColumn(name = "specie_id"))
     private Set<Specie> specieTrattate;
 
-    @ManyToMany(cascade = {CascadeType.ALL}) // AGGIUNTA NUOVA
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @ToString.Exclude
     @JoinTable(name = "veterinario_prestazione",
         joinColumns = @JoinColumn(name = "veterinario_id"),
         inverseJoinColumns = @JoinColumn(name = "prestazione_id"))

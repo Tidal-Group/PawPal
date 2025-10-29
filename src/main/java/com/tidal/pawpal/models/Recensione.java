@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -26,11 +27,13 @@ public class Recensione extends GenericEntity {
 
     @Column(name = "commento", length = 2000)
     private String commento;
+    
     @Column(name = "data_Recensione")
     private LocalDate dataRecensione = LocalDate.now();
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "cliente_id", nullable = true)
+    @ToString.Exclude
     private Cliente cliente;
 
     // anche se il veterinario viene cancellato,
@@ -39,5 +42,6 @@ public class Recensione extends GenericEntity {
     // che l'ha fatta
     @ManyToOne(optional = true)
     @JoinColumn(name = "veterinario_id", nullable = true)
+    @ToString.Exclude
     private Veterinario veterinario;
 }

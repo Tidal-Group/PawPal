@@ -24,8 +24,8 @@ public class Specie extends GenericEntity {
     @Column(name = "nome_Specie")
     private String nomeSpecie;
 
-    @ToString.Exclude
     @ManyToMany(mappedBy = "specieTrattate")
+    @ToString.Exclude
     private List<Veterinario> veterinari;
 
 }
