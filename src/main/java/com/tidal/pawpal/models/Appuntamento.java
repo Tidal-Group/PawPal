@@ -31,8 +31,12 @@ public class Appuntamento extends GenericEntity {
   @JoinColumn(name = "cliente_id", nullable = true)
   private Cliente cliente;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "veterinario_id", nullable = false)
+  // anche se il veterinario viene cancellato,
+  // l'appuntamento continuerà a essere visibile nella pagina
+  // degli appuntamenti (passati) presente nella dashboard del cliente
+  // che l'ha fatta
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "veterinario_id", nullable = true)
   private Veterinario veterinario;
 
 }

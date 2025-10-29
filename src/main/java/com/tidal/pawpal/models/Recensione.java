@@ -33,7 +33,11 @@ public class Recensione extends GenericEntity {
     @JoinColumn(name = "cliente_id", nullable = true)
     private Cliente cliente;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "veterinario_id", nullable = false)
+    // anche se il veterinario viene cancellato,
+    // la recensione continuerà a essere visibile nella pagina
+    // delle recensioni presente nella dashboard del cliente
+    // che l'ha fatta
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "veterinario_id", nullable = true)
     private Veterinario veterinario;
 }
