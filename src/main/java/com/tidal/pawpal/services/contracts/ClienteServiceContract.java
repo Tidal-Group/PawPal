@@ -55,6 +55,12 @@ public abstract class ClienteServiceContract extends GenericService<Cliente, Lon
 
     @Override
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public void elimina(Long id, Consumer<Cliente> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }

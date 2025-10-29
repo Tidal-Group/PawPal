@@ -50,6 +50,13 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     // DEBUG: SICUREZZA! Si possono eliminare le recensioni di tutti!
+    public void elimina(Long id, Consumer<Recensione> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
+    // DEBUG: SICUREZZA! Si possono eliminare le recensioni di tutti!
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }

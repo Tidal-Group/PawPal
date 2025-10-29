@@ -55,6 +55,12 @@ public abstract class VeterinarioServiceContract extends GenericService<Veterina
 
     @Override
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public void elimina(Long id, Consumer<Veterinario> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }

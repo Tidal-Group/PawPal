@@ -55,6 +55,12 @@ public abstract class SpecieServiceContract extends GenericService<Specie, Long>
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
+    public void elimina(Long id, Consumer<Specie> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }

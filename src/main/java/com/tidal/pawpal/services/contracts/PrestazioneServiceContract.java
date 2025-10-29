@@ -56,6 +56,12 @@ public abstract class PrestazioneServiceContract extends GenericService<Prestazi
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
+    public void elimina(Long id, Consumer<Prestazione> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }

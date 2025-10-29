@@ -9,19 +9,30 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.models.Appuntamento;
+import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.VeterinarioRepository;
+import com.tidal.pawpal.services.contracts.AppuntamentoServiceContract;
 import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
+import com.tidal.pawpal.services.contracts.RecensioneServiceContract;
 import com.tidal.pawpal.services.contracts.SpecieServiceContract;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
 
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 
 @Service
 public class VeterinarioService extends VeterinarioServiceContract {
 
     @Autowired
     private VeterinarioRepository veterinarioRepository;
+
+    @Autowired
+    private AppuntamentoServiceContract appuntamentoService;
+
+    @Autowired
+    private RecensioneServiceContract recensioneService;
 
     @Autowired
     private SpecieServiceContract specieService;
@@ -36,6 +47,19 @@ public class VeterinarioService extends VeterinarioServiceContract {
                 veterinario.getSpecieTrattate().add(specieService.cercaPerId(id));
             for(Long id : listaIdPrestazione)
                 veterinario.getPrestazioniOfferte().add(prestazioneService.cercaPerId(id));
+        });
+    }
+
+    @Override
+    @Transactional
+    public void elimina(Long id) {
+        super.elimina(id, (veterinario) -> {
+            List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerVeterinario(id);
+            listaAppuntamenti.forEach((appuntamento) -> appuntamento.setVeterinario(null));
+            appuntamentoService.getRepository().saveAll(listaAppuntamenti);
+            List<Recensione> listaRecensioni = recensioneService.cercaPerVeterinario(id);
+            listaRecensioni.forEach((recensione) -> recensione.setVeterinario(null));
+            recensioneService.getRepository().saveAll(listaRecensioni);
         });
     }
 

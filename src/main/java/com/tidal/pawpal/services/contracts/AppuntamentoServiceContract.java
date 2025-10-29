@@ -57,6 +57,13 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     @Override
     @PreAuthorize("isAuthenticated()")
     // DEBUG: SICUREZZA! Si possono eliminare gli appuntamenti di tutti!
+    public void elimina(Long id, Consumer<Appuntamento> consumer) {
+        DeleteService.super.elimina(id, consumer);
+    }
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    // DEBUG: SICUREZZA! Si possono eliminare gli appuntamenti di tutti!
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }
