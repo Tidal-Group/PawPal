@@ -1,0 +1,122 @@
+
+
+:root {
+  --colore-primario: #2a9d8f;
+  --colore-secondario: #264653;
+  --colore-accento: #e9c46a;
+  --colore-danger: #e76f51;
+  --colore-bg: #f8f9fa;
+  --colore-testo: #333;
+  --colore-card: #ffffff;
+  --colore-bordo: #ddd;
+  --ombra-leggera: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --raggio: 10px;
+  --transizione: 0.25s ease;
+  --font-base: "Inter", Arial, sans-serif;
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base);
+  background-color: var(--colore-bg);
+  color: var(--colore-testo);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1, h2, h3 {
+  color: var(--colore-secondario);
+  margin-bottom: 1rem;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.btn {
+  background-color: var(--colore-primario);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--raggio);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transizione);
+}
+
+.btn:hover {
+  background-color: var(--colore-secondario);
+}
+
+
+.card {
+  background: var(--colore-card);
+  border: 1px solid var(--colore-bordo);
+  border-radius: var(--raggio);
+  box-shadow: var(--ombra-leggera);
+  padding: 1rem;
+  transition: var(--transizione);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+
+header, footer {
+  background-color: var(--colore-secondario);
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+footer a {
+  color: var(--colore-accento);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border: 1px solid var(--colore-bordo);
+  border-radius: var(--raggio);
+  font-size: 1rem;
+}
+
+label {
+  font-weight: 600;
+  color: var(--colore-secondario);
+}
+
+button, input[type="submit"] {
+  background-color: var(--colore-primario);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--raggio);
+  cursor: pointer;
+  transition: var(--transizione);
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: var(--colore-secondario);
+}
