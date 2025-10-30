@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.exceptions.AuthenticationFailureException;
 import com.tidal.pawpal.exceptions.ExistingEmailException;
 import com.tidal.pawpal.exceptions.ExistingUsernameException;
 import com.tidal.pawpal.models.Persona;
@@ -103,15 +104,21 @@ public class UserService extends UserServiceContract {
         if(userRepository.findByUsername(username) != null) throw new ExistingUsernameException();
         Map<String, String> data = new HashMap<>();
         data.put("username", username);
-        return modifica(idUser, data);
+        User updatedUser = modifica(idUser, data);
+        refreshSecurityContext(updatedUser.getUsername());
+        return updatedUser;
     }
 
     @Override
     @Transactional
-    public User modificaPassword(Long idUser, String password) {
+    public User modificaPassword(Long idUser, String currentPassword, String newPassword) {
         Map<String, String> data = new HashMap<>();
-        data.put("password", password);
-        return modifica(idUser, data);
+        data.put("password", newPassword);
+        User updatedUser = modifica(idUser, data, (user) -> {
+            if(!user.getPassword().equals(currentPassword)) throw new AuthenticationFailureException();
+        });
+        refreshSecurityContext(updatedUser.getUsername());
+        return updatedUser;
     }    
 
     @Override

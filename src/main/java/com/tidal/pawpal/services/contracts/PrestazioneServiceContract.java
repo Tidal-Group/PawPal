@@ -55,6 +55,13 @@ public abstract class PrestazioneServiceContract extends GenericService<Prestazi
     @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
+    public Prestazione modifica(Long id, Map<String, String> data, Consumer<Prestazione> consumer) {
+        return UpdateService.super.modifica(id, data, consumer);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public Prestazione modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);
     }

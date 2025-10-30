@@ -54,6 +54,13 @@ public abstract class ClienteServiceContract extends GenericService<Cliente, Lon
     @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public Cliente modifica(Long id, Map<String, String> data, Consumer<Cliente> consumer) {
+        return UpdateService.super.modifica(id, data, consumer);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public Cliente modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);
     }

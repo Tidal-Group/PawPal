@@ -138,10 +138,8 @@ package com.tidal.pawpal.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors; // Necessario per la mappatura, se usassi Object[]
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest; // Aggiunto per gestire il LIMIT
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -159,37 +157,25 @@ public class VeterinarioService extends VeterinarioServiceContract {
     @Autowired
     private VeterinarioRepository veterinarioRepository;
 
-    // ... (altri servizi iniettati)
+    // @Autowired
+    // private AppuntamentoServiceContract appuntamentoService;
+
+    // @Autowired
+    // private RecensioneServiceContract recensioneService;
+
     @Autowired
     private SpecieService specieService;
 
     @Autowired
     private PrestazioneService prestazioneService;
 
-    // --- METODI NUOVI PER LE QUERY RICHIESTE ---
-
-    /**
-     * Recupera la lista delle specializzazioni più popolari in base al numero di veterinari.
-     * Richiama la query NATVA con CTE che restituisce List<String>.
-     * * @return List<String> contenente i nomi delle specializzazioni ordinati per popolarità.
-     */
-    public List<String> getMostPopularSpecializationNames() {
+    public List<String> cercaSpecializzazioniPiuPopolari() {
         return veterinarioRepository.findPopularSpecializationNamesNative();
     }
 
-    /**
-     * Recupera i veterinari in evidenza, ordinati per rating medio decrescente.
-     * Utilizza PageRequest per limitare i risultati ai "primi N".
-     * * @param limit Il numero massimo di veterinari da restituire (es. 5 per i "Top 5").
-     * @return List<Veterinario> ordinata e limitata.
-     */
-    public List<Veterinario> getTopRatedVeterinarians() {
-        
-       // Chiama la query JQL che usa il raggruppamento e l'ordinamento.
+    public List<Veterinario> cercaVeterinariPiuPopolari() {
         return veterinarioRepository.findTopVeterinariansByAverageRating();
     }
-
-    // --- METODI ESISTENTI ---
 
     @Transactional
     @PreAuthorize("permitAll")
@@ -202,11 +188,23 @@ public class VeterinarioService extends VeterinarioServiceContract {
         });
     }
 
+    // DEBUG: circular referencing
+    // @Override
+    // public void elimina(Long id) {
+    //     super.elimina(id, (veterinario) -> {
+    //         List<Appuntamento> listaAppuntamenti = appuntamentoService.cercaPerVeterinario(id);
+    //         listaAppuntamenti.forEach((appuntamento) -> appuntamento.setVeterinario(null));
+    //         appuntamentoService.getRepository().saveAll(listaAppuntamenti);
+    //         List<Recensione> listaRecensioni = recensioneService.cercaPerVeterinario(id);
+    //         listaRecensioni.forEach((recensione) -> recensione.setVeterinario(null));
+    //         recensioneService.getRepository().saveAll(listaRecensioni);
+    //     });
+    // }
+
     @Override
     public List<Veterinario> cercaPerSpecie(String nomeSpecie) {
         return veterinarioRepository.findByNomeSpecie(nomeSpecie);
     }
-    // ... (altri metodi di ricerca esistenti)
 
     @Override
     public List<Veterinario> cercaPerPrestazione(Long idPrestazione) {

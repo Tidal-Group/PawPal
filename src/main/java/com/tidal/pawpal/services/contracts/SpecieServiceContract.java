@@ -54,6 +54,13 @@ public abstract class SpecieServiceContract extends GenericService<Specie, Long>
     @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
+    public Specie modifica(Long id, Map<String, String> data, Consumer<Specie> consumer) {
+        return UpdateService.super.modifica(id, data, consumer);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public Specie modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);
     }

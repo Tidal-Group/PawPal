@@ -54,6 +54,13 @@ public abstract class VeterinarioServiceContract extends GenericService<Veterina
     @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public Veterinario modifica(Long id, Map<String, String> data, Consumer<Veterinario> consumer) {
+        return UpdateService.super.modifica(id, data, consumer);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public Veterinario modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);
     }

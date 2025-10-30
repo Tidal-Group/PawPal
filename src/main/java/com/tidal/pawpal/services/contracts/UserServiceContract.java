@@ -2,22 +2,35 @@ package com.tidal.pawpal.services.contracts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.services.abstractions.GenericService;
 import com.tidal.pawpal.services.abstractions.ReadService;
+import com.tidal.pawpal.services.abstractions.SecurityContextService;
 import com.tidal.pawpal.services.abstractions.UpdateService;
 
 import jakarta.transaction.Transactional;
 
 public abstract class UserServiceContract extends GenericService<User, Long> implements 
     ReadService<User, Long>,
-    UpdateService<User, Long> {
+    UpdateService<User, Long>,
+    SecurityContextService {
 
     public UserServiceContract() {
         super(User.class, Long.class);
+    }
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Override
+    public UserDetailsService getUserDetailsService() {
+        return userDetailsService;
     }
 
     @Override
@@ -30,6 +43,13 @@ public abstract class UserServiceContract extends GenericService<User, Long> imp
     @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
     public User cercaPerId(Long id) {
         return ReadService.super.cercaPerId(id);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public User modifica(Long id, Map<String, String> data, Consumer<User> consumer) {
+        return UpdateService.super.modifica(id, data, consumer);
     }
 
     @Override
@@ -64,7 +84,7 @@ public abstract class UserServiceContract extends GenericService<User, Long> imp
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN') || #idUser == authentication.principal.id")
-    public abstract User modificaPassword(Long idUser, String password);
+    public abstract User modificaPassword(Long idUser, String currentPassword, String newPassword);
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN') || #idUser == authentication.principal.id")

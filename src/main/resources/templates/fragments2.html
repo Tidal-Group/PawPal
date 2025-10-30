@@ -7,7 +7,7 @@
 
             <li class="nav-item">
 
-                <button 
+                <button
                     class="nav-link btn btn-link text-decoration-none" 
                     type="button" 
                     data-bs-toggle="collapse" 
@@ -45,7 +45,7 @@
 
     </nav>
 
-    <script defer>
+    <script th:inline="javascript" defer>
         let profilo;
         let appuntamenti;
         let recensioni;
@@ -56,6 +56,25 @@
             appuntamenti = document.getElementById("appuntamenti");
             recensioni = document.getElementById("recensioni");
             lineeGuida = document.getElementById("linee_guida");
+
+            const dashboardPage = /*[[${dashboardPage}]]*/ null;
+
+            if(dashboardPage) {
+                switch(dashboardPage) {
+                    case 'modifica_dati':
+                        apriModificaDati();
+                        break;
+                    case 'appuntamenti':
+                        apriAppuntamenti();
+                        break;
+                    case 'recensioni':
+                        apriRecensioni();
+                        break;
+                    case 'linee_guida':
+                        apriLineeGuida();
+                        break;
+                }
+            }
         });
 
         function apriModificaDati() {
@@ -89,7 +108,7 @@
     
 </header>
 
-<div th:fragment="modifica_conto(nome_campo)">
+<div th:fragment="modifica_conto(nome_campo, verifica_vecchio)">
 
     <div class="modal fade" th:id="${'modal-' + nome_campo}" aria-hidden="true" th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
         
@@ -104,34 +123,52 @@
 
                 <div class="modal-body text-center">
 
-                    <form th:action="@{/dash/utenti/modifica_} + ${nome_campo}" method="post">
+                    <form th:action="@{/dash/profilo/modifica_} + ${nome_campo}" method="post">
 
                         <div class="col-12">
                             <fieldset>
-                                <label class="form-label" th:for="${'current_' + nome_campo}" th:text="|Inserire ${nome_campo} corrente:|">Inserire campo corrente</label>
-                                <input
-                                    class="form-control"
-                                    th:id="${'current_' + nome_campo}"
-                                    th:name="${'current_' + nome_campo}"
-                                    th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
-                                    required
-                                >
+                                <div
+                                    th:if="${errorMessage != null and errorMessage.length() > 0}"
+                                    th:text="${errorMessage}"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                ></div>
 
-                                <label class="form-label" th:for="${'new_' + nome_campo}" th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
-                                <input
-                                    class="form-control"
-                                    th:id="${'new_' + nome_campo}"
-                                    th:name="${'new_' + nome_campo}"
-                                    th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
-                                    required
-                                >
+                                <div th:if="${verifica_vecchio} == 'true'">
+                                    <label class="form-label" th:for="${'current_' + nome_campo}" th:text="|Inserire ${nome_campo} corrente:|">Inserire campo corrente</label>
+                                    <input
+                                        class="form-control"
+                                        th:id="${'current_' + nome_campo}"
+                                        th:name="${'current_' + nome_campo}"
+                                        th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                        required
+                                    >
+                                </div>
 
-                                <label class="form-label" th:for="${'confirm_' + nome_campo}" th:text="|Confermare ${nome_campo}:|">Confermare campo</label>
+                                <div>
+                                    <label class="form-label" th:for="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}" th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
+                                    <input
+                                        class="form-control"
+                                        th:id="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
+                                        th:name="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
+                                        th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                        required
+                                    >
+                                </div>
+
+                                <label
+                                    class="form-label"
+                                    th:for="${'confirm_' + nome_campo}"
+                                    th:text="${verifica_vecchio == 'true' ? ('Confermare ' + nome_campo + ':') : 'Scrivere ''CONFERMO'' per confermare:'}"
+                                >
+                                    Confermare campo
+                                </label>
                                 <input
                                     class="form-control"
                                     th:id="${'confirm_' + nome_campo}"
                                     th:name="${'confirm_' + nome_campo}"
-                                    th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                    th:type="${verifica_vecchio == 'true' ? (nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')) : 'text'}"
+                                    th:placeholder="${verifica_vecchio == 'true' ? '' : 'CONFERMO'}"
                                     required
                                 >
 

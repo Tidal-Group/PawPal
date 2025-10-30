@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
-import com.tidal.pawpal.exceptions.InvalidCredentialsException;
+import com.tidal.pawpal.exceptions.AuthenticationFailureException;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.models.Veterinario;
@@ -41,7 +41,7 @@ public class AuthService extends AuthServiceContract {
             SecuredUser securedUser = (SecuredUser) authentication.getPrincipal();
             return userService.cercaPerId(securedUser.getId());
         } catch (AuthenticationException exception) {
-            throw new InvalidCredentialsException();
+            throw new AuthenticationFailureException();
         }
     }
 

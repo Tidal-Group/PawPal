@@ -310,9 +310,24 @@
 
     </main>
 
-    <div th:replace="fragments2 :: modifica_conto(email)"></div>
-    <div th:replace="fragments2 :: modifica_conto(username)"></div>
-    <div th:replace="fragments2 :: modifica_conto(password)"></div>
+    <div th:replace="fragments2 :: modifica_conto(email, 'false')"></div>
+    <div th:replace="fragments2 :: modifica_conto(username, 'false')"></div>
+    <div th:replace="fragments2 :: modifica_conto(password, 'true')"></div>
+
+    <script th:inline="javascript">
+        const modalId = /*[[${openModal}]]*/ null;
+
+        if (modalId) {
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modalElement = document.getElementById(modalId);
+
+                if (modalElement) {
+                    const modalInstance = new bootstrap.Modal(modalElement);
+                    modalInstance.show();
+                }
+            }
+        }
+    </script>
 
     <style>
         body {
