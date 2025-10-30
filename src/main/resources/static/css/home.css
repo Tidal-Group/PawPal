@@ -1,0 +1,181 @@
+/* ==================== BODY ==================== */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* ==================== HEADER ==================== */
+header {
+    width: 100%;
+    background-color: #ffffff;
+}
+
+
+.banner-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; 
+    overflow: hidden;
+}
+
+.banner-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.banner-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.navbar {
+    padding: 15px 30px;
+}
+
+.navbar-brand img {
+    height: 50px;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-link {
+    color: #222;
+    font-weight: 500;
+    padding: 5px 10px;
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #2563eb;
+}
+
+.navbar-nav .btn {
+    margin-left: 10px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.navbar-nav .btn-secondary {
+    background-color: transparent;
+    color: #2563eb;
+    border: 2px solid #2563eb;
+}
+
+.navbar-nav .btn-secondary:hover {
+    background-color: #2563eb;
+    color: white;
+}
+
+
+.navbar-collapse {
+    display: flex !important;
+    justify-content: center;
+    flex: 1;
+}
+
+.navbar-nav.ms-auto {
+    margin-left: auto !important;
+    display: flex;
+    gap: 10px;
+}
+
+/* ==================== BANNER ==================== */
+img[alt="Banner PawPal"] {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 40px;
+}
+
+/* ==================== SEZIONI ==================== */
+section {
+    padding: 50px 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+section h6 {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #666;
+    text-align: center;
+}
+
+section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.carousel {
+    display: flex;
+    justify-content: center; 
+}
+
+.carousel-inner {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+}
+
+.carousel-item {
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-item .card {
+    margin: auto; 
+}
+
+/* ==================== FORM RICERCA ==================== */
+form .form-label {
+    font-weight: 500;
+}
+
+form .form-select,
+form .form-control {
+    margin-bottom: 15px;
+}
+
+form button {
+    margin-top: 10px;
+}
+
+/* ==================== MODALI ==================== */
+.modal-content {
+    padding: 20px;
+}
+
+.modal-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-body .form-control {
+    margin-bottom: 15px;
+}
+
+

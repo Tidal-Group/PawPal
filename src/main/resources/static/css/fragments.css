@@ -1,0 +1,109 @@
+/* ==================== HEADER ==================== */
+header {
+    width: 100%;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
+
+.navbar {
+    padding: 0.5rem 1rem; 
+    min-height: 50px;
+}
+
+.logo-img {
+    height: 20px;         /* allineata ai link */
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-brand {
+    padding: 0;
+    margin-right: 15px; 
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 50px;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav li {
+    list-style: none;
+}
+
+.navbar-nav .nav-link {
+    color: #222;
+    font-weight: 500;
+    padding: 5px 10px;
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #2563eb;
+}
+
+/* Pulsanti login/registrazione */
+.navbar-nav .btn {
+    margin-left: 10px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.navbar-nav .btn-secondary {
+    background-color: transparent;
+    color: #2563eb;
+    border: 2px solid #2563eb;
+}
+
+.navbar-nav .btn-secondary:hover {
+    background-color: #2563eb;
+    color: white;
+}
+
+/* Centrare le voci di menu */
+.navbar-collapse {
+    display: flex !important;
+    justify-content: center;
+    flex: 1;
+}
+
+.navbar-nav.ms-auto {
+    margin-left: auto !important;
+    display: flex;
+    gap: 10px;
+}
+
+/* ==================== FOOTER ==================== */
+.footer {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    font-family: 'Inter', sans-serif;
+    color: #666; /* grigio chiaro sul bianco */
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* ==================== FORM RICERCA VETERINARI ==================== */
+form .form-label {
+    font-weight: 500;
+}
+
+form .form-select,
+form .form-control {
+    margin-bottom: 15px;
+}
+
+form button {
+    margin-top: 10px;
+}
