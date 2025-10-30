@@ -60,6 +60,8 @@ public class DashController {
 
     @GetMapping("")
     public String showDashboard(Principal principal, Model model) {
+        System.out.println("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+
         acceptAuthenticated(principal, (authentication, utente) -> {
             List<Appuntamento> listaAppuntamenti = new ArrayList<>();
             if(isCliente(authentication))

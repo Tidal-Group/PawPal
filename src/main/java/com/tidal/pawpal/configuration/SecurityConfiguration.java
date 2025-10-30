@@ -37,7 +37,7 @@ public class SecurityConfiguration {
         .exceptionHandling(exception -> exception.accessDeniedPage("/public/403"))
         .formLogin((form) -> 
             form
-            .loginPage("/auth/login")
+            .loginPage("/")
             .loginProcessingUrl("/auth/login/form")
             .defaultSuccessUrl("/", true)
             .permitAll()
