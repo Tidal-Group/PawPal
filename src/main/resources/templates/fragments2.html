@@ -1,0 +1,48 @@
+<!-- HEADER DASHBOARD -->
+<header th:fragment="dashboard-header(title)">
+
+    <div class="header-left">
+        <button class="toggle-btn" type="button" aria-label="Apri sidebar">☰</button>
+        <h2 class="header-title" th:text="${title}">Dashboard</h2>
+    </div>
+
+    <div class="header-right">
+        <a th:href="@{/}" class="btn-home">Home</a>
+
+        <div class="profile" aria-haspopup="true">
+
+            <button class="profile-btn" type="button" aria-expanded="false">
+                <span th:text="${#authentication.name}">Nome Utente</span> ▾
+            </button>
+
+            <div class="profile-dropdown" role="menu" aria-hidden="true">
+
+                <div class="profile-info">
+
+                    <div class="profile-name" th:text="${#authentication.name}">Utente</div>
+
+                    <div class="profile-role">
+                        <span th:if="${#authorization.expression('hasRole(''CLIENTE'')')}">Cliente</span>
+                        <span th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">Veterinario</span>
+                        <span th:if="${#authorization.expression('hasRole(''ADMIN'')')}">Amministratore</span>
+                    </div>
+
+                </div>
+
+                <ul class="profile-actions">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/dash/profilo}">Profilo</a></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+</header>
