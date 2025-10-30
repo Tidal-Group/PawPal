@@ -1,31 +1,31 @@
 <!-- HEADER DASHBOARD -->
 <header th:fragment="dashboard-sidebar">
 
-    <nav id="dashboard-sidebar" class="nav flex-column border p-2 bg-light vh-100 position-fixed start-0" style="width: 200px;">
+    <nav id="dashboard-sidebar" class="nav flex-column border p-2 bg-light vh-100 position-fixed top-0 start-0" style="width: 200px;">
         
         <ul class="navbar-nav">
 
             <li class="nav-item">
 
-            <button 
-                class="nav-link btn btn-link text-decoration-none" 
-                type="button" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#profilo_submenu" 
-                aria-expanded="false" 
-                aria-controls="profilo_submenu"
-            >
-                Profilo
-            </button>
+                <button 
+                    class="nav-link btn btn-link text-decoration-none" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#profilo_submenu" 
+                    aria-expanded="false" 
+                    aria-controls="profilo_submenu"
+                >
+                    Profilo
+                </button>
 
-            <div class="collapse" id="profilo_submenu">
-                <div class="card card-body p-0 border-0">
-                    <a class="nav-link" href="#"><button onclick="apriModificaDati()" class="btn btn-secondary" th:classappend="${active} == 'profilo' ? ' active' : ''">Modifica dati</button></a>
-                    <a class="nav-link" href="#"><div class="row" th:replace="fragments2 :: modifica_conto(email)"></div></a>
-                    <a class="nav-link" href="#"><div class="row" th:replace="fragments2 :: modifica_conto(username)"></div></a>
-                    <a class="nav-link" href="#"><div class="row" th:replace="fragments2 :: modifica_conto(password)"></div></a>
+                <div class="collapse" id="profilo_submenu">
+                    <div class="card card-body p-0 border-0">
+                        <button onclick="apriModificaDati()" class="btn btn-secondary" th:classappend="${active} == 'profilo' ? ' active' : ''">Modifica dati</button>
+                        <button class="btn btn-secondary" data-bs-target="#modal-email" data-bs-toggle="modal">Cambia email</button>
+                        <button class="btn btn-secondary" data-bs-target="#modal-username" data-bs-toggle="modal">Cambia username</button>
+                        <button class="btn btn-secondary" data-bs-target="#modal-password" data-bs-toggle="modal">Cambia password</button>
+                    </div>
                 </div>
-            </div>
 
             </li>
 
@@ -91,8 +91,6 @@
 
 <div th:fragment="modifica_conto(nome_campo)">
 
-    <button class="btn btn-secondary" th:data-bs-target="${'#modal-' + nome_campo}" data-bs-target="#loginModal" data-bs-toggle="modal" th:text="|Cambia ${nome_campo}|">Cambia campo</button>
-
     <div class="modal fade" th:id="${'modal-' + nome_campo}" aria-hidden="true" th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
         
         <div class="modal-dialog modal-dialog-centered">
@@ -105,6 +103,7 @@
                 </div>
 
                 <div class="modal-body text-center">
+
                     <form th:action="@{/dash/utenti/modifica_} + ${nome_campo}" method="post">
 
                         <div class="col-12">
@@ -141,6 +140,7 @@
                         </div>
 
                     </form>
+
                 </div>
 
             </div>

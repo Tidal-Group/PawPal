@@ -6,8 +6,8 @@
 
 <body>
 
-    <div th:insert="fragments :: navbar(dashboard)" th:classappend="dashboard-header"></div>
-    <div th:insert="fragments2 :: dashboard-sidebar" th:classappend="dashboard-sidebar"></div>
+    <div th:insert="fragments :: navbar(dashboard)"></div>
+    <div th:insert="fragments2 :: dashboard-sidebar"></div>
 
     <main>
 
@@ -134,13 +134,11 @@
         <section class="dashboard-section">
             <h2>I tuoi Appuntamenti</h2>
 
-
             <form class="filter-form" th:action="@{/dash/appuntamenti}" method="get">
                 <input type="date" name="data" placeholder="Filtra per data">
                 <input type="text" name="veterinario" placeholder="Cerca per veterinario">
                 <button type="submit" class="btn">Filtra</button>
             </form>
-
 
             <table class="table-appuntamenti">
                 <thead>
@@ -312,24 +310,13 @@
 
     </main>
 
+    <div th:replace="fragments2 :: modifica_conto(email)"></div>
+    <div th:replace="fragments2 :: modifica_conto(username)"></div>
+    <div th:replace="fragments2 :: modifica_conto(password)"></div>
+
     <style>
         body {
-            margin-top: 56px;
             margin-left: 200px;
-        }
-
-        .dashboard-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-        }
-
-        .dashboard-sidebar {
-            position: fixed;
-            top: 56px;
-            z-index: 100;
         }
     </style>
 
