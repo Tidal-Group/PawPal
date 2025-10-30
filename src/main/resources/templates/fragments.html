@@ -496,43 +496,47 @@
                         <form th:action="@{/auth/register_cliente}" method="post" style="display: contents;">
 
                             <div>
-                                <label class="form-label" for="nome">Nome:</label>
-                                <input class="form-control" type="text" id="nome" name="nome" required>
+                                <label class="form-label" for="nome_cliente">Nome:</label>
+                                <input class="form-control" type="text" id="nome_cliente" name="nome" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="cognome">Cognome:</label>
-                                <input class="form-control" type="text" id="cognome" name="cognome" required>
+                                <label class="form-label" for="cognome_cliente">Cognome:</label>
+                                <input class="form-control" type="text" id="cognome_cliente" name="cognome" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="codiceFiscale">Codice Fiscale:</label>
-                                <input class="form-control" type="text" id="codiceFiscale" name="codiceFiscale" maxlength="16" required>
+                                <label class="form-label" for="codice_fiscale_cliente">Codice Fiscale:</label>
+                                <input class="form-control" type="text" id="codice_fiscale_cliente" name="codiceFiscale" maxlength="16" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="telefono">Telefono:</label>
-                                <input class="form-control" type="text" id="telefono" name="telefono" required>
+                                <label class="form-label" for="telefono_cliente">Telefono:</label>
+                                <input class="form-control" type="text" id="telefono_cliente" name="telefono" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="email">Email:</label>
-                                <input class="form-control" type="email" id="email" name="email" required>
+                                <label class="form-label" for="email_cliente">Email:</label>
+                                <input class="form-control" type="email" id="email_cliente" name="email" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="username">Username:</label>
-                                <input class="form-control" type="text" id="username" name="username" required>
+                                <label class="form-label" for="username_cliente">Username:</label>
+                                <input class="form-control" type="text" id="username_cliente" name="username" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="password">Password:</label>
-                                <input class="form-control" type="password" id="password" name="password" required>
+                                <label class="form-label" for="password_cliente">Password:</label>
+                                <input class="form-control" type="password" id="password_cliente" name="password" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="check_password">Conferma Password:</label>
-                                <input class="form-control" type="password" id="check_password" name="check_password" required>
+                                <label class="form-label" for="check_password_cliente">Conferma Password:</label>
+                                <input class="form-control" type="password" id="check_password_cliente" name="check_password" oninput="verificaPasswordCliente()" required>
+                            </div>
+
+                            <div id="check_password_error_cliente" class="alert alert-danger" role="alert" style="display: none;">
+                                Le password non corrispondono!
                             </div>
 
                             <input type="hidden" name="ruolo" value="CLIENTE">
@@ -573,48 +577,48 @@
                         <form th:action="@{/auth/register_veterinario}" method="post" style="display: contents;">
 
                             <div>
-                                <label class="form-label" for="nome">Nome:</label>
-                                <input class="form-control" type="text" id="nome" name="nome" required>
+                                <label class="form-label" for="nome_veterinario">Nome:</label>
+                                <input class="form-control" type="text" id="nome_veterinario" name="nome" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="cognome">Cognome:</label>
-                                <input class="form-control" type="text" id="cognome" name="cognome" required>
+                                <label class="form-label" for="cognome_veterinario">Cognome:</label>
+                                <input class="form-control" type="text" id="cognome_veterinario" name="cognome" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="codiceFiscale">Codice Fiscale:</label>
-                                <input class="form-control" type="text" id="codiceFiscale" name="codiceFiscale" maxlength="16" required>
+                                <label class="form-label" for="codice_fiscale_veterinario">Codice Fiscale:</label>
+                                <input class="form-control" type="text" id="codice_fiscale_veterinario" name="codiceFiscale" maxlength="16" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="telefono">Telefono:</label>
-                                <input class="form-control" type="text" id="telefono" name="telefono" required>
+                                <label class="form-label" for="telefono_veterinario">Telefono:</label>
+                                <input class="form-control" type="text" id="telefono_veterinario" name="telefono" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="email">Email:</label>
-                                <input class="form-control" type="email" id="email" name="email" required>
+                                <label class="form-label" for="email_veterinario">Email:</label>
+                                <input class="form-control" type="email" id="email_veterinario" name="email" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="username">Username:</label>
-                                <input class="form-control" type="text" id="username" name="username" required>
+                                <label class="form-label" for="username_veterinario">Username:</label>
+                                <input class="form-control" type="text" id="username_veterinario" name="username" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="password">Password:</label>
-                                <input class="form-control" type="password" id="password" name="password" required>
+                                <label class="form-label" for="password_veterinario">Password:</label>
+                                <input class="form-control" type="password" id="password_veterinario" name="password" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="check_password">Conferma Password:</label>
-                                <input class="form-control" type="password" id="check_password" name="check_password" required>
+                                <label class="form-label" for="check_password_veterinario" oninput="verificaPasswordVeterinario()">Conferma Password:</label>
+                                <input class="form-control" type="password" id="check_password_veterinario" name="check_password" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="specializzazione">Specializzazione:</label>
-                                <input class="form-control" type="text" id="specializzazione" name="specializzazione" required>
+                                <label class="form-label" for="specializzazione_veterinario">Specializzazione:</label>
+                                <input class="form-control" type="text" id="specializzazione_veterinario" name="specializzazione" required>
                             </div>
 
                             <div>
@@ -642,23 +646,23 @@
                             </div>
 
                             <div>
-                                <label class="form-label" for="indirizzoStudio">Indirizzo studio:</label>
-                                <input class="form-control" type="text" id="indirizzoStudio" name="indirizzoStudio" placeholder="Via, numero civico, città" required>
+                                <label class="form-label" for="indirizzo_studio_veterinario">Indirizzo studio:</label>
+                                <input class="form-control" type="text" id="indirizzo_studio_veterinario" name="indirizzoStudio" placeholder="Via, numero civico, città" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="iscrizioneAlbo">Numero di iscrizione all&#39;albo:</label>
-                                <input class="form-control" type="text" id="iscrizioneAlbo" name="iscrizioneAlbo" placeholder="es. 12345" required>
+                                <label class="form-label" for="iscrizione_albo_veterinario">Numero di iscrizione all&#39;albo:</label>
+                                <input class="form-control" type="text" id="iscrizione_albo_veterinario" name="iscrizioneAlbo" placeholder="es. 12345" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="disponibilita">Disponibilit&#224;:</label>
-                                <input class="form-control" type="text" id="disponibilita" name="disponibilita" placeholder="es. Lun-Ven 9:00-18:00" required>
+                                <label class="form-label" for="disponibilita_veterinario">Disponibilit&#224;:</label>
+                                <input class="form-control" type="text" id="disponibilita_veterinario" name="disponibilita" placeholder="es. Lun-Ven 9:00-18:00" required>
                             </div>
 
                             <div>
-                                <label class="form-label" for="descrizione">Descrizione:</label>
-                                <textarea class="form-control" name="descrizione" id="descrizione" maxlength="140"></textarea>
+                                <label class="form-label" for="descrizione_veterinario">Descrizione:</label>
+                                <textarea class="form-control" name="descrizione" id="descrizione_veterinario" maxlength="140"></textarea>
                             </div>
 
                             <input type="hidden" name="ruolo" value="VETERINARIO">
