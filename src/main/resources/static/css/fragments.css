@@ -6,17 +6,15 @@ header {
 }
 
 .navbar {
-    padding: 0.5rem 1rem; 
-    min-height: 50px;
+    padding: 15px 30px;
 }
 
 .logo-img {
-    height: 20px;         /* allineata ai link */
+    height: 16px !important; 
     width: auto;
     display: inline-block;
     vertical-align: middle;
 }
-
 .navbar-brand {
     padding: 0;
     margin-right: 15px; 
