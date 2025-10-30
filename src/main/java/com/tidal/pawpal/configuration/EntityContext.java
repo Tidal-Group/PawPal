@@ -58,7 +58,7 @@ public class EntityContext {
 
         if (v.getRecensioni() == null) v.setRecensioni(new ArrayList<>());
 
-        if (v.getDisponibilita() == null) v.setDisponibilita(new ArrayList<>());
+        // if (v.getDisponibilita() == null) v.setDisponibilita(new ArrayList<>());
 
         if (v.getAppuntamenti() == null) v.setAppuntamenti(new ArrayList<>());
 

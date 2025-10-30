@@ -98,7 +98,21 @@ public class DashController {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 userService.modificaUsername(utente.getId(), username);
             });
-            return "redirect:/dash#modifica_username";
+            return "redirect:/dash#modifica_account";
+        } catch(Exception exception) {
+            // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
+            return "redirect:/error";
+        }
+    }
+
+    @PostMapping("/profilo/modifica_email")
+    public String sendEmail(@RequestParam String email, Principal principal) {        
+        try {
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                userService.modificaEmail(utente.getId(), email);
+            });
+            return "redirect:/dash#modifica_account";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -112,7 +126,7 @@ public class DashController {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 userService.modificaPassword(utente.getId(), password);
             });
-            return "redirect:/dash#modifica_password";
+            return "redirect:/dash#modifica_account";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();

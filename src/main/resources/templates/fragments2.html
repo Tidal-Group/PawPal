@@ -1,18 +1,32 @@
 <!-- HEADER DASHBOARD -->
-<header th:fragment="dashboard-header(title)">
+<header th:fragment="dashboard-sidebar">
 
-    <style>
-        body {
-            margin-left: 200px;
-        }
-    </style>
-
-    <nav class="nav flex-column border p-2 bg-light vh-100 position-fixed top-0 start-0" style="width: 200px;">
+    <nav id="dashboard-sidebar" class="nav flex-column border p-2 bg-light vh-100 position-fixed start-0" style="width: 200px;">
         
         <ul class="navbar-nav">
 
             <li class="nav-item">
-                <button onclick="apriProfilo()" class="btn btn-secondary" th:classappend="${active} == 'profilo' ? ' active' : ''">Profilo</a>
+
+            <button 
+                class="nav-link btn btn-link text-decoration-none" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#profilo_submenu" 
+                aria-expanded="false" 
+                aria-controls="profilo_submenu"
+            >
+                Profilo
+            </button>
+
+            <div class="collapse" id="profilo_submenu">
+                <div class="card card-body p-0 border-0">
+                    <a class="nav-link" href="#"><button onclick="apriModificaDati()" class="btn btn-secondary" th:classappend="${active} == 'profilo' ? ' active' : ''">Modifica dati</button></a>
+                    <a class="nav-link" href="#"><div class="row" th:replace="fragments2 :: modifica_conto(email)"></div></a>
+                    <a class="nav-link" href="#"><div class="row" th:replace="fragments2 :: modifica_conto(username)"></div></a>
+                    <a class="nav-link" href="#"><div class="row" th:replace="fragments2 :: modifica_conto(password)"></div></a>
+                </div>
+            </div>
+
             </li>
 
             <li class="nav-item">
@@ -29,57 +43,6 @@
 
         </ul>
 
-        <ul class="navbar-nav">
-
-            <!-- <CLIENTE-VETERINARIO> -->
-            <div sec:authorize="hasAnyRole('CLIENTE','VETERINARIO')" style="display: contents;">
-
-                <li class="nav-item dropdown">
-
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span th:text="${#authentication.name}">Utente</span>
-                    </a>
-
-                    <ul class="dropdown-menu">
-
-                        <li>
-                            <p class="dropdown-item">
-                                <span th:if="${#authorization.expression('hasRole(''CLIENTE'')')}"><strong><em>Cliente</em></strong></span>
-                                <span th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}"><strong><em>Veterinario</em></strong></span>
-                            </p>
-                        </li>
-
-                        <li><hr class="dropdown-divider"></li>
-
-                        <li>
-                            <a class="dropdown-item" th:href="@{/}">Home</a>
-                        </li>
-
-                        <li th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
-                            <a class="dropdown-item" th:href="@{/dash/linee_guida}">Linee guida</a>
-                        </li>
-
-                        <li><hr class="dropdown-divider"></li>
-
-                        <li>
-                            <form id="navbar_logout_form" th:action="@{/logout}" method="post" style="display: contents;">
-                                <a class="dropdown-item" href="#" onclick="document.getElementById('navbar_logout_form').submit()">Logout</a>
-                            </form>
-                        </li>
-
-                    </ul>
-
-                </li>
-
-                <li class="nav-item" style="visibility: hidden;">
-                    <a class="nav-link" th:href="@{/dash}">Dashboard</a>
-                </li>
-
-            </div>
-            <!-- </CLIENTE-VETERINARIO> -->
-
-        </ul>
-
     </nav>
 
     <script defer>
@@ -89,14 +52,14 @@
         let lineeGuida;
 
         document.addEventListener("DOMContentLoaded", () => {
-            profilo = document.getElementById("profilo");
+            modificaDati = document.getElementById("modifica_dati");
             appuntamenti = document.getElementById("appuntamenti");
             recensioni = document.getElementById("recensioni");
             lineeGuida = document.getElementById("linee_guida");
         });
 
-        function apriProfilo() {
-            if(profilo) profilo.style.display = "flex";
+        function apriModificaDati() {
+            if(modificaDati) modificaDati.style.display = "flex";
             if(appuntamenti) appuntamenti.style.display = "none";
             if(recensioni) recensioni.style.display = "none";
             if(lineeGuida) lineeGuida.style.display = "none";
@@ -104,24 +67,86 @@
 
         function apriAppuntamenti() {
             if(appuntamenti) appuntamenti.style.display = "flex";
-            if(profilo) profilo.style.display = "none";
+            if(modificaDati) modificaDati.style.display = "none";
             if(recensioni) recensioni.style.display = "none";
             if(lineeGuida) lineeGuida.style.display = "none";
         }
 
         function apriRecensioni() {
             if(recensioni) recensioni.style.display = "flex";
-            if(profilo) profilo.style.display = "none";
+            if(modificaDati) modificaDati.style.display = "none";
             if(appuntamenti) appuntamenti.style.display = "none";
             if(lineeGuida) lineeGuida.style.display = "none";
         }
 
         function apriLineeGuida() {
             if(lineeGuida) lineeGuida.style.display = "flex";
-            if(profilo) profilo.style.display = "none";
+            if(modificaDati) modificaDati.style.display = "none";
             if(appuntamenti) appuntamenti.style.display = "none";
             if(recensioni) recensioni.style.display = "none";
         }
     </script>
     
 </header>
+
+<div th:fragment="modifica_conto(nome_campo)">
+
+    <button class="btn btn-secondary" th:data-bs-target="${'#modal-' + nome_campo}" data-bs-target="#loginModal" data-bs-toggle="modal" th:text="|Cambia ${nome_campo}|">Cambia campo</button>
+
+    <div class="modal fade" th:id="${'modal-' + nome_campo}" aria-hidden="true" th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
+        
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="${'label-' + nome_campo}" th:text="|Modifica ${nome_campo}|">Modifica campo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <form th:action="@{/dash/utenti/modifica_} + ${nome_campo}" method="post">
+
+                        <div class="col-12">
+                            <fieldset>
+                                <label class="form-label" th:for="${'current_' + nome_campo}" th:text="|Inserire ${nome_campo} corrente:|">Inserire campo corrente</label>
+                                <input
+                                    class="form-control"
+                                    th:id="${'current_' + nome_campo}"
+                                    th:name="${'current_' + nome_campo}"
+                                    th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                    required
+                                >
+
+                                <label class="form-label" th:for="${'new_' + nome_campo}" th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
+                                <input
+                                    class="form-control"
+                                    th:id="${'new_' + nome_campo}"
+                                    th:name="${'new_' + nome_campo}"
+                                    th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                    required
+                                >
+
+                                <label class="form-label" th:for="${'confirm_' + nome_campo}" th:text="|Confermare ${nome_campo}:|">Confermare campo</label>
+                                <input
+                                    class="form-control"
+                                    th:id="${'confirm_' + nome_campo}"
+                                    th:name="${'confirm_' + nome_campo}"
+                                    th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                    required
+                                >
+
+                                <button class="btn btn-secondary" type="submit" th:text="Aggiorna"></button>
+                            </fieldset>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

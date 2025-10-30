@@ -6,13 +6,12 @@
 
 <body>
 
-    <header th:replace="fragments2 :: dashboard-header('Dashboard Utente')"></header>
+    <div th:insert="fragments :: navbar(dashboard)" th:classappend="dashboard-header"></div>
+    <div th:insert="fragments2 :: dashboard-sidebar" th:classappend="dashboard-sidebar"></div>
 
     <main>
 
-        <div id="profilo" class="container-fluid flex-column" style="display: none;">
-
-            <h1>PROFILO</h1>
+        <div id="modifica_dati" class="container-fluid flex-column" style="display: none;">
 
             <section id="modifica_dati">
 
@@ -50,19 +49,6 @@
 
                         </div>
 
-                        <div class="col-12">
-
-                            <fieldset>
-                                <legend>Informazioni Account</legend>
-                                
-                                <div>
-                                    <label class="form-label" for="email">Email</label>
-                                    <input class="form-control" id="email" name="email" type="email" th:value="${#strings.defaultString(user.email,'')}" />
-                                </div>
-                            </fieldset>
-
-                        </div>
-
                         <div class="col-12" th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
 
                             <fieldset>
@@ -78,6 +64,42 @@
                                     <input class="form-control" id="specializzazione" name="specializzazione" type="text" th:value="${#strings.defaultString(user.specializzazione,'')}" />
                                 </div>
 
+                                <!-- CERCARE LE SPECIE PER VETERINARIO -->
+                                <div>
+                                    <label class="form-label">Specie trattate:</label>
+                                    <div class="btn-group" role="group" aria-label="specie trattate dal veterinario">
+                                        <div th:each="spec : ${lista_specie}" style="display: contents;">
+                                            <input type="checkbox" class="btn-check" name="specie" th:value="${spec.id}" th:id="'specie_' + ${spec.id}" />
+                                            <label class="btn btn-outline-primary" th:for="'specie_' + ${spec.id}">
+                                                <span th:text="${spec.nomeSpecie}">Nome Specie</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CERCARE LE PRESTAZIONI PER VETERINARIO -->
+                                <div>
+                                    <label class="form-label">Prestazioni offerte:</label>
+                                    <div class="btn-group" role="group" aria-label="prestazioni offerte dal veterinario">
+                                        <div th:each="prest : ${lista_prestazioni}" style="display: contents;">
+                                            <input type="checkbox" class="btn-check" name="prestazioni" th:value="${prest.id}" th:id="'prestazione_' + ${prest.id}" />
+                                            <label class="btn btn-outline-primary" th:for="'prestazione_' + ${prest.id}">
+                                                <span th:text="${prest.descrizione}">Nome Prestazione</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="form-label" for="iscrizione_albo">Numero di iscrizione all&#39;albo:</label>
+                                    <input class="form-control" type="text" id="iscrizione_albo" name="iscrizioneAlbo" th:value="${#strings.defaultString(user.iscrizioneAlbo,'')}">
+                                </div>
+
+                                <div>
+                                    <label class="form-label" for="disponibilita_veterinario">Disponibilit&#224;:</label>
+                                    <input class="form-control" type="text" id="disponibilita_veterinario" name="disponibilita" th:value="${#strings.defaultString(user.disponibilita,'')}">
+                                </div>
+
                                 <div>
                                     <label class="form-label" for="descrizione">Descrizione </label>
                                     <textarea
@@ -86,6 +108,7 @@
                                         name="descrizione"
                                         th:text="${#strings.defaultString(user.descrizione,'')}"
                                         placeholder="Descrivi chi sei e di cosa ti occupi"
+                                        maxlength="140"
                                     ></textarea>
                                 </div>
 
@@ -104,101 +127,9 @@
 
             </section>
 
-            <section id="modifica_username">
-                <h1>Modifica username</h1>
-
-                <form th:action="@{/dash/utenti/modifica_password}" method="post" class="form-profilo">
-                    <fieldset>
-                        <h3>Modifica password</h3>
-
-                        <label for="currentPassword">Password attuale</label>
-                        <input id="currentPassword" name="currentPassword" type="password" required
-                            placeholder="Inserisci la password attuale" />
-
-                        <label for="newPassword">Nuova password</label>
-                        <input id="newPassword" name="newPassword" type="password" required minlength="8"
-                            placeholder="Almeno 8 caratteri" />
-
-                        <label for="confirmPassword">Conferma nuova password</label>
-                        <input id="confirmPassword" name="confirmPassword" type="password" required minlength="8"
-                            placeholder="Ripeti la nuova password" />
-
-                        <p class="help-text">La nuova password deve essere almeno 8 caratteri. Assicurati che i campi
-                            corrispondano.</p>
-                    </fieldset>
-
-                    <div class="form-actions">
-                        <button type="submit">Aggiorna password</button>
-                        <a th:href="@{/dash/profilo}" class="btn-cancel">Annulla</a>
-                    </div>
-                </form>
-            </section>
-
-            <section class="cambia-password" id="cambia-password">
-                <h1>Cambia password</h1>
-
-                <form th:action="@{/dash/utenti/modifica_password}" method="post" class="form-profilo">
-                    <fieldset>
-                        <h3>Modifica password</h3>
-
-                        <label for="currentPassword">Password attuale</label>
-                        <input id="currentPassword" name="currentPassword" type="password" required
-                            placeholder="Inserisci la password attuale" />
-
-                        <label for="newPassword">Nuova password</label>
-                        <input id="newPassword" name="newPassword" type="password" required minlength="8"
-                            placeholder="Almeno 8 caratteri" />
-
-                        <label for="confirmPassword">Conferma nuova password</label>
-                        <input id="confirmPassword" name="confirmPassword" type="password" required minlength="8"
-                            placeholder="Ripeti la nuova password" />
-
-                        <p class="help-text">La nuova password deve essere almeno 8 caratteri. Assicurati che i campi
-                            corrispondano.</p>
-                    </fieldset>
-
-                    <div class="form-actions">
-                        <button type="submit">Aggiorna password</button>
-                        <a th:href="@{/dash/profilo}" class="btn-cancel">Annulla</a>
-                    </div>
-                </form>
-            </section>
-
-            <section class="elimina-account" id="elimina-account">
-                <h1>Elimina account</h1>
-
-                <form th:action="@{/dash/utenti/elimina_account}" method="post" class="form-profilo"
-                    onsubmit="return confirm('L\'eliminazione è irreversibile. Vuoi procedere?');">
-
-                    <input type="hidden" name="_method" value="delete" />
-
-                    <fieldset>
-                        <h3>Conferma eliminazione</h3>
-
-                        <p class="warning" style="color:var(--danger); font-weight:700;">
-                            Attenzione: l'eliminazione dell'account è definitiva e cancellerà tutti i tuoi dati.
-                        </p>
-
-                        <label for="elimConfirmText">Per confermare, digita "ELIMINA" nel campo sottostante</label>
-                        <input id="elimConfirmText" name="elimConfirmText" type="text" required
-                            placeholder="Digita ELIMINA per confermare" />
-
-                        <label for="elimPassword">Password attuale</label>
-                        <input id="elimPassword" name="elimPassword" type="password" required
-                            placeholder="Inserisci la password attuale" />
-
-                        <p class="help-text">Per motivi di sicurezza è richiesta la password attuale.</p>
-                    </fieldset>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn-danger">Elimina account</button>
-                        <button type="reset" class="btn-cancel">Annulla</button>
-                    </div>
-
-                </form>
-            </section>
-
         </div>
+
+        <div id="appuntamenti" class="container-fluid flex-column" style="display: none;"></div>
 
         <section class="dashboard-section">
             <h2>I tuoi Appuntamenti</h2>
@@ -287,6 +218,8 @@
                 </form>
             </div> -->
         </section>
+
+        <div id="recensioni" class="container-fluid flex-column" style="display: none;"></div>
 
         <section class="recensioni-section">
             <h2>Recensioni</h2>
@@ -378,6 +311,27 @@
         </section>
 
     </main>
+
+    <style>
+        body {
+            margin-top: 56px;
+            margin-left: 200px;
+        }
+
+        .dashboard-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .dashboard-sidebar {
+            position: fixed;
+            top: 56px;
+            z-index: 100;
+        }
+    </style>
 
 </body>
 

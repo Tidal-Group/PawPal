@@ -44,9 +44,11 @@ public class Veterinario extends User {
     @Column(name="indirizzo_Studio") 
     private String indirizzoStudio;
 
-    @OneToMany(mappedBy = "veterinario")
-    @ToString.Exclude
-    private List<Disponibilita> disponibilita;
+    // @OneToMany(mappedBy = "veterinario")
+    // @ToString.Exclude
+    // private List<Disponibilita> disponibilita;
+    @Column(name="disponibilita")
+    private String disponibilita;
 
     @OneToMany(mappedBy = "veterinario")
     @ToString.Exclude
