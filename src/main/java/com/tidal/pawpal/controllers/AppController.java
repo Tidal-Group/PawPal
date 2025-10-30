@@ -1,7 +1,6 @@
 package com.tidal.pawpal.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +17,8 @@ public class AppController {
     @Autowired
     private SpecieService specieService;
 
-    // PROBABILMENTE DA TOGLIERE
-    @Value("${app.pawpal.nome:Pawpal}")
-    private String appName;
-
     @GetMapping("/")
     public String homepage(Model model) {
-        // PROBABILMENTE DA TOGLIERE
-        model.addAttribute("app-name", appName);
         model.addAttribute("lista_specie", specieService.elencaTutti());
         model.addAttribute("lista_prestazioni", prestazioneService.elencaTutti());
         return "homepage";

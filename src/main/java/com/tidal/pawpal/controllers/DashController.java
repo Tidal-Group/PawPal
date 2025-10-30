@@ -231,6 +231,5 @@ public class DashController {
     public String showLineeGuida() {
         return "linee_guida";
     }
-    
 
 }

@@ -7,132 +7,314 @@
 
     <header th:replace="fragments :: navbar('home')"></header>
 
-    <div class="banner">
-        <img th:src="@{/img/banner.jpg}" alt="Banner PawPal">
-    </div>
+    <img th:src="@{/img/banner.jpg}" alt="Banner PawPal">
 
     <main>
 
-        <section class="search-veterinari">
+        <section th:replace="fragments :: ricerca_veterinari"></section>
 
-            <div class="container">
+        <section>
 
-                <h2>Trova il veterinario più adatto alle tue esigenze vicino a te</h2>
-                <form th:action="@{/veterinari/lista_veterinari}" method="get" class="search-form">
+            <div class="container-fluid">
 
-                    <div class="form-group">
-                        <label for="citta">Città</label>
-                        <select name="citta" id="citta">
-                            <option value="milano">Milano</option>
-                            <option value="roma">Roma</option>
-                            <option value="napoli">Napoli</option>
-                            <option value="torino">Torino</option>
-                            <option value="catania">Catania</option>
-                        </select>
+                <div class="row">
+
+                    <div class="col-12 text-center">
+                        <h2>Chi siamo</h2>
                     </div>
 
-                    <div class="form-group">
-                        <label for="prestazione">Prestazione</label>
-                        <select id="prestazione" name="idPrestazione">
-                            <option value="">-- Seleziona --</option>
-                            <option th:each="prest : ${lista_prestazioni}" th:value="${prest.id}" th:text="${prest.descrizione}"></option>
-                        </select>
+                    <div class="col-12">
+                        <p>
+                            PawPal è la piattaforma dedicata a connettere proprietari di animali e veterinari, offrendo
+                            un'esperienza semplice, sicura e completa per la gestione delle cure dei vostri amici a quattro
+                            zampe.
+                        </p>
                     </div>
 
-                    <div class="form-group">
-                        <label for="specie">Animale</label>
-                        <select id="specie" name="idSpecie">
-                            <option value="">-- Seleziona --</option>
-                            <option th:each="spec : ${lista_specie}" th:value="${spec.id}" th:text="${spec.nomeSpecie}"></option>
-                        </select>
+                    <div class="col-12">
+                        <p>
+                            Il nostro obiettivo è rendere più facile ogni aspetto della vita degli animali domestici: dalla
+                            ricerca del veterinario più adatto, alla prenotazione degli appuntamenti, fino alla comunicazione
+                            diretta con i professionisti.
+                        </p>
                     </div>
 
-                    <div class="form-group">
-                        <button type="submit">Cerca</button>
+                    <div class="col-12">
+                        <p>
+                            Per i veterinari, offriamo strumenti avanzati per gestire la loro attività: dalla definizione delle
+                            disponibilità alla gestione delle prestazioni e delle specie trattate, fino alla possibilità di
+                            visualizzare recensioni e interagire con i clienti.
+                        </p>
                     </div>
 
-                </form>
+                    <div class="col-12">
+                        <p>
+                            La nostra missione è garantire il benessere degli animali attraverso una rete di professionisti
+                            affidabili e facilmente accessibili e dove proprietari di animali e veterinari possano incontrarsi,
+                            comunicare e collaborare nel modo più semplice possibile, offrendo cure migliori e un servizio
+                            sempre più personalizzato.
+                        </p>
+                    </div>
+
+                </div>
 
             </div>
 
         </section>
 
-        <section class="hero">
-
-            <div class="container">
-                <h2>Chi siamo</h2>
-                <p>PawPal è la piattaforma dedicata a connettere proprietari di animali e veterinari, offrendo
-                    un'esperienza semplice, sicura e completa per la gestione delle cure dei vostri amici a quattro
-                    zampe.</p>
-                <p>Il nostro obiettivo è rendere più facile ogni aspetto della vita degli animali domestici: dalla
-                    ricerca del veterinario più adatto, alla prenotazione degli appuntamenti, fino alla comunicazione
-                    diretta con i professionisti.</p>
-                <p>Per i veterinari, offriamo strumenti avanzati per gestire la loro attività: dalla definizione delle
-                    disponibilità alla gestione delle prestazioni e delle specie trattate, fino alla possibilità di
-                    visualizzare recensioni e interagire con i clienti.</p>
-                <p>La nostra missione è garantire il benessere degli animali attraverso una rete di professionisti
-                    affidabili e facilmente accessibili e dove proprietari di animali e veterinari possano incontrarsi,
-                    comunicare e collaborare nel modo più semplice possibile, offrendo cure migliori e un servizio
-                    sempre più personalizzato.</p>
-            </div>
-
-        </section>
-
-        <section class="specializzazioni-in-evidenza">
+        <section>
 
             <div class="container">
 
-                <h2>Specializzazioni in evidenza</h2>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Specializzazioni in evidenza</h2>
+                    </div>
+                    <div class="col-12 text-center">
+                        <h6>Di quale specialista ha bisogno il tuo animale?</h6>
+                    </div>
+                </div>
 
-                <p class="subtitle">Di quale specialista ha bisogno il tuo animale?</p>
+                <div class="row">
 
-                <div class="specializzazioni-list">
+                    <!-- CAROSELLO SPECIALIZZAZIONI IN EVIDENZA -->
+                    <!-- query veterinari in base al rating group by specializzazione limit 5 -->
+                    <div id="carouselExampleIndicators" class="carousel slide">
 
-                    <div th:each="spec : ${specializzazioniInEvidenza}" class="specializzazione-card">
-                        <a th:href="@{'/lista_veterinari?specializzazione=' + ${spec}}" class="card-link">
-                            <div class="icon">
-                                <img th:src="@{'/img/specializzazioni/' + ${spec.toLowerCase()} + '.png'}"
-                                    th:alt="'Icona ' + ${spec}">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                        </div>
+
+                        <div class="carousel-inner d-flex justify-center align-center">
+
+                            <div class="carousel-item active text-center">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="/img/banner.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Card title</h5>
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 th:text="${spec}"></h3>
-                        </a>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+
                     </div>
+
                 </div>
-                <div class="more-specializzazioni">
-                    <a th:href="@{/lista_veterinari}" class="btn">Scopri tutte le specializzazioni</a>
-                </div>
+
             </div>
+
         </section>
 
-        <section class="veterinari-in-evidenza">
-            <h2>Veterinari in evidenza</h2>
-            <div class="veterinari-list">
-                <div th:each="vet : ${veterinariInEvidenza}" class="veterinario-card">
-                    <a th:href="@{/lista_veterinari}" class="card-link">
-                        <img th:src="@{'/img/' + ${vet.foto}}" th:alt="'Foto di ' + ${vet.nome}">
-                        <h3 th:text="${vet.nome}"></h3>
-                        <p th:text="${vet.specialita}"></p>
-                    </a>
+        <section>
+
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Veterinari in evidenza</h2>
+                    </div>
+                    <div class="col-12 text-center">
+                        <h6>I migliori del settore!</h6>
+                    </div>
                 </div>
+
+                <div class="row">
+
+                    <!-- CAROSELLO VETERINARI IN EVIDENZA -->
+                    <!-- query veterinari in base al rating limit 5 -->
+                    <div id="carouselExampleIndicators" class="carousel slide">
+
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                        </div>
+
+                        <div class="carousel-inner d-flex justify-center align-center">
+
+                            <div class="carousel-item active text-center">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="/img/banner.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Card title</h5>
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </section>
 
         <section class="recensioni">
+
             <div class="container">
-                <h2>Recensioni dei nostri utenti</h2>
-                <div class="recensioni-list">
-                    <div th:each="rec : ${recensioniRecenti}" class="recensione-card">
-                        <p th:text="${rec.testo}"></p>
-                        <p class="utente" th:text="${rec.nomeUtente}"></p>
-                        <span class="stelle" th:each="i : ${#numbers.sequence(1, rec.stelle)}">&#9733;</span>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2>Recensioni dei nostri utenti</h2>
+                    </div>
+                    <div class="col-12 text-center">
+                        <h6>Sempre in cima alle classifiche!</h6>
                     </div>
                 </div>
+
+                <div class="row">
+
+                    <!-- CAROSELLO RECENSIONI IN EVIDENZA -->
+                    <!-- query recensioni in base al rating e data limit 5 -->
+                    <div id="carouselExampleIndicators" class="carousel slide">
+
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                        </div>
+
+                        <div class="carousel-inner d-flex justify-center align-center">
+
+                            <div class="carousel-item active text-center">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="/img/banner.jpg" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Card title</h5>
+                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="/img/banner.jpg" class="d-block w-100" alt="">
+                            </div>
+
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </section>
+
+        <section th:replace="fragments :: login"></section>
+
+        <section th:replace="fragments :: registrazione_cliente"></section>
+
+        <section th:replace="fragments :: registrazione_veterinario"></section>
 
     </main>
 
     <footer th:replace="fragments :: footer"></footer>
+
+    <script th:inline="javascript">
+        const modalId = /*[[${openModal}]]*/ null;
+
+        if (modalId) {
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modalElement = document.getElementById(modalId);
+                
+                if (modalElement) {
+                    const modalInstance = new bootstrap.Modal(modalElement);
+                    modalInstance.show();
+                }
+            }
+        }
+    </script>
+
     <script th:src="@{/js/script.js}"></script>
     
 </body>
