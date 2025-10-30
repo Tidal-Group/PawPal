@@ -60,44 +60,31 @@ public class DashController {
 
     @GetMapping("")
     public String showDashboard(Principal principal, Model model) {
-        System.out.println("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-
-        acceptAuthenticated(principal, (authentication, utente) -> {
-            List<Appuntamento> listaAppuntamenti = new ArrayList<>();
-            if(isCliente(authentication))
-                listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
-            else if(isVeterinario(authentication))
-                listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
-            List<Recensione> listaRecensioni = new ArrayList<>();
-            if(isCliente(authentication))
-                listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
-            else if(isVeterinario(authentication))
-            listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
-            if(isCliente(authentication))
-                utente = clienteService.cercaPerId(utente.getId());
-            else if(isVeterinario(authentication))
-                utente = veterinarioService.cercaPerId(utente.getId());
-            model.addAttribute("user", utente);
-            model.addAttribute("lista_recensioni", listaRecensioni);
-            model.addAttribute("lista_appuntamenti", listaAppuntamenti);
-            model.addAttribute("ruolo", utente.getRuolo());
-        });
-        return "dashboard_utente";
-    }
-
-    @GetMapping("/profilo")
-    public String showProfilo(Model model, Principal principal) {
-        // DEBUG: Problema di sicurezza: tra i campi di utente, c'è anche la sua password
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
+
+                List<Appuntamento> listaAppuntamenti = new ArrayList<>();
+                if(isCliente(authentication))
+                    listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
+                else if(isVeterinario(authentication))
+                    listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
+
+                List<Recensione> listaRecensioni = new ArrayList<>();
+                if(isCliente(authentication))
+                    listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
+                else if(isVeterinario(authentication))
+                    listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
+
                 if(isCliente(authentication))
                     utente = clienteService.cercaPerId(utente.getId());
                 else if(isVeterinario(authentication))
                     utente = veterinarioService.cercaPerId(utente.getId());
-                model.addAttribute("utente", utente);
-                model.addAttribute("ruolo", utente.getRuolo());
+
+                model.addAttribute("user", utente);
+                model.addAttribute("lista_recensioni", listaRecensioni);
+                model.addAttribute("lista_appuntamenti", listaAppuntamenti);
             });
-            return "profilo";
+            return "dashboard_utente";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -111,7 +98,7 @@ public class DashController {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 userService.modificaUsername(utente.getId(), username);
             });
-            return "redirect:/dash/profilo";
+            return "redirect:/dash#modifica_username";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -125,7 +112,7 @@ public class DashController {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 userService.modificaPassword(utente.getId(), password);
             });
-            return "redirect:/dash/profilo";
+            return "redirect:/dash#modifica_password";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -143,7 +130,7 @@ public class DashController {
                     System.out.println("hello");
                     veterinarioService.modifica(utente.getId(), data);
             });
-            return "redirect:/dash#modifica_profilo";
+            return "redirect:/dash#modifica_dati";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             System.out.println(exception.getMessage());
@@ -152,19 +139,11 @@ public class DashController {
         }
     }
 
-    @GetMapping("/appuntamenti")
-    public String mostraAppuntamenti(Model model, Principal principal) {
+    @PostMapping("/profilo/elimina_account")
+    public String deleteAccount(@RequestParam String password, Principal principal) {        
         try {
-            acceptAuthenticated(principal, (authentication, utente) -> {
-                List<Appuntamento> listaAppuntamenti = new ArrayList<>();
-                if(isCliente(authentication))
-                    listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
-                else if(isVeterinario(authentication))
-                    listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
-                model.addAttribute("lista_appuntamenti", listaAppuntamenti);
-                model.addAttribute("ruolo", utente.getRuolo());
-            });
-            return "appuntamenti";
+            // TODO IMPLEMENT
+            return "redirect:/dash#elimina_account";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -196,27 +175,6 @@ public class DashController {
 
     }
 
-    @GetMapping("/recensioni")
-    public String showRecensioni(Model model, Principal principal) {
-        try {
-            acceptAuthenticated(principal, (authentication, utente) -> {
-                List<Recensione> listaRecensioni = new ArrayList<>();
-                if(isCliente(authentication))
-                    listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
-                else if(isVeterinario(authentication))
-                    listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
-                model.addAttribute("lista_recensioni", listaRecensioni);
-                model.addAttribute("ruolo", utente.getRuolo());
-            });
-            return "recensioni";
-        } catch(Exception exception) {
-            // IMPLEMENT CUSTOM ERROR HANDLING
-            exception.printStackTrace();
-            return "redirect:/error";
-        }
-
-    }
-
     @PostMapping("/recensioni/elimina_recensione")
     public String postMethodName(@RequestParam Long id) {
         try {
@@ -227,11 +185,6 @@ public class DashController {
             exception.printStackTrace();
             return "redirect:/error";
         }
-    }
-    
-    @GetMapping("/linee_guida")
-    public String showLineeGuida() {
-        return "linee_guida";
     }
 
 }
