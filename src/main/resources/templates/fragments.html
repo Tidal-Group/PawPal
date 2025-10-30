@@ -16,16 +16,18 @@
 
 <body>
 
+
     <!-- HEADER HOMEPAGE -->
     <header th:fragment="navbar(active)">
+        
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
             <div class="container-fluid">
 
                 <!-- LOGO -->
-                <a class="navbar-brand" th:href="@{/}">
-                    <img src="" alt="">
+                <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
+                    <img width="250px" height="250px" th:src="@{/img/logopawpal.svg}" alt="PawPal Logo" class="logo-img">
                 </a>
 
                 <!-- BOTTONE COLLAPSE -->
@@ -72,14 +74,10 @@
                             </li>
 
                             <li class="nav-item">
-                                <button class="btn btn-secondary" data-bs-target="#registrazioneClienteModal"
-                                    data-bs-toggle="modal">Registrati come cliente</button>
+                                <button class="btn btn-secondary" data-bs-target="#registrazioneClienteModal" data-bs-toggle="modal">Registrati</button>
                             </li>
 
-                            <li class="nav-item">
-                                <button class="btn btn-secondary" data-bs-target="#registrazioneVeterinarioModal"
-                                    data-bs-toggle="modal">Registrati come veterinario</button>
-                            </li>
+                        
 
                         </div>
                         <!-- </ANONIMO> -->
@@ -391,7 +389,7 @@
                     <div class="col-4"></div>
 
                     <div class="col-4 text-center">
-                        <button class="btn btn-outline-success" type="submit">Cerca</button>
+                        <button class="btn btn-outline-primary" type="submit">Cerca</button>
                     </div>
 
                     <div class="col-4"></div>
@@ -529,8 +527,9 @@
 
                     <div class="modal-footer">
                         <h4>Hai gi&#224; un account?</h4>
-                        <button class="btn btn-secondary" data-bs-target="#loginModal"
-                            data-bs-toggle="modal">Accedi</button>
+                        <button class="btn btn-secondary" data-bs-target="#loginModal" data-bs-toggle="modal">Accedi</button>
+                        <button class="btn btn-secondary" data-bs-target="#registrazioneVeterinarioModal" data-bs-toggle="modal">Vuoi registrarti come veterinario?</button>
+                        
                     </div>
 
                 </div>
