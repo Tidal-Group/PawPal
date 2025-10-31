@@ -183,18 +183,16 @@
                                 th:text="${appuntamento.indirizzoUtente}"
                             ></td>
                             <td th:text="${appuntamento.telefonoUtente}"></td>
-                            <td th:text="${appuntamento.dataOraAppuntamento}"></td>
+                            <td th:text="${#temporals.format(appuntamento.dataOraAppuntamento, 'dd/MM/yyyy HH:mm')}"></td>
                             <td th:text="${appuntamento.noteAppuntamento}"></td>
 
                             <td>
                                 <div>
                                     <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
-                                        <!-- <input type="hidden" name="id" th:value="${appuntamento.id}" /> -->
                                         <button type="submit" class="btn btn-primary">Modifica</button>
                                     </form>
 
                                     <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
-                                        <!-- <input type="hidden" name="id" th:value="${appuntamento.id}" /> -->
                                         <button type="submit" class="btn btn-danger">Elimina</button>
                                     </form>
                                 </div>
@@ -213,122 +211,60 @@
 
         </div>
 
-            <!-- Prenotazione (solo cliente) -->
-            <!-- <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}" class="nuovo-appuntamento">
-                <h3>Prenota un nuovo appuntamento</h3>
-                <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
-                    <label for="veterinario">Veterinario</label>
-                    <select name="veterinario" id="veterinario" required>
-                        <option value="">Seleziona...</option>
-                        <option th:each="v : ${veterinariDisponibili}" th:value="${v.id}" th:text="${v.nome}"></option>
-                    </select>
+        <div id="recensioni" class="container-fluid flex-column" style="display: none;">
+            
+            <section class="recensioni-section">
 
-                    <label for="data">Data</label>
-                    <input type="date" name="data" id="data" required>
-
-                    <label for="ora">Ora</label>
-                    <input type="time" name="ora" id="ora" required>
-
-                    <label for="motivo">Motivo</label>
-                    <textarea name="motivo" id="motivo" rows="3" placeholder="Descrivi il motivo..."
-                        required></textarea>
-
-                    <button type="submit" class="btn">Prenota</button>
-                </form>
-            </div> -->
-        </section>
-
-        <div id="recensioni" class="container-fluid flex-column" style="display: none;"></div>
-
-        <section class="recensioni-section">
-            <h2>Recensioni</h2>
-
-            <!-- CLIENTE: cronologia delle recensioni scritte -->
-            <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}">
-                <h3>Le tue recensioni</h3>
+                <h2
+                    th:text="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')} ?
+                             'Le tue recensioni' : 'Recensioni ricevute'"
+                >
+                    Recensioni
+                </h2>
 
                 <div th:if="${#lists.isEmpty(lista_recensioni)}">
-                    <p>Nessuna recensione inviata.</p>
+                    <p 
+                        th:text="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')} ?
+                                 'Nessuna recensione inviata' : 'Nessuna recensione ricevuta'"
+                    >
+                        Nessuna recensione.
+                    </p>
                 </div>
 
                 <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
-                    <li th:each="rec : ${lista_recensioni}" class="recensione-item">
+                    <li th:each="recensione : ${lista_recensioni}" class="recensione-item">
                         <div class="rec-header">
                             <strong class="rec-vet">
-                                <span
-                                    th:text="${rec.veterinario != null ? rec.veterinario.nome : 'Veterinario'}">Veterinario</span>
+                                <span 
+                                    th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ?
+                                             recensione.nomeUtente + ' ' + recensione.cognomeUtente : recensione.usernameUtente}"
+                                ></span>
                             </strong>
-                            <span class="rec-date"
-                                th:text="${rec.data != null ? #dates.format(rec.data,'dd/MM/yyyy') : ''}">01/01/2025</span>
-                            <span class="rec-rating" th:text="${rec.valutazione} + ' / 5'">5 / 5</span>
+                            <span
+                                class="rec-date"
+                                th:text="${#temporals.format(recensione.dataOraAppuntamento, 'dd/MM/yyyy')}"
+                            ></span>
+                            <span class="rec-rating" th:text="${recensione.votoRecensione} + ' / 5'"></span>
                         </div>
 
-                        <p class="rec-text" th:text="${rec.testo}">Testo recensione...</p>
+                        <p class="rec-text" th:text="${recensione.commentoRecensione}"></p>
 
-                        <div class="rec-meta">
-                            <small th:if="${rec.appuntamento != null}"
-                                th:text="'Appuntamento: ' + (${rec.appuntamento.data} != null ? #dates.format(rec.appuntamento.data,'dd/MM/yyyy') : '') + ' – ' + (${rec.appuntamento.ora} != null ? rec.appuntamento.ora : '')">Appuntamento</small>
-                        </div>
-
-                        <div class="rec-actions">
-                            <a th:href="@{/dash/recensioni/modifica/{id}(id=${rec.id})}" class="btn">Modifica</a>
-
-                            <form th:action="@{/dash/recensioni/elimina_recensione}" method="post"
-                                style="display:inline">
-                                <input type="hidden" name="_method" value="delete" />
-                                <input type="hidden" name="id" th:value="${rec.id}" />
+                        <div class="rec-actions" th:if="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE'))}">
+                            <form 
+                                th:action="@{/dash/recensioni/elimina_recensione}"
+                                method="post"
+                                style="display:inline"
+                            >
+                                <input type="hidden" name="id" th:value="${recensione.id}" />
                                 <button type="submit" class="btn btn-danger">Elimina</button>
                             </form>
                         </div>
                     </li>
                 </ul>
-            </div>
 
-            <!-- VETERINARIO: cronologia delle recensioni ricevute + possibilità di rispondere -->
-            <div th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
-                <h3>Recensioni ricevute</h3>
+            </section>
 
-                <div th:if="${#lists.isEmpty(lista_recensioni)}">
-                    <p>Nessuna recensione ricevuta.</p>
-                </div>
-
-                <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
-                    <li th:each="rec : ${lista_recensioni}" class="recensione-item">
-                        <div class="rec-header">
-                            <strong class="rec-from"
-                                th:text="${rec.cliente != null ? rec.cliente.nome : 'Cliente'}">Nome Cliente</strong>
-                            <span class="rec-date"
-                                th:text="${rec.data != null ? #dates.format(rec.data,'dd/MM/yyyy') : ''}">01/01/2025</span>
-                            <span class="rec-rating" th:text="${rec.valutazione} + ' / 5'">5 / 5</span>
-                        </div>
-
-                        <p class="rec-text" th:text="${rec.testo}">Testo recensione...</p>
-
-                        <div class="rec-meta">
-                            <small th:if="${rec.appuntamento != null}"
-                                th:text="'Appuntamento: ' + (${rec.appuntamento.data} != null ? #dates.format(rec.appuntamento.data,'dd/MM/yyyy') : '') + ' – ' + (${rec.appuntamento.ora} != null ? rec.appuntamento.ora : '')">Appuntamento</small>
-                        </div>
-
-                        <!-- Se è già presente una risposta, mostrarla -->
-                        <div class="rec-reply" th:if="${rec.risposta != null}">
-                            <p><strong>Risposta:</strong> <span th:text="${rec.risposta}">Testo risposta</span></p>
-                        </div>
-
-                        <!-- Form per inviare/modificare la risposta (invia a controller che gestisce creazione/aggiornamento) -->
-                        <!-- <form th:action="@{/dash/recensioni/rispondi}" method="post" class="reply-form">
-                            <input type="hidden" name="recensioneId" th:value="${rec.id}" />
-                            <label th:for="${'reply__' + ${rec.id}}">Rispondi</label>
-                            <textarea th:id="${'reply__' + ${rec.id}}" th:name="testoRisposta" rows="3"
-                                placeholder="Scrivi una risposta..." th:text="${rec.risposta}"></textarea>
-                            <div class="rec-actions">
-                                <button type="submit" class="btn">Invia risposta</button>
-                                <button type="reset" class="btn-cancel">Annulla</button>
-                            </div>
-                        </form> -->
-                    </li>
-                </ul>
-            </div>
-        </section>
+        </div>
 
         <div id="linee_guida" class="container-fluid flex-column" style="display: none;">
             <section>
@@ -358,21 +294,6 @@
     <div th:replace="fragments/dashboard_fragments :: modifica_conto(email, 'false')"></div>
     <div th:replace="fragments/dashboard_fragments :: modifica_conto(username, 'false')"></div>
     <div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
-
-    <script th:inline="javascript">
-        const modalId = /*[[${openModal}]]*/ null;
-
-        if (modalId) {
-            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                const modalElement = document.getElementById(modalId);
-
-                if (modalElement) {
-                    const modalInstance = new bootstrap.Modal(modalElement);
-                    modalInstance.show();
-                }
-            }
-        }
-    </script>
 
     <script th:src="@{/js/dashboard.js}" defer></script>
 

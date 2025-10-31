@@ -62,3 +62,27 @@
     <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
+
+            <!-- Prenotazione (solo cliente) -->
+            <!-- <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}" class="nuovo-appuntamento">
+                <h3>Prenota un nuovo appuntamento</h3>
+                <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
+                    <label for="veterinario">Veterinario</label>
+                    <select name="veterinario" id="veterinario" required>
+                        <option value="">Seleziona...</option>
+                        <option th:each="v : ${veterinariDisponibili}" th:value="${v.id}" th:text="${v.nome}"></option>
+                    </select>
+
+                    <label for="data">Data</label>
+                    <input type="date" name="data" id="data" required>
+
+                    <label for="ora">Ora</label>
+                    <input type="time" name="ora" id="ora" required>
+
+                    <label for="motivo">Motivo</label>
+                    <textarea name="motivo" id="motivo" rows="3" placeholder="Descrivi il motivo..."
+                        required></textarea>
+
+                    <button type="submit" class="btn">Prenota</button>
+                </form>
+            </div> -->
