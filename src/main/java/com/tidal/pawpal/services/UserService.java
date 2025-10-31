@@ -91,11 +91,13 @@ public class UserService extends UserServiceContract {
 
     @Override
     @Transactional
-    public User modificaEmail (Long idUser, String email) {
-        if(userRepository.findByEmail(email) != null) throw new ExistingEmailException();
+    public User modificaEmail (Long idUser, String newEmail, String confirmPassword) {
+        if(userRepository.findByEmail(newEmail) != null) throw new ExistingEmailException();
         Map<String, String> data = new HashMap<>();
-        data.put("email", email);
-        return modifica(idUser, data);
+        data.put("email", newEmail);
+        return modifica(idUser, data, (user) -> {
+            if(!user.getPassword().equals(confirmPassword)) throw new AuthenticationFailureException();
+        });
     }
     
     @Override
