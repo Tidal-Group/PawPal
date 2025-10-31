@@ -1,0 +1,188 @@
+<!-- SECTION RICERCA VETERINARI -->
+<section th:fragment="ricerca_veterinari">
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-12 text-center">
+                <h2>Trova il veterinario più adatto alle tue esigenze vicino a te</h2>
+            </div>
+
+        </div>
+
+        <form th:action="@{/veterinari/lista_veterinari}" method="get" style="display: contents;">
+
+            <div class="row">
+
+                <div class="col-2"></div>
+
+                <div class="col-8 text-center">
+                    <label class="form-label" for="citta">Città</label>
+                    <select class="form-select" name="citta" id="citta">
+                        <option value="" selected>-- Seleziona --</option>
+                        <option value="agrigento">Agrigento</option>
+                        <option value="alessandria">Alessandria</option>
+                        <option value="ancona">Ancona</option>
+                        <option value="aosta">Aosta</option>
+                        <option value="arezzo">Arezzo</option>
+                        <option value="ascoli piceno">Ascoli Piceno</option>
+                        <option value="asti">Asti</option>
+                        <option value="avellino">Avellino</option>
+                        <option value="bari">Bari</option>
+                        <option value="barletta-andria-trani">Barletta-Andria-Trani</option>
+                        <option value="belluno">Belluno</option>
+                        <option value="benevento">Benevento</option>
+                        <option value="bergamo">Bergamo</option>
+                        <option value="biella">Biella</option>
+                        <option value="bologna">Bologna</option>
+                        <option value="bolzano">Bolzano</option>
+                        <option value="brescia">Brescia</option>
+                        <option value="brindisi">Brindisi</option>
+                        <option value="cagliari">Cagliari</option>
+                        <option value="caltanissetta">Caltanissetta</option>
+                        <option value="campobasso">Campobasso</option>
+                        <option value="caserta">Caserta</option>
+                        <option value="catania">Catania</option>
+                        <option value="catanzaro">Catanzaro</option>
+                        <option value="chieti">Chieti</option>
+                        <option value="como">Como</option>
+                        <option value="cosenza">Cosenza</option>
+                        <option value="cremona">Cremona</option>
+                        <option value="crotone">Crotone</option>
+                        <option value="cuneo">Cuneo</option>
+                        <option value="enna">Enna</option>
+                        <option value="fermo">Fermo</option>
+                        <option value="ferrara">Ferrara</option>
+                        <option value="firenze">Firenze</option>
+                        <option value="foggia">Foggia</option>
+                        <option value="forlì-cesena">Forlì-Cesena</option>
+                        <option value="frosinone">Frosinone</option>
+                        <option value="genova">Genova</option>
+                        <option value="gorizia">Gorizia</option>
+                        <option value="grosseto">Grosseto</option>
+                        <option value="imperia">Imperia</option>
+                        <option value="isernia">Isernia</option>
+                        <option value="l'aquila">L'Aquila</option>
+                        <option value="la spezia">La Spezia</option>
+                        <option value="latina">Latina</option>
+                        <option value="lecce">Lecce</option>
+                        <option value="lecco">Lecco</option>
+                        <option value="livorno">Livorno</option>
+                        <option value="lodi">Lodi</option>
+                        <option value="lucca">Lucca</option>
+                        <option value="macerata">Macerata</option>
+                        <option value="mantova">Mantova</option>
+                        <option value="massa-carrara">Massa-Carrara</option>
+                        <option value="matera">Matera</option>
+                        <option value="messina">Messina</option>
+                        <option value="milano">Milano</option>
+                        <option value="modena">Modena</option>
+                        <option value="monza e della brianza">Monza e della Brianza</option>
+                        <option value="napoli">Napoli</option>
+                        <option value="novara">Novara</option>
+                        <option value="nuoro">Nuoro</option>
+                        <option value="oristano">Oristano</option>
+                        <option value="padova">Padova</option>
+                        <option value="palermo">Palermo</option>
+                        <option value="parma">Parma</option>
+                        <option value="pavia">Pavia</option>
+                        <option value="perugia">Perugia</option>
+                        <option value="pesaro e urbino">Pesaro e Urbino</option>
+                        <option value="pescara">Pescara</option>
+                        <option value="piacenza">Piacenza</option>
+                        <option value="pisa">Pisa</option>
+                        <option value="pistoia">Pistoia</option>
+                        <option value="pordenone">Pordenone</option>
+                        <option value="potenza">Potenza</option>
+                        <option value="prato">Prato</option>
+                        <option value="ragusa">Ragusa</option>
+                        <option value="ravenna">Ravenna</option>
+                        <option value="reggio calabria">Reggio Calabria</option>
+                        <option value="reggio emilia">Reggio Emilia</option>
+                        <option value="rieti">Rieti</option>
+                        <option value="rimini">Rimini</option>
+                        <option value="roma">Roma</option>
+                        <option value="rovigo">Rovigo</option>
+                        <option value="salerno">Salerno</option>
+                        <option value="sassari">Sassari</option>
+                        <option value="savona">Savona</option>
+                        <option value="siena">Siena</option>
+                        <option value="siracusa">Siracusa</option>
+                        <option value="sondrio">Sondrio</option>
+                        <option value="sud sardegna">Sud Sardegna</option>
+                        <option value="taranto">Taranto</option>
+                        <option value="teramo">Teramo</option>
+                        <option value="terni">Terni</option>
+                        <option value="torino">Torino</option>
+                        <option value="trapani">Trapani</option>
+                        <option value="trento">Trento</option>
+                        <option value="treviso">Treviso</option>
+                        <option value="trieste">Trieste</option>
+                        <option value="udine">Udine</option>
+                        <option value="varese">Varese</option>
+                        <option value="venezia">Venezia</option>
+                        <option value="verbano-cusio-ossola">Verbano-Cusio-Ossola</option>
+                        <option value="vercelli">Vercelli</option>
+                        <option value="verona">Verona</option>
+                        <option value="vibo valentia">Vibo Valentia</option>
+                        <option value="vicenza">Vicenza</option>
+                        <option value="viterbo">Viterbo</option>
+                    </select>
+                </div>
+
+                <div class="col-2"></div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-2"></div>
+
+                <div class="col-8 text-center">
+                    <label class="form-label" for="prestazione">Prestazione</label>
+                    <select class="form-select" id="prestazione" name="idPrestazione">
+                        <option value="" selected>-- Seleziona --</option>
+                        <option th:each="prest : ${lista_prestazioni}" th:value="${prest.id}"
+                            th:text="${prest.descrizione}"></option>
+                    </select>
+                </div>
+
+                <div class="col-2"></div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-2"></div>
+
+                <div class="col-8 text-center">
+                    <label class="form-label" for="specie">Animale</label>
+                    <select class="form-select" id="specie" name="idSpecie">
+                        <option value="" selected>-- Seleziona --</option>
+                        <option th:each="spec : ${lista_specie}" th:value="${spec.id}" th:text="${spec.nomeSpecie}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-2"></div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-4"></div>
+
+                <div class="col-4 text-center">
+                    <button class="btn btn-outline-primary" type="submit">Cerca</button>
+                </div>
+
+                <div class="col-4"></div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>

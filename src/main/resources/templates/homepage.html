@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments :: head('Home - PawPal')"></head>
+<head th:replace="fragments/generic_fragments :: head('Home - PawPal')"></head>
 <link rel="stylesheet" th:href="@{/css/fragments.css}">
 <link rel="stylesheet" th:href="@{/css/home.css}">
 
 
 <body>
 
-    <header th:replace="fragments :: navbar('home')" style="position: relative; z-index: 10;"></header>
+    <header th:replace="fragments/generic_fragments :: navbar('home')" style="position: relative; z-index: 10;"></header>
         <div class="position-relative w-100 vh-100">
             <img th:src="@{/img/banner.jpeg}" alt="Banner PawPal" class="img-fluid w-100 h-100"
                 style="object-fit: cover;">
@@ -21,7 +21,7 @@
     
     <main>
 
-        <section th:replace="fragments :: ricerca_veterinari"></section>
+        <section th:replace="fragments/veterinari_fragments :: ricerca_veterinari"></section>
 
         <section>
 
@@ -298,32 +298,16 @@
             </div>
         </section>
 
-        <section th:replace="fragments :: login"></section>
+        <section th:replace="fragments/auth_fragments :: login"></section>
 
-        <section th:replace="fragments :: registrazione_cliente"></section>
+        <section th:replace="fragments/auth_fragments :: registrazione_cliente"></section>
 
-        <section th:replace="fragments :: registrazione_veterinario"></section>
+        <section th:replace="fragments/auth_fragments :: registrazione_veterinario"></section>
 
     </main>
 
-    <footer th:replace="fragments :: footer"></footer>
+    <footer th:replace="fragments/generic_fragments :: footer"></footer>
 
-    <script th:inline="javascript">
-        const modalId = /*[[${openModal}]]*/ null;
-
-        if (modalId) {
-            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                const modalElement = document.getElementById(modalId);
-
-                if (modalElement) {
-                    const modalInstance = new bootstrap.Modal(modalElement);
-                    modalInstance.show();
-                }
-            }
-        }
-    </script>
-
-    <!-- <script th:src="@{/js/script.js}"></script> -->
     <script th:src="@{/js/registrazione.js}"></script>
 
 </body>

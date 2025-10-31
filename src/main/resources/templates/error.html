@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
   <link rel="stylesheet" th:href="@{/css/errore.css}">
-<head th:replace="fragments :: head('Errore')"></head>
+<head th:replace="fragments/generic_fragments :: head('Errore')"></head>
 
 <body>
-<header th:replace="fragments :: header('')"></header>
+<header th:replace="fragments/generic_fragments :: header('')"></header>
 
 <main class="main center-form">
   <div class="card error-card">
@@ -18,6 +18,6 @@
   </div>
 </main>
 
-<footer th:replace="fragments :: footer"></footer>
+<footer th:replace="fragments/generic_fragments :: footer"></footer>
 </body>
 </html>

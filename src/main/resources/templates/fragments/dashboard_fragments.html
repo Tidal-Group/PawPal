@@ -127,12 +127,7 @@
 
                         <div class="col-12">
                             <fieldset>
-                                <div
-                                    th:if="${errorMessage != null and errorMessage.length() > 0}"
-                                    th:text="${errorMessage}"
-                                    class="alert alert-danger"
-                                    role="alert"
-                                ></div>
+                                <div th:replace="fragments/generic_fragments :: error_message"></div>
 
                                 <div th:if="${verifica_vecchio} == 'true'">
                                     <label class="form-label" th:for="${'current_' + nome_campo}" th:text="|Inserire ${nome_campo} corrente:|">Inserire campo corrente</label>

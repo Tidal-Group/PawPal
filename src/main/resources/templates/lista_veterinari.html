@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: head('Cerca Veterinari - PawPal')"></head>
+<head th:replace="generic_fragments :: head('Cerca Veterinari - PawPal')"></head>
 <body>
-<header th:replace="fragments :: header('lista_veterinari')"></header>
+<header th:replace="generic_fragments :: header('lista_veterinari')"></header>
 
 <main class="main container">
     <h1>Ricerca Veterinari</h1>
@@ -60,6 +60,6 @@
     </table>
 </main>
 
-<footer th:replace="fragments :: footer"></footer>
+<footer th:replace="generic_fragments :: footer"></footer>
 </body>
 </html>
