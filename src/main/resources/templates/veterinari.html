@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>PawPal - Veterinari</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
 
+<head th:replace="fragments/generic_fragments :: head('Veterinari')"></head>
+
+<body>
     
-    <div th:replace="fragments :: headerFooter"></div>
+    <div th:replace="fragments/generic_fragments :: navbar(veterinari)"></div>
 
     <main>
         <div class="container">
@@ -57,7 +54,7 @@
     </main>
 
     
-    <footer th:replace="fragments :: footer"></footer>
+    <footer th:replace="fragments/generic_fragments :: footer"></footer>
 
     <script th:src="@{/js/script.js}"></script>
 </body>
