@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="generic_fragments :: head('Dashboard - PawPal')">
+<head th:replace="fragments/generic_fragments :: head('Dashboard - PawPal')">
 </head>
 
 <body>
 
-    <div th:insert="generic_fragments :: navbar(dashboard)"></div>
-    <div th:insert="dashboard_fragments :: dashboard-sidebar"></div>
+    <div th:replace="fragments/generic_fragments :: navbar(dashboard)"></div>
+    <div th:replace="fragments/dashboard_fragments :: dashboard-sidebar"></div>
 
     <main>
 
@@ -332,9 +332,9 @@
 
     </main>
 
-    <div th:replace="dashboard_fragments :: modifica_conto(email, 'false')"></div>
-    <div th:replace="dashboard_fragments :: modifica_conto(username, 'false')"></div>
-    <div th:replace="dashboard_fragments :: modifica_conto(password, 'true')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(email, 'false')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(username, 'false')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
 
     <script th:inline="javascript">
         const modalId = /*[[${openModal}]]*/ null;
