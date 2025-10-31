@@ -40,25 +40,42 @@
     <!-- SCRIPT TO OPEN MODALS ON REDIRECT -->
 
     <!-- SCRIPT TO CHANGE URL WHEN OPENING/CLOSING MODALS -->
-    <script defer>
+    <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", () => {
+            const currentPath = window.location.pathname;
+            const currentQuery = window.location.search;
+            
+            let originalFullUrl = currentPath + currentQuery;
+            
             document.querySelectorAll('.modal').forEach(modalElement => {
 
                 modalElement.addEventListener('show.bs.modal', function () {
                     const modalId = this.getAttribute('id');
-                    history.pushState(null, '', modalId);
+                    history.pushState(null, '', originalFullUrl + '#' + modalId);
                 });
 
                 modalElement.addEventListener('hide.bs.modal', function () {
-                    history.pushState(null, '', window.location.pathname + window.location.search);
+                    // When the modal hides:
+                    // Revert to the stored original URL, removing the "#modalId"
+                    history.pushState(null, '', originalFullUrl);
                 });
                 
+                // --- Popstate Listener remains mostly the same, targeting the hash ---
                 window.addEventListener('popstate', function() {
                     const currentHash = window.location.hash.substring(1);
-                    if (!currentHash || currentHash !== modalElement.getAttribute('id')) {
+                    const modalId = modalElement.getAttribute('id');
+                    
+                    if (currentHash !== modalId) {
                         const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if (modalInstance) modalInstance.hide();
+                        if (modalInstance && modalElement.classList.contains('show')) {
+                            // Only hide if the current hash doesn't match this modal's ID
+                            // and the modal is currently open.
+                            modalInstance.hide();
+                        }
                     }
+                    // Note: The browser's back/forward button will handle showing the modal 
+                    // if the hash matches, thanks to Bootstrap's data-bs-toggle="modal" 
+                    // combined with the URL hash.
                 });
 
             });
