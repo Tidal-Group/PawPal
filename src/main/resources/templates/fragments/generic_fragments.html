@@ -22,7 +22,7 @@
     <!-- BOOTSTRAP -->
 
     <!-- SCRIPT TO OPEN MODALS ON REDIRECT -->
-    <script th:inline="javascript">
+    <script th:inline="javascript" defer>
         document.addEventListener("DOMContentLoaded", () => {
             const modalId = /*[[${openModal}]]*/ null;
             if (modalId) {
@@ -40,7 +40,8 @@
     <!-- SCRIPT TO OPEN MODALS ON REDIRECT -->
 
     <!-- SCRIPT TO CHANGE URL WHEN OPENING/CLOSING MODALS -->
-    <script th:inline="javascript">
+    <script th:inline="javascript" defer>
+        /*[+
         document.addEventListener("DOMContentLoaded", () => {
             const currentPath = window.location.pathname;
             const currentQuery = window.location.search;
@@ -80,6 +81,7 @@
 
             });
         });
+        +]*/
     </script>
     <!-- SCRIPT TO CHANGE URL WHEN OPENING/CLOSING MODALS -->
 
