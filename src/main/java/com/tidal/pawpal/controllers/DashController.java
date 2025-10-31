@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tidal.pawpal.dto.AppuntamentoDto;
+import com.tidal.pawpal.dto.RecensioneDto;
 import com.tidal.pawpal.exceptions.AuthenticationFailureException;
 import com.tidal.pawpal.exceptions.ExistingEmailException;
 import com.tidal.pawpal.exceptions.ExistingUsernameException;
 import com.tidal.pawpal.models.Prestazione;
-import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Specie;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.services.AppuntamentoService;
@@ -98,7 +98,7 @@ public class DashController {
                 else if(isVeterinario(authentication))
                     listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
 
-                List<Recensione> listaRecensioni = new ArrayList<>();
+                List<RecensioneDto> listaRecensioni = new ArrayList<>();
                 if(isCliente(authentication))
                     listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
                 else if(isVeterinario(authentication))

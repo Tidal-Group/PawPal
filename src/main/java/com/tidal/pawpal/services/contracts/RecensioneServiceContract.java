@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.tidal.pawpal.dto.RecensioneDto;
 import com.tidal.pawpal.models.Recensione;
 
 import com.tidal.pawpal.services.abstractions.GenericService;
@@ -69,10 +70,10 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     }
 
     @PreAuthorize("permitAll")
-    public abstract List<Recensione> cercaPerVeterinario(Long idVeterinario);
+    public abstract List<RecensioneDto> cercaPerVeterinario(Long idVeterinario);
 
     @PreAuthorize("hasRole('ADMIN') || #idCliente == authentication.principal.id")
-    public abstract List<Recensione> cercaPerCliente(Long idCliente);
+    public abstract List<RecensioneDto> cercaPerCliente(Long idCliente);
 
     @PreAuthorize("permitAll")
     public abstract Double calcolaVotoMedioVeterinario(Long idVeterinario);

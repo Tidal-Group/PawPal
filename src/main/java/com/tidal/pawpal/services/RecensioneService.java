@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.dto.RecensioneDto;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Veterinario;
@@ -35,12 +36,12 @@ public class RecensioneService extends RecensioneServiceContract {
     }
 
     @Override
-    public List<Recensione> cercaPerVeterinario(Long Veterinario) {
+    public List<RecensioneDto> cercaPerVeterinario(Long Veterinario) {
         return recensioneRepository.findByVeterinario(Veterinario);
     }
 
     @Override
-    public List<Recensione> cercaPerCliente(Long idCliente) {
+    public List<RecensioneDto> cercaPerCliente(Long idCliente) {
         return recensioneRepository.findByCliente(idCliente);
     }
 

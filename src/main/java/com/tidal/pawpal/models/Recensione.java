@@ -25,7 +25,7 @@ public class Recensione extends GenericEntity {
     private Long id;
 
     @Column(name = "voto")
-    private int voto;
+    private Integer voto;
 
     @Column(name = "commento", length = 2000)
     private String commento;
