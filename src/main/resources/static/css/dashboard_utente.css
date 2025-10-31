@@ -1,0 +1,242 @@
+/* ============ STRUTTURA BASE ============ */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding: 30px;
+  margin-left: 220px; 
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-header h3 {
+  font-size: 1.4rem;
+  color: #2563eb;
+  margin: 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 10px;
+}
+
+.sidebar-nav a {
+  display: block;
+  text-decoration: none;
+  color: #222;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* ============ TITOLI E SEZIONI ============ */
+.dashboard-section,
+.recensioni-section {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-section h2,
+.recensioni-section h2 {
+  font-size: 1.8rem;
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+
+/* ============ TABELLE ============ */
+.table-appuntamenti {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-appuntamenti th,
+.table-appuntamenti td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-appuntamenti th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.table-appuntamenti tr:hover {
+  background-color: #f9fafb;
+}
+
+/* ============ BOTTONI ============ */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #1e40af;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* ============ FORM ============ */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label.form-label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+input.form-control,
+textarea.form-control,
+select.form-control {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+/* ============ RECENSIONI ============ */
+.recensioni-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recensione-item {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.rec-date,
+.rec-rating {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.rec-text {
+  margin: 10px 0;
+}
+
+.rec-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ============ MESSAGGI / STATO ============ */
+.no-data {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 20px;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 992px) {
+  body {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  main {
+    margin-left: 0;
+    padding: 20px;
+  }
+}

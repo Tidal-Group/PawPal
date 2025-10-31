@@ -1,44 +1,48 @@
 <!-- HEADER DASHBOARD -->
 <header th:fragment="dashboard-sidebar">
+    <link rel="stylesheet" th:href="@{/css/dashboard_fragments.css}">
 
-    <nav id="dashboard-sidebar" class="nav flex-column border p-2 bg-light vh-100 position-fixed top-0 start-0" style="width: 200px;">
-        
+
+    <nav id="dashboard-sidebar" class="nav flex-column border p-2 bg-light vh-100 position-fixed top-0 start-0"
+        style="width: 200px;">
+
         <ul class="navbar-nav">
 
             <li class="nav-item">
 
-                <button
-                    class="nav-link btn btn-link text-decoration-none" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#profilo_submenu" 
-                    aria-expanded="false" 
-                    aria-controls="profilo_submenu"
-                >
+                <button class="nav-link btn btn-link text-decoration-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#profilo_submenu" aria-expanded="false" aria-controls="profilo_submenu">
                     Profilo
                 </button>
 
                 <div class="collapse" id="profilo_submenu">
                     <div class="card card-body p-0 border-0">
-                        <button onclick="apriModificaDati()" class="btn btn-secondary" th:classappend="${active} == 'profilo' ? ' active' : ''">Modifica dati</button>
-                        <button class="btn btn-secondary" data-bs-target="#modal-email" data-bs-toggle="modal">Cambia email</button>
-                        <button class="btn btn-secondary" data-bs-target="#modal-username" data-bs-toggle="modal">Cambia username</button>
-                        <button class="btn btn-secondary" data-bs-target="#modal-password" data-bs-toggle="modal">Cambia password</button>
+                        <button onclick="apriModificaDati()" class="btn btn-secondary"
+                            th:classappend="${active} == 'profilo' ? ' active' : ''">Modifica dati</button>
+                        <button class="btn btn-secondary" data-bs-target="#modal-email" data-bs-toggle="modal">Cambia
+                            email</button>
+                        <button class="btn btn-secondary" data-bs-target="#modal-username" data-bs-toggle="modal">Cambia
+                            username</button>
+                        <button class="btn btn-secondary" data-bs-target="#modal-password" data-bs-toggle="modal">Cambia
+                            password</button>
                     </div>
                 </div>
 
             </li>
 
             <li class="nav-item">
-                <button onclick="apriAppuntamenti()" class="btn btn-secondary" th:classappend="${active} == 'appuntamenti' ? ' active' : ''">Appuntamenti</a>
+                <button onclick="apriAppuntamenti()" class="btn btn-secondary"
+                    th:classappend="${active} == 'appuntamenti' ? ' active' : ''">Appuntamenti</a>
             </li>
 
             <li class="nav-item">
-                <button onclick="apriRecensioni()" class="btn btn-secondary" th:classappend="${active} == 'recensioni' ? ' active' : ''">Recensioni</a>
+                <button onclick="apriRecensioni()" class="btn btn-secondary"
+                    th:classappend="${active} == 'recensioni' ? ' active' : ''">Recensioni</a>
             </li>
 
             <li class="nav-item" th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
-                <button onclick="apriLineeGuida()" class="btn btn-secondary" th:classappend="${active} == 'linee_guida' ? ' active' : ''">Linee guida</a>
+                <button onclick="apriLineeGuida()" class="btn btn-secondary"
+                    th:classappend="${active} == 'linee_guida' ? ' active' : ''">Linee guida</a>
             </li>
 
         </ul>
@@ -59,8 +63,8 @@
 
             const dashboardPage = /*[[${dashboardPage}]]*/ null;
 
-            if(dashboardPage) {
-                switch(dashboardPage) {
+            if (dashboardPage) {
+                switch (dashboardPage) {
                     case 'modifica_dati':
                         apriModificaDati();
                         break;
@@ -78,46 +82,48 @@
         });
 
         function apriModificaDati() {
-            if(modificaDati) modificaDati.style.display = "flex";
-            if(appuntamenti) appuntamenti.style.display = "none";
-            if(recensioni) recensioni.style.display = "none";
-            if(lineeGuida) lineeGuida.style.display = "none";
+            if (modificaDati) modificaDati.style.display = "flex";
+            if (appuntamenti) appuntamenti.style.display = "none";
+            if (recensioni) recensioni.style.display = "none";
+            if (lineeGuida) lineeGuida.style.display = "none";
         }
 
         function apriAppuntamenti() {
-            if(appuntamenti) appuntamenti.style.display = "flex";
-            if(modificaDati) modificaDati.style.display = "none";
-            if(recensioni) recensioni.style.display = "none";
-            if(lineeGuida) lineeGuida.style.display = "none";
+            if (appuntamenti) appuntamenti.style.display = "flex";
+            if (modificaDati) modificaDati.style.display = "none";
+            if (recensioni) recensioni.style.display = "none";
+            if (lineeGuida) lineeGuida.style.display = "none";
         }
 
         function apriRecensioni() {
-            if(recensioni) recensioni.style.display = "flex";
-            if(modificaDati) modificaDati.style.display = "none";
-            if(appuntamenti) appuntamenti.style.display = "none";
-            if(lineeGuida) lineeGuida.style.display = "none";
+            if (recensioni) recensioni.style.display = "flex";
+            if (modificaDati) modificaDati.style.display = "none";
+            if (appuntamenti) appuntamenti.style.display = "none";
+            if (lineeGuida) lineeGuida.style.display = "none";
         }
 
         function apriLineeGuida() {
-            if(lineeGuida) lineeGuida.style.display = "flex";
-            if(modificaDati) modificaDati.style.display = "none";
-            if(appuntamenti) appuntamenti.style.display = "none";
-            if(recensioni) recensioni.style.display = "none";
+            if (lineeGuida) lineeGuida.style.display = "flex";
+            if (modificaDati) modificaDati.style.display = "none";
+            if (appuntamenti) appuntamenti.style.display = "none";
+            if (recensioni) recensioni.style.display = "none";
         }
     </script>
-    
+
 </header>
 
 <div th:fragment="modifica_conto(nome_campo, verifica_vecchio)">
 
-    <div class="modal fade" th:id="${'modal-' + nome_campo}" aria-hidden="true" th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
-        
+    <div class="modal fade" th:id="${'modal-' + nome_campo}" aria-hidden="true"
+        th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
+
         <div class="modal-dialog modal-dialog-centered">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="${'label-' + nome_campo}" th:text="|Modifica ${nome_campo}|">Modifica campo</h1>
+                    <h1 class="modal-title fs-5" id="${'label-' + nome_campo}" th:text="|Modifica ${nome_campo}|">
+                        Modifica campo</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -130,42 +136,33 @@
                                 <div th:replace="fragments/generic_fragments :: error_message"></div>
 
                                 <div th:if="${verifica_vecchio} == 'true'">
-                                    <label class="form-label" th:for="${'current_' + nome_campo}" th:text="|Inserire ${nome_campo} corrente:|">Inserire campo corrente</label>
-                                    <input
-                                        class="form-control"
-                                        th:id="${'current_' + nome_campo}"
+                                    <label class="form-label" th:for="${'current_' + nome_campo}"
+                                        th:text="|Inserire ${nome_campo} corrente:|">Inserire campo corrente</label>
+                                    <input class="form-control" th:id="${'current_' + nome_campo}"
                                         th:name="${'current_' + nome_campo}"
                                         th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
-                                        required
-                                    >
+                                        required>
                                 </div>
 
                                 <div>
-                                    <label class="form-label" th:for="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}" th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
-                                    <input
-                                        class="form-control"
+                                    <label class="form-label"
+                                        th:for="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
+                                        th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
+                                    <input class="form-control"
                                         th:id="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
                                         th:name="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
                                         th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
-                                        required
-                                    >
+                                        required>
                                 </div>
 
-                                <label
-                                    class="form-label"
-                                    th:for="${'confirm_' + nome_campo}"
-                                    th:text="${verifica_vecchio == 'true' ? ('Confermare ' + nome_campo + ':') : 'Scrivere ''CONFERMO'' per confermare:'}"
-                                >
+                                <label class="form-label" th:for="${'confirm_' + nome_campo}"
+                                    th:text="${verifica_vecchio == 'true' ? ('Confermare ' + nome_campo + ':') : 'Scrivere ''CONFERMO'' per confermare:'}">
                                     Confermare campo
                                 </label>
-                                <input
-                                    class="form-control"
-                                    th:id="${'confirm_' + nome_campo}"
+                                <input class="form-control" th:id="${'confirm_' + nome_campo}"
                                     th:name="${'confirm_' + nome_campo}"
                                     th:type="${verifica_vecchio == 'true' ? (nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')) : 'text'}"
-                                    th:placeholder="${verifica_vecchio == 'true' ? '' : 'CONFERMO'}"
-                                    required
-                                >
+                                    th:placeholder="${verifica_vecchio == 'true' ? '' : 'CONFERMO'}" required>
 
                                 <button class="btn btn-secondary" type="submit" th:text="Aggiorna"></button>
                             </fieldset>
