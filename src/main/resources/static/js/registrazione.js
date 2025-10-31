@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     verificaPasswordGenerica('password_cliente', 'check_password_cliente', 'check_password_error_cliente');
     verificaPasswordGenerica('password_veterinario', 'check_password_veterinario', 'check_password_error_veterinario');
 
-    const formCliente = document.querySelector('#registrazioneClienteModal form');
+    const formCliente = document.querySelector('#auth\\/register_cliente form');
     if (formCliente) {
         const cf = formCliente.querySelector('#codice_fiscale_cliente');
         const telefono = formCliente.querySelector('#telefono_cliente');
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-     const formVet = document.querySelector('#registrazioneVeterinarioModal form');
+     const formVet = document.querySelector('#auth\\/register_veterinario form');
     if (formVet) {
         const indirizzo = formVet.querySelector('#indirizzo_studio_veterinario');
         const iscrizione = formVet.querySelector('#iscrizione_albo_veterinario');
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const modalId = ['registrazioneClienteModal', 'registrazioneVeterinarioModal'];
+    const modalId = ['auth/register_cliente', 'auth/register_veterinario'];
     modalId.forEach(id => {
         const modalElement = document.getElementById(id);
         if (!modalElement) return;
