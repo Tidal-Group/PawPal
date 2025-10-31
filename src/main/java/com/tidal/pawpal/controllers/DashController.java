@@ -2,8 +2,10 @@ package com.tidal.pawpal.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tidal.pawpal.exceptions.AuthenticationFailureException;
 import com.tidal.pawpal.models.Appuntamento;
+import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.models.Recensione;
+import com.tidal.pawpal.models.Specie;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.services.AppuntamentoService;
 import com.tidal.pawpal.services.ClienteService;
+import com.tidal.pawpal.services.PrestazioneService;
 import com.tidal.pawpal.services.RecensioneService;
+import com.tidal.pawpal.services.SpecieService;
 import com.tidal.pawpal.services.UserService;
 import com.tidal.pawpal.services.VeterinarioService;
 
@@ -52,6 +58,12 @@ public class DashController {
     public VeterinarioService veterinarioService;
 
     @Autowired
+    private PrestazioneService prestazioneService;
+
+    @Autowired
+    private SpecieService specieService;
+
+    @Autowired
     public AppuntamentoService appuntamentoService;
 
     @Autowired
@@ -65,6 +77,19 @@ public class DashController {
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
 
+                Set<Specie> listaSpecieSelezionate = new HashSet<>();
+                if(isVeterinario(authentication))
+                    listaSpecieSelezionate = specieService.cercaPerVeterinario(utente.getId());
+
+                Set<Prestazione> listaPrestazioniSelezionate = new HashSet<>();
+                if(isVeterinario(authentication))
+                    listaPrestazioniSelezionate = prestazioneService.cercaPerVeterinario(utente.getId());
+
+                if(isCliente(authentication))
+                    utente = clienteService.cercaPerId(utente.getId());
+                else if(isVeterinario(authentication))
+                    utente = veterinarioService.cercaPerId(utente.getId());
+
                 List<Appuntamento> listaAppuntamenti = new ArrayList<>();
                 if(isCliente(authentication))
                     listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
@@ -77,11 +102,10 @@ public class DashController {
                 else if(isVeterinario(authentication))
                     listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
 
-                if(isCliente(authentication))
-                    utente = clienteService.cercaPerId(utente.getId());
-                else if(isVeterinario(authentication))
-                    utente = veterinarioService.cercaPerId(utente.getId());
-
+                model.addAttribute("lista_specie", specieService.elencaTutti());
+                model.addAttribute("lista_specie_selezionate", listaSpecieSelezionate);
+                model.addAttribute("lista_prestazioni_selezionate", listaPrestazioniSelezionate);
+                model.addAttribute("lista_prestazioni", prestazioneService.elencaTutti());
                 model.addAttribute("user", utente);
                 model.addAttribute("lista_recensioni", listaRecensioni);
                 model.addAttribute("lista_appuntamenti", listaAppuntamenti);

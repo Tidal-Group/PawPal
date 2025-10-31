@@ -1,5 +1,7 @@
 package com.tidal.pawpal.services;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class SpecieService extends SpecieServiceContract {
     @Override
     public Specie cercaPerNomeSpecie(String nomeSpecie) {
         return specieRepository.findByNomeSpecie(nomeSpecie);
+    }
+
+    @Override
+    public Set<Specie> cercaPerVeterinario(Long idVeterinario) {
+        return specieRepository.findByIdVeterinario(idVeterinario);
     }
 
 }

@@ -22,4 +22,9 @@ public class PrestazioneService extends PrestazioneServiceContract {
         return prestazioneRepository.findByRangePrezzo(prezzoMin, prezzoMax);
     }
 
+    @Override
+    public Set<Prestazione> cercaPerVeterinario(Long idVeterinario) {
+        return prestazioneRepository.findByIdVeterinario(idVeterinario);
+    }
+
 }

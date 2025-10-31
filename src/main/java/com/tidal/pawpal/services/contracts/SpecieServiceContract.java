@@ -2,6 +2,7 @@ package com.tidal.pawpal.services.contracts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -81,5 +82,8 @@ public abstract class SpecieServiceContract extends GenericService<Specie, Long>
 
     @PreAuthorize("permitAll")
     public abstract Specie cercaPerNomeSpecie(String nomeSpecie);
+
+    @PreAuthorize("permitAll")
+    public abstract Set<Specie> cercaPerVeterinario(Long idVeterinario);
 
 }
