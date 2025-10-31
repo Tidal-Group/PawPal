@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +76,17 @@ public class VeterinariController {
         }
     }
 
+    @GetMapping("/lista_veterinari/{idVeterinario}")
+    public String getMethodName(
+        @PathVariable Long idVeterinario,
+        Model model
+    ) {
+        // DEBUG: risolvere il problema dell'id del modale
+        model.addAttribute("openModal", "lista_veterinari/" + idVeterinario);
+        model.addAttribute("veterinario", veterinarioService.cercaPerId(idVeterinario));
+        return "lista_veterinari";
+    }
+    
     @PostMapping("/inserisci_appuntamento")
     public String sendAppuntamentoData(@RequestParam Map<String, String> data, Principal principal) {        
         try {
