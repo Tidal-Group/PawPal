@@ -145,15 +145,12 @@
                                 </div>
 
                                 <div>
-                                    <label class="form-label"
-                                        th:for="${'new_' + nome_campo}"
+                                    <label class="form-label" th:for="${'new_' + nome_campo}"
                                         th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
-                                    <input class="form-control"
-                                        th:id="${'new_' + nome_campo}"
+                                    <input class="form-control" th:id="${'new_' + nome_campo}"
                                         th:name="${'new_' + nome_campo}"
                                         th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
-                                        th:value="${verifica_vecchio == 'true' ? '' : user[nome_campo]}"
-                                        required>
+                                        th:value="${verifica_vecchio == 'true' ? '' : user[nome_campo]}" required>
                                 </div>
 
                                 <label class="form-label"
@@ -165,8 +162,7 @@
                                     th:id="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
                                     th:name="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
                                     th:type="${verifica_vecchio == 'true' ? (nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')) : 'password'}"
-                                    required
-                                >
+                                    required>
 
                                 <button class="btn btn-secondary" type="submit" th:text="Aggiorna"></button>
                             </fieldset>
