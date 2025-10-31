@@ -19,8 +19,8 @@ public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
     List<RecensioneDto> findByVeterinario(@Param("id_veterinario") Long idVeterinario);
 
     @Query(
-        "SELECT new com.tidal.pawpal.dto.RecensioneDto(r.id, v.id, r.voto, r.commento, r.dataRecensione, NULL, v.nome, v.cognome) " + 
-        "FROM Recensione r JOIN r.veterinario v JOIN r.cliente c WHERE v.id = :id_veterinario"
+        "SELECT new com.tidal.pawpal.dto.RecensioneDto(r.id, c.id, r.voto, r.commento, r.dataRecensione, NULL, v.nome, v.cognome) " + 
+        "FROM Recensione r JOIN r.veterinario v JOIN r.cliente c WHERE c.id = :id_cliente"
     )
     List<RecensioneDto> findByCliente(@Param("id_cliente") Long idCliente);
 

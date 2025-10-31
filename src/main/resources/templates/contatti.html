@@ -3,25 +3,11 @@
 
 <link rel="stylesheet" th:href="@{/css/contatti.css}">
 
-<head th:replace="fragments :: head('Contatti - PawPal')">
+<head th:replace="fragments/generic_fragments :: head('Contatti - PawPal')">
 </head>
 
 <body>
     <header th:replace="fragments/generic_fragments :: navbar('Contatti')"></header>
-
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h3>Dashboard</h3>
-        </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a th:href="@{/dash/home}">Home</a></li>
-                <li><a th:href="@{/dash/appuntamenti}">Appuntamenti</a></li>
-                <li><a th:href="@{/dash/recensioni}">Recensioni</a></li>
-                <li><a th:href="@{/dash/contatti}">Contatti</a></li>
-            </ul>
-        </nav>
-    </div>
 
     <main class="main-content">
         <section class="contatti-section">

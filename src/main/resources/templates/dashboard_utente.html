@@ -148,6 +148,12 @@
 
             </section>
 
+            <section>
+
+                <!-- AGGIUNGERE ELIMINAZIONE ACCOUNT -->
+
+            </section>
+
         </div>
 
         <div id="appuntamenti" class="container-fluid flex-column" style="display: none;">
@@ -242,7 +248,7 @@
                             </strong>
                             <span
                                 class="rec-date"
-                                th:text="${#temporals.format(recensione.dataOraAppuntamento, 'dd/MM/yyyy')}"
+                                th:text="${#temporals.format(recensione.dataRecensione, 'dd/MM/yyyy')}"
                             ></span>
                             <span class="rec-rating" th:text="${recensione.votoRecensione} + ' / 5'"></span>
                         </div>
@@ -255,7 +261,7 @@
                                 method="post"
                                 style="display:inline"
                             >
-                                <input type="hidden" name="id" th:value="${recensione.id}" />
+                                <input type="hidden" name="id" th:value="${recensione.idRecensione}" />
                                 <button type="submit" class="btn btn-danger">Elimina</button>
                             </form>
                         </div>
@@ -296,12 +302,6 @@
     <div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
 
     <script th:src="@{/js/dashboard.js}" defer></script>
-
-    <style>
-        body {
-            margin-left: 200px;
-        }
-    </style>
 
 </body>
 
