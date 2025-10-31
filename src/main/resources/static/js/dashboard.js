@@ -2,7 +2,6 @@ function isPristine(inputElement) {
     return !!inputElement && (inputElement.defaultValue || '').trim() === (inputElement.value || '').trim();
 }
 
-
 function mostraErrore(input, message) {
     if (!input) return;
     const errorId = input.id + '_error';
@@ -21,14 +20,12 @@ function mostraErrore(input, message) {
     errorMessage.style.display = 'block';
 }
 
-
 function nascondiErrore(input) {
     if (!input) return;
     const errorId = input.id + '_error';
     const errorMessage = document.getElementById(errorId);
     if (errorMessage) errorMessage.style.display = 'none';
 }
-
 
 function validaTestoNonVuoto(input, nomeCampo) {
     const value = (input.value || '').trim();
@@ -39,7 +36,6 @@ function validaTestoNonVuoto(input, nomeCampo) {
     nascondiErrore(input);
     return true;
 }
-
 
 function validaEmail(input) {
     const value = (input.value || '').trim();
@@ -57,7 +53,6 @@ function validaEmail(input) {
         return true;
     }
 }
-
 
 function validaCodiceFiscale(input) {
     const value = (input.value || '').trim();
@@ -90,7 +85,6 @@ function validaTelefono(input) {
         return true;
     }
 }
-
 
 function validaIscrizioneAlbo(input) {
     const value = (input.value || '').trim();
@@ -173,7 +167,6 @@ function verificaCorrispondenzaGenerica(inputElement, confirmInput, errorMessage
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const formEmail = document.querySelector('#modal-email form');
@@ -181,24 +174,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentEmail = formEmail.querySelector('#current_email');
         const newEmail = formEmail.querySelector('#new_email');
-        const confirmEmail = formEmail.querySelector('#confirm_email');
-        
+        const confirmEmail = formEmail.querySelector('#confirm_email');     
         const newEmailInput = newEmail || formEmail.querySelector('#email');
         const confirmEmailInput = confirmEmail || formEmail.querySelector('#confirm_email');
 
-        if (newEmailInput) {
-            
+        if (newEmailInput) {        
             newEmailInput.addEventListener('input', () => validaEmail(newEmailInput));
         }
 
         formEmail.addEventListener('submit', (e) => {
             let isValid = true;
             
-            if (currentEmail && !validaTestoNonVuoto(currentEmail, 'Email corrente')) isValid = false;
+            if (currentEmail && !validaTestoNonVuoto(currentEmail, 'Email corrente')) 
+                isValid = false;
             
-            if (newEmailInput && !validaEmail(newEmailInput)) isValid = false;
+            if (newEmailInput && !validaEmail(newEmailInput)) 
+                isValid = false;
 
-            if (confirmEmailInput && !validaTestoNonVuoto(confirmEmailInput, 'Conferma')) isValid = false; 
+            if (confirmEmailInput && !validaTestoNonVuoto(confirmEmailInput, 'Conferma')) 
+                isValid = false; 
             
             if (!isValid) {
                 e.preventDefault();
@@ -210,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formPassword) {
         const currentPass = formPassword.querySelector('#current_password');
         const newPass = formPassword.querySelector('#new_password');
-
         const confirmPass = formPassword.querySelector('#confirm_password');
         
         if (newPass && confirmPass) {
@@ -222,11 +215,14 @@ document.addEventListener('DOMContentLoaded', () => {
             formPassword.addEventListener('submit', (e) => {
                 let isValid = true;
 
-                if (currentPass && !validaTestoNonVuoto(currentPass, 'Password corrente')) isValid = false;
+                if (currentPass && !validaTestoNonVuoto(currentPass, 'Password corrente')) 
+                    isValid = false;
 
-                if (newPass && !validaPassword(newPass)) isValid = false;
+                if (newPass && !validaPassword(newPass)) 
+                    isValid = false;
 
-                if (confirmPass && !validaTestoNonVuoto(confirmPass, 'Conferma Password')) isValid = false;
+                if (confirmPass && !validaTestoNonVuoto(confirmPass, 'Conferma Password')) 
+                    isValid = false;
                 
                 const val1 = (newPass.value || '').trim();
                 const val2 = (confirmPass.value || '').trim();
@@ -278,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const descrizione = formModificaDati.querySelector('#descrizione');           
         const specieTrattate = formModificaDati.querySelector('#specieTrattate');
         const prestazioniOfferte = formModificaDati.querySelector('#prestazioniOfferte');
-
         const submitBtn = formModificaDati.querySelector('button[type="submit"]');
 
         if (nome) nome.addEventListener('input', () => validaTestoNonVuoto(nome, 'Nome'));
@@ -310,16 +305,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (!validaTelefono(telefono)) isValid = false;
             }
 
-            if (indirizzo && !validaIndirizzo(indirizzo)) isValid = false;
-            if (iscrizione && !validaIscrizioneAlbo(iscrizione)) isValid = false;
+            if (indirizzo && !validaIndirizzo(indirizzo)) 
+                isValid = false;
+
+            if (iscrizione && !validaIscrizioneAlbo(iscrizione)) 
+                isValid = false;
             
-            if (specializzazione && !validaTestoNonVuoto(specializzazione, 'Specializzazione')) isValid = false;
-            if (disponibilita && !validaTestoNonVuoto(disponibilita, 'Disponibilità')) isValid = false;
-            if (descrizione && !validaTestoNonVuoto(descrizione, 'Descrizione')) isValid = false;
+            if (specializzazione && !validaTestoNonVuoto(specializzazione, 'Specializzazione')) 
+                isValid = false;
 
-            if (specieTrattate && !validaTestoNonVuoto(specieTrattate, 'Specie Trattate')) isValid = false;
-            if (prestazioniOfferte && !validaTestoNonVuoto(prestazioniOfferte, 'Prestazioni Offerte')) isValid = false;
+            if (disponibilita && !validaTestoNonVuoto(disponibilita, 'Disponibilità')) 
+                isValid = false;
+            if (descrizione && !validaTestoNonVuoto(descrizione, 'Descrizione')) 
+                isValid = false;
 
+            if (specieTrattate && !validaTestoNonVuoto(specieTrattate, 'Specie Trattate')) 
+                isValid = false;
+            if (prestazioniOfferte && !validaTestoNonVuoto(prestazioniOfferte, 'Prestazioni Offerte')) 
+                isValid = false;
 
             if (!isValid) {
                 e.preventDefault();
