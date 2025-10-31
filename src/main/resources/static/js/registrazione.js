@@ -253,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const form of forms) {
             const inputs = form.querySelectorAll('input, textarea, select');
-
             const hasChanges = Array.from(inputs).some(input => !isPristine(input));
             if (hasChanges) {
                 return true; 
@@ -263,8 +262,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('beforeunload', (e) => {
-        if (checkFormChanges()) {
-            
+
+        if (!formSubmitting && checkFormChanges()) { 
             e.preventDefault(); 
             e.returnValue = ''; 
         }
