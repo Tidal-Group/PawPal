@@ -91,20 +91,24 @@ public class UserService extends UserServiceContract {
 
     @Override
     @Transactional
-    public User modificaEmail (Long idUser, String email) {
-        if(userRepository.findByEmail(email) != null) throw new ExistingEmailException();
+    public User modificaEmail (Long idUser, String newEmail, String confirmPassword) {
+        if(userRepository.findByEmail(newEmail) != null) throw new ExistingEmailException();
         Map<String, String> data = new HashMap<>();
-        data.put("email", email);
-        return modifica(idUser, data);
+        data.put("email", newEmail);
+        return modifica(idUser, data, (user) -> {
+            if(!user.getPassword().equals(confirmPassword)) throw new AuthenticationFailureException();
+        });
     }
     
     @Override
     @Transactional
-    public User modificaUsername(Long idUser, String username) {
-        if(userRepository.findByUsername(username) != null) throw new ExistingUsernameException();
+    public User modificaUsername(Long idUser, String newUsername, String confirmPassword) {
+        if(userRepository.findByUsername(newUsername) != null) throw new ExistingUsernameException();
         Map<String, String> data = new HashMap<>();
-        data.put("username", username);
-        User updatedUser = modifica(idUser, data);
+        data.put("username", newUsername);
+        User updatedUser = modifica(idUser, data, (user) -> {
+            if(!user.getPassword().equals(confirmPassword)) throw new AuthenticationFailureException();
+        });
         refreshSecurityContext(updatedUser.getUsername());
         return updatedUser;
     }

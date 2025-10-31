@@ -146,23 +146,27 @@
 
                                 <div>
                                     <label class="form-label"
-                                        th:for="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
+                                        th:for="${'new_' + nome_campo}"
                                         th:text="|Inserire ${nome_campo}:|">Inserire campo</label>
                                     <input class="form-control"
-                                        th:id="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
-                                        th:name="${(verifica_vecchio == 'true' ? 'new_' : '') + nome_campo}"
+                                        th:id="${'new_' + nome_campo}"
+                                        th:name="${'new_' + nome_campo}"
                                         th:type="${nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')}"
+                                        th:value="${verifica_vecchio == 'true' ? '' : user[nome_campo]}"
                                         required>
                                 </div>
 
-                                <label class="form-label" th:for="${'confirm_' + nome_campo}"
-                                    th:text="${verifica_vecchio == 'true' ? ('Confermare ' + nome_campo + ':') : 'Scrivere ''CONFERMO'' per confermare:'}">
+                                <label class="form-label"
+                                    th:for="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
+                                    th:text="${verifica_vecchio == 'true' ? ('Confermare ' + nome_campo + ':') : 'Inserire password corrente:'}">
                                     Confermare campo
                                 </label>
-                                <input class="form-control" th:id="${'confirm_' + nome_campo}"
-                                    th:name="${'confirm_' + nome_campo}"
-                                    th:type="${verifica_vecchio == 'true' ? (nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')) : 'text'}"
-                                    th:placeholder="${verifica_vecchio == 'true' ? '' : 'CONFERMO'}" required>
+                                <input class="form-control"
+                                    th:id="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
+                                    th:name="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
+                                    th:type="${verifica_vecchio == 'true' ? (nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')) : 'password'}"
+                                    required
+                                >
 
                                 <button class="btn btn-secondary" type="submit" th:text="Aggiorna"></button>
                             </fieldset>

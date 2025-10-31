@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tidal.pawpal.dto.AppuntamentoDto;
 import com.tidal.pawpal.exceptions.AuthenticationFailureException;
+import com.tidal.pawpal.exceptions.ExistingEmailException;
+import com.tidal.pawpal.exceptions.ExistingUsernameException;
 import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Specie;
@@ -126,12 +128,21 @@ public class DashController {
     
 
     @PostMapping("/profilo/modifica_username")
-    public String sendUsername(@RequestParam String username, Principal principal) {        
+    public String sendUsername(
+        Principal principal,
+        RedirectAttributes redirectAttributes,
+        @RequestParam("new_username") String newUsername,
+        @RequestParam("confirm_password") String confirmPassword
+    ) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
-                userService.modificaUsername(utente.getId(), username);
+                userService.modificaUsername(utente.getId(), newUsername, confirmPassword);
             });
             return "redirect:/dash/#modifica_account";
+        } catch(ExistingUsernameException | AuthenticationFailureException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+            redirectAttributes.addFlashAttribute("openModal", "modal-username");
+            return "redirect:/dash#modifica_account";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -140,11 +151,20 @@ public class DashController {
     }
 
     @PostMapping("/profilo/modifica_email")
-    public String sendEmail(@RequestParam String email, Principal principal) {        
+    public String sendEmail(
+        Principal principal,
+        RedirectAttributes redirectAttributes,
+        @RequestParam("new_email") String newEmail,
+        @RequestParam("confirm_password") String confirmPassword
+    ) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
-                userService.modificaEmail(utente.getId(), email);
+                userService.modificaEmail(utente.getId(), newEmail, confirmPassword);
             });
+            return "redirect:/dash#modifica_account";
+        } catch(ExistingEmailException | AuthenticationFailureException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+            redirectAttributes.addFlashAttribute("openModal", "modal-email");
             return "redirect:/dash#modifica_account";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
