@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.tidal.pawpal.dto.AppuntamentoDto;
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.services.abstractions.CreateService;
 import com.tidal.pawpal.services.abstractions.DeleteService;
@@ -84,9 +85,9 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIO')")
-    public abstract List<Appuntamento> cercaPerVeterinario(Long idVeterinario);
+    public abstract List<AppuntamentoDto> cercaPerVeterinario(Long idVeterinario);
 
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    public abstract List<Appuntamento> cercaPerCliente(Long idCliente);
+    public abstract List<AppuntamentoDto> cercaPerCliente(Long idCliente);
 
 }

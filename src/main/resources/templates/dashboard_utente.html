@@ -158,44 +158,39 @@
                 <table class="table-appuntamenti">
                     <thead>
                         <tr>
-                            <th>Data</th>
-                            <th>Ora</th>
-                            <th th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
+                            <th th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'"></th>
+                            <th th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}">
+                                Indirizzo
                             </th>
-                            <th>Specie</th>
-                            <th>Motivo</th>
-                            <th>Stato</th>
-                            <th>Azioni</th>
+                            <th>Telefono</th>
+                            <th>Data e Ora</th>
+                            <th>Note</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <tr th:each="app : ${lista_appuntamenti}">
-                            <td th:text="${app.data}"></td>
-                            <td th:text="${app.ora}"></td>
-                            <td
-                                th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
-                            </td>
-                            <td th:text="${app.specie}"></td>
-                            <td th:text="${app.motivo}"></td>
-                            <td th:text="${app.stato}"></td>
+                        <tr th:each="appuntamento : ${lista_appuntamenti}">
+                            <td th:text="${appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"></td>
+                            <td 
+                                th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
+                                th:text="${appuntamento.indirizzoUtente}"
+                            ></td>
+                            <td th:text="${appuntamento.telefonoUtente}"></td>
+                            <td th:text="${appuntamento.dataOraAppuntamento}"></td>
+                            <td th:text="${appuntamento.noteAppuntamento}"></td>
 
                             <td>
-
-                                <div th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
+                                <div>
                                     <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
-                                        <input type="hidden" name="_method" value="put" />
-                                        <input type="hidden" name="id" th:value="${app.id}" />
+                                        <!-- <input type="hidden" name="id" th:value="${appuntamento.id}" /> -->
                                         <button type="submit" class="btn btn-primary">Modifica</button>
                                     </form>
 
                                     <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
-                                        <input type="hidden" name="_method" value="delete" />
-                                        <input type="hidden" name="id" th:value="${app.id}" />
+                                        <!-- <input type="hidden" name="id" th:value="${appuntamento.id}" /> -->
                                         <button type="submit" class="btn btn-danger">Elimina</button>
                                     </form>
                                 </div>
-
                             </td>
                         </tr>
 

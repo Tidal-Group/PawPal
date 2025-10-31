@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tidal.pawpal.dto.AppuntamentoDto;
 import com.tidal.pawpal.exceptions.AuthenticationFailureException;
-import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Specie;
@@ -90,7 +90,7 @@ public class DashController {
                 else if(isVeterinario(authentication))
                     utente = veterinarioService.cercaPerId(utente.getId());
 
-                List<Appuntamento> listaAppuntamenti = new ArrayList<>();
+                List<AppuntamentoDto> listaAppuntamenti = new ArrayList<>();
                 if(isCliente(authentication))
                     listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
                 else if(isVeterinario(authentication))
@@ -107,8 +107,8 @@ public class DashController {
                 model.addAttribute("lista_prestazioni_selezionate", listaPrestazioniSelezionate);
                 model.addAttribute("lista_prestazioni", prestazioneService.elencaTutti());
                 model.addAttribute("user", utente);
-                model.addAttribute("lista_recensioni", listaRecensioni);
                 model.addAttribute("lista_appuntamenti", listaAppuntamenti);
+                model.addAttribute("lista_recensioni", listaRecensioni);
             });
             return "dashboard_utente";
         } catch(Exception exception) {
