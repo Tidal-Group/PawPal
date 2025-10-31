@@ -80,7 +80,7 @@ public abstract class UserServiceContract extends GenericService<User, Long> imp
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN') || #idUser == authentication.principal.id")
-    public abstract User modificaUsername(Long idUser, String username);
+    public abstract User modificaUsername(Long idUser, String newusername, String confirmPassword);
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN') || #idUser == authentication.principal.id")

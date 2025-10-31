@@ -102,11 +102,13 @@ public class UserService extends UserServiceContract {
     
     @Override
     @Transactional
-    public User modificaUsername(Long idUser, String username) {
-        if(userRepository.findByUsername(username) != null) throw new ExistingUsernameException();
+    public User modificaUsername(Long idUser, String newUsername, String confirmPassword) {
+        if(userRepository.findByUsername(newUsername) != null) throw new ExistingUsernameException();
         Map<String, String> data = new HashMap<>();
-        data.put("username", username);
-        User updatedUser = modifica(idUser, data);
+        data.put("username", newUsername);
+        User updatedUser = modifica(idUser, data, (user) -> {
+            if(!user.getPassword().equals(confirmPassword)) throw new AuthenticationFailureException();
+        });
         refreshSecurityContext(updatedUser.getUsername());
         return updatedUser;
     }
