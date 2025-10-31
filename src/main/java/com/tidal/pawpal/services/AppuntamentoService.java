@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.dto.AppuntamentoDto;
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Veterinario;
@@ -35,12 +36,12 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
     }
 
     @Override
-    public List<Appuntamento> cercaPerVeterinario(Long idVeterinario) {
+    public List<AppuntamentoDto> cercaPerVeterinario(Long idVeterinario) {
         return appuntamentoRepository.findByVeterinario(idVeterinario);
     }
 
     @Override
-    public List<Appuntamento> cercaPerCliente(Long idCliente) {
+    public List<AppuntamentoDto> cercaPerCliente(Long idCliente) {
         return appuntamentoRepository.findByCliente(idCliente);
     }
 
