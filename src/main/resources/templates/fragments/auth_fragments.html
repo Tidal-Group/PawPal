@@ -1,8 +1,11 @@
-
 <section th:fragment="login">
     <link rel="stylesheet" th:href="@{/css/auth_fragments.css}">
 
-    <div class="modal fade" id="auth/login" aria-hidden="true" aria-labelledby="loginLabel" tabindex="-1">
+    <script>
+        showCallbacks["loginModal"] = modalShowCallback;
+    </script>
+
+    <div class="modal fade" id="loginModal" aria-hidden="true" aria-labelledby="loginLabel" tabindex="-1">
 
         <div class="modal-dialog modal-dialog-centered">
 
@@ -39,9 +42,9 @@
 
                 <div class="modal-footer">
                     <h4>Non hai un account?</h4>
-                    <button class="btn btn-secondary" data-bs-target="#auth/register_cliente"
+                    <button class="btn btn-secondary" data-bs-target="#registrazioneClienteModal"
                         data-bs-toggle="modal">Registrati come cliente</button>
-                    <button class="btn btn-secondary" data-bs-target="#auth/register_veterinario"
+                    <button class="btn btn-secondary" data-bs-target="#registrazioneVeterinarioModal"
                         data-bs-toggle="modal">Registrati come veterinario</button>
                 </div>
 
@@ -55,7 +58,11 @@
 
 <section th:fragment="registrazione_cliente">
 
-    <div class="modal fade" id="auth/register_cliente" aria-hidden="true"
+    <script>
+        showCallbacks["registrazioneClienteModal"] = modalShowCallback;
+    </script>
+
+    <div class="modal fade" id="registrazioneClienteModal" aria-hidden="true"
         aria-labelledby="registrazioneClienteLabel" tabindex="-1">
 
         <div class="modal-dialog modal-dialog-centered">
@@ -127,9 +134,8 @@
 
                 <div class="modal-footer">
                     <h4>Hai gi&#224; un account?</h4>
-                    <button class="btn btn-secondary" data-bs-target="#auth/login" data-bs-toggle="modal">Accedi</button>
-                    <button class="btn btn-secondary" data-bs-target="#auth/register_veterinario" data-bs-toggle="modal">Vuoi registrarti come veterinario?</button>
-                    
+                    <button class="btn btn-secondary" data-bs-target="#loginModal" data-bs-toggle="modal">Accedi</button>
+                    <button class="btn btn-secondary" data-bs-target="#registrazioneVeterinarioModal" data-bs-toggle="modal">Vuoi registrarti come veterinario?</button>
                 </div>
 
             </div>
@@ -142,7 +148,11 @@
 
 <section th:fragment="registrazione_veterinario">
 
-    <div class="modal fade" id="auth/register_veterinario" aria-hidden="true"
+    <script>
+        showCallbacks["registrazioneVeterinarioModal"] = modalShowCallback;
+    </script>
+
+    <div class="modal fade" id="registrazioneVeterinarioModal" aria-hidden="true"
         aria-labelledby="registrazioneVeterinarioLabel" tabindex="-1">
 
         <div class="modal-dialog modal-dialog-centered">
@@ -274,7 +284,7 @@
 
                 <div class="modal-footer">
                     <h4>Hai già un account?</h4>
-                    <button class="btn btn-secondary" data-bs-target="#auth/login"
+                    <button class="btn btn-secondary" data-bs-target="#loginModal"
                         data-bs-toggle="modal">Accedi</button>
                 </div>
 

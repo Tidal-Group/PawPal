@@ -21,67 +21,104 @@
     ></script>
     <!-- BOOTSTRAP -->
 
+    <script>
+        var showCallbacks = {};
+        var showEvent = new Event('show.element');
+        var hiddenEvent = new Event('hidden.element');
+
+        var modalShowCallback = (modalElementId) => {
+            const modalElement = document.getElementById(modalElementId);
+            if (modalElement && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+                modalInstance.show();
+            }
+        };
+    </script>
+
     <!-- SCRIPT TO OPEN MODALS ON REDIRECT -->
     <script th:inline="javascript" defer>
         document.addEventListener("DOMContentLoaded", () => {
-            const modalId = /*[[${openModal}]]*/ null;
-            if (modalId) {
-                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                    const modalElement = document.getElementById(modalId);
-
-                    if (modalElement) {
-                        const modalInstance = new bootstrap.Modal(modalElement);
-                        modalInstance.show();
-                    }
-                }
-            }
+            const fullHash = window.location.hash;
+            const elementIds = fullHash.substring(1).split('#');
+            elementIds.forEach((elementId) => {
+                if(elementId && showCallbacks[elementId])
+                    showCallbacks[elementId](elementId);
+            });
         });
     </script>
     <!-- SCRIPT TO OPEN MODALS ON REDIRECT -->
 
     <!-- SCRIPT TO CHANGE URL WHEN OPENING/CLOSING MODALS -->
     <script th:inline="javascript" defer>
-        /*[+
-        document.addEventListener("DOMContentLoaded", () => {
-            const currentPath = window.location.pathname;
-            const currentQuery = window.location.search;
-            
-            let originalFullUrl = currentPath + currentQuery;
-            
-            document.querySelectorAll('.modal').forEach(modalElement => {
 
-                modalElement.addEventListener('show.bs.modal', function () {
-                    const modalId = this.getAttribute('id');
-                    history.pushState(null, '', originalFullUrl + '#' + modalId);
-                });
+        var updateUrl = (element, showEvent, hideEvent, originalFullUrl, currentHash, hideCallback, raceConditionChecker) => {
+            element.addEventListener(showEvent, function () {
+                const elementId = this.getAttribute('id');
+                history.pushState(null, '', originalFullUrl + "#" + elementId);
+            });
 
-                modalElement.addEventListener('hide.bs.modal', function () {
-                    // When the modal hides:
-                    // Revert to the stored original URL, removing the "#modalId"
-                    history.pushState(null, '', originalFullUrl);
-                });
-                
-                // --- Popstate Listener remains mostly the same, targeting the hash ---
-                window.addEventListener('popstate', function() {
-                    const currentHash = window.location.hash.substring(1);
-                    const modalId = modalElement.getAttribute('id');
-                    
-                    if (currentHash !== modalId) {
-                        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if (modalInstance && modalElement.classList.contains('show')) {
-                            // Only hide if the current hash doesn't match this modal's ID
-                            // and the modal is currently open.
-                            modalInstance.hide();
+            element.addEventListener(hideEvent, function () {
+                // accounts for browser race conditions in fast event firing
+                if(raceConditionChecker) {
+                    setTimeout(() => {
+                        if (raceConditionChecker()) {
+                            history.pushState(null, '', originalFullUrl);
                         }
-                    }
-                    // Note: The browser's back/forward button will handle showing the modal 
-                    // if the hash matches, thanks to Bootstrap's data-bs-toggle="modal" 
-                    // combined with the URL hash.
+                    }, 50);
+                } else history.pushState(null, '', originalFullUrl);
+            });
+            
+            if(hideCallback) {
+                window.addEventListener('popstate', function() {
+                    const elementId = element.getAttribute('id');
+                    if (currentHash !== elementId) hideCallback(element);
+                });
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // base url, without hash
+            let originalFullUrl = window.location.pathname + window.location.search;
+            const elementIds = window.location.hash.substring(1).split('#');
+
+            elementIds.forEach((elementId) => {
+
+                if(elementId && showCallbacks[elementId])
+                    showCallbacks[elementId](elementId);
+
+                document.querySelectorAll('.modal').forEach((modalElement) => {
+
+                    updateUrl(
+                        modalElement,
+                        'show.bs.modal',
+                        'hidden.bs.modal',
+                        originalFullUrl,
+                        elementId,
+                        (modalElement) => {
+                            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                            if (modalInstance && modalElement.classList.contains('show'))
+                                modalInstance.hide();
+                        },
+                        () => document.querySelectorAll('.modal.show').length <= 0
+                    );
+
+                });
+
+                document.querySelectorAll('.showable').forEach((showableElement) => {
+                    updateUrl(
+                        showableElement,
+                        'show.element',
+                        'hidden.element',
+                        originalFullUrl,
+                        elementId
+                    );
                 });
 
             });
+
         });
-        +]*/
+
     </script>
     <!-- SCRIPT TO CHANGE URL WHEN OPENING/CLOSING MODALS -->
 
@@ -138,12 +175,12 @@
                     <div sec:authorize="isAnonymous()" style="display: contents;">
 
                         <li class="nav-item">
-                            <button class="btn btn-secondary" data-bs-target="#auth/login"
+                            <button class="btn btn-secondary" data-bs-target="#loginModal"
                                 data-bs-toggle="modal">Login</button>
                         </li>
 
                         <li class="nav-item">
-                            <button class="btn btn-secondary" data-bs-target="#auth/register_cliente" data-bs-toggle="modal">Registrati</button>
+                            <button class="btn btn-secondary" data-bs-target="#registrazioneClienteModal" data-bs-toggle="modal">Registrati</button>
                         </li>
 
                     
