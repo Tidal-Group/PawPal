@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <link rel="stylesheet" th:href="@{/css/dashboard_utente.css}">
+<link rel="stylesheet" th:href="@{/css/dashboard_utente.css}">
 
 <head th:replace="fragments/generic_fragments :: head('Dashboard - PawPal')">
 </head>
@@ -29,40 +29,47 @@
 
                                 <div>
                                     <label class="form-label" for="nome">Nome</label>
-                                    <input class="form-control" id="nome" name="nome" type="text" th:value="${#strings.defaultString(user.nome,'')}" />
+                                    <input class="form-control" id="nome" name="nome" type="text"
+                                        th:value="${#strings.defaultString(user.nome,'')}" />
                                 </div>
 
                                 <div>
                                     <label class="form-label" for="cognome">Cognome</label>
-                                    <input class="form-control" id="cognome" name="cognome" type="text" th:value="${#strings.defaultString(user.cognome,'')}" />
+                                    <input class="form-control" id="cognome" name="cognome" type="text"
+                                        th:value="${#strings.defaultString(user.cognome,'')}" />
                                 </div>
 
                                 <div>
                                     <label class="form-label" for="telefono">Telefono</label>
-                                    <input class="form-control" id="telefono" name="telefono" type="tel" th:value="${#strings.defaultString(user.telefono,'')}" />
+                                    <input class="form-control" id="telefono" name="telefono" type="tel"
+                                        th:value="${#strings.defaultString(user.telefono,'')}" maxlength="10" />
                                 </div>
 
                                 <div>
                                     <label class="form-label" for="codiceFiscale">Codice fiscale</label>
-                                    <input class="form-control" id="codiceFiscale" name="codiceFiscale" type="text" th:value="${#strings.defaultString(user.codiceFiscale,'')}" />
+                                    <input class="form-control" id="codiceFiscale" name="codiceFiscale" type="text"
+                                        th:value="${#strings.defaultString(user.codiceFiscale,'')}" maxlength="16" />
                                 </div>
                             </fieldset>
 
                         </div>
 
-                        <div class="col-12" th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
+                        <div class="col-12"
+                            th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
 
                             <fieldset>
                                 <legend>Informazioni professionali</legend>
 
                                 <div>
                                     <label class="form-label" for="indirizzo">Indirizzo</label>
-                                    <input class="form-control" id="indirizzo" name="indirizzo" type="text" th:value="${#strings.defaultString(user.indirizzoStudio,'')}" />
+                                    <input class="form-control" id="indirizzo" name="indirizzo" type="text"
+                                        th:value="${#strings.defaultString(user.indirizzoStudio,'')}" />
                                 </div>
 
                                 <div>
                                     <label class="form-label" for="specializzazione">Specializzazione</label>
-                                    <input class="form-control" id="specializzazione" name="specializzazione" type="text" th:value="${#strings.defaultString(user.specializzazione,'')}" />
+                                    <input class="form-control" id="specializzazione" name="specializzazione"
+                                        type="text" th:value="${#strings.defaultString(user.specializzazione,'')}" />
                                 </div>
 
                                 <!-- CERCARE LE SPECIE PER VETERINARIO -->
@@ -70,7 +77,8 @@
                                     <label class="form-label">Specie trattate:</label>
                                     <div class="btn-group" role="group" aria-label="specie trattate dal veterinario">
                                         <div th:each="spec : ${lista_specie}" style="display: contents;">
-                                            <input type="checkbox" class="btn-check" name="specie" th:value="${spec.id}" th:id="'specie_' + ${spec.id}" />
+                                            <input type="checkbox" class="btn-check" name="specie" th:value="${spec.id}"
+                                                th:id="'specie_' + ${spec.id}" />
                                             <label class="btn btn-outline-primary" th:for="'specie_' + ${spec.id}">
                                                 <span th:text="${spec.nomeSpecie}">Nome Specie</span>
                                             </label>
@@ -81,10 +89,13 @@
                                 <!-- CERCARE LE PRESTAZIONI PER VETERINARIO -->
                                 <div>
                                     <label class="form-label">Prestazioni offerte:</label>
-                                    <div class="btn-group" role="group" aria-label="prestazioni offerte dal veterinario">
+                                    <div class="btn-group" role="group"
+                                        aria-label="prestazioni offerte dal veterinario">
                                         <div th:each="prest : ${lista_prestazioni}" style="display: contents;">
-                                            <input type="checkbox" class="btn-check" name="prestazioni" th:value="${prest.id}" th:id="'prestazione_' + ${prest.id}" />
-                                            <label class="btn btn-outline-primary" th:for="'prestazione_' + ${prest.id}">
+                                            <input type="checkbox" class="btn-check" name="prestazioni"
+                                                th:value="${prest.id}" th:id="'prestazione_' + ${prest.id}" />
+                                            <label class="btn btn-outline-primary"
+                                                th:for="'prestazione_' + ${prest.id}">
                                                 <span th:text="${prest.descrizione}">Nome Prestazione</span>
                                             </label>
                                         </div>
@@ -92,25 +103,25 @@
                                 </div>
 
                                 <div>
-                                    <label class="form-label" for="iscrizione_albo">Numero di iscrizione all&#39;albo:</label>
-                                    <input class="form-control" type="text" id="iscrizione_albo" name="iscrizioneAlbo" th:value="${#strings.defaultString(user.iscrizioneAlbo,'')}">
+                                    <label class="form-label" for="iscrizione_albo">Numero di iscrizione
+                                        all&#39;albo:</label>
+                                    <input class="form-control" type="text" id="iscrizione_albo" name="iscrizioneAlbo"
+                                        th:value="${#strings.defaultString(user.iscrizioneAlbo,'')}" maxlength="10">
                                 </div>
 
                                 <div>
-                                    <label class="form-label" for="disponibilita_veterinario">Disponibilit&#224;:</label>
-                                    <input class="form-control" type="text" id="disponibilita_veterinario" name="disponibilita" th:value="${#strings.defaultString(user.disponibilita,'')}">
+                                    <label class="form-label"
+                                        for="disponibilita_veterinario">Disponibilit&#224;:</label>
+                                    <input class="form-control" type="text" id="disponibilita_veterinario"
+                                        name="disponibilita"
+                                        th:value="${#strings.defaultString(user.disponibilita,'')}">
                                 </div>
 
                                 <div>
                                     <label class="form-label" for="descrizione">Descrizione </label>
-                                    <textarea
-                                        class="form-control"
-                                        id="descrizione"
-                                        name="descrizione"
+                                    <textarea class="form-control" id="descrizione" name="descrizione"
                                         th:text="${#strings.defaultString(user.descrizione,'')}"
-                                        placeholder="Descrivi chi sei e di cosa ti occupi"
-                                        maxlength="140"
-                                    ></textarea>
+                                        placeholder="Descrivi chi sei e di cosa ti occupi" maxlength="140"></textarea>
                                 </div>
 
                             </fieldset>
@@ -146,7 +157,8 @@
                     <tr>
                         <th>Data</th>
                         <th>Ora</th>
-                        <th th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
+                        <th
+                            th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
                         </th>
                         <th>Specie</th>
                         <th>Motivo</th>
@@ -253,7 +265,8 @@
                         <div class="rec-actions">
                             <a th:href="@{/dash/recensioni/modifica/{id}(id=${rec.id})}" class="btn">Modifica</a>
 
-                            <form th:action="@{/dash/recensioni/elimina_recensione}" method="post" style="display:inline">
+                            <form th:action="@{/dash/recensioni/elimina_recensione}" method="post"
+                                style="display:inline">
                                 <input type="hidden" name="_method" value="delete" />
                                 <input type="hidden" name="id" th:value="${rec.id}" />
                                 <button type="submit" class="btn btn-danger">Elimina</button>
@@ -313,7 +326,8 @@
             <section>
                 <h1>Linee Guida per Veterinari</h1>
 
-                <p>Qui puoi consultare le linee guida ufficiali per la gestione dei pazienti e le best practices da seguire.</p>
+                <p>Qui puoi consultare le linee guida ufficiali per la gestione dei pazienti e le best practices da
+                    seguire.</p>
 
                 <div>
                     <ul>
@@ -333,8 +347,8 @@
 
     </main>
 
-    <div th:replace="fragments/dashboard_fragments :: modifica_conto(email, 'false')"></div>
-    <div th:replace="fragments/dashboard_fragments :: modifica_conto(username, 'false')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(email, 'true')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(username, 'true')"></div>
     <div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
 
     <script th:inline="javascript">
@@ -351,6 +365,8 @@
             }
         }
     </script>
+
+    <script th:src="@{/js/dashboard.js}" defer></script>
 
     <style>
         body {
