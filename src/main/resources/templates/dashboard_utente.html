@@ -14,7 +14,7 @@
 
         <div id="modifica_dati" class="container-fluid flex-column" style="display: none;">
 
-            <section id="modifica_dati">
+            <section>
 
                 <h2>Modifica dati</h2>
 
@@ -76,11 +76,17 @@
                                 <div>
                                     <label class="form-label">Specie trattate:</label>
                                     <div class="btn-group" role="group" aria-label="specie trattate dal veterinario">
-                                        <div th:each="spec : ${lista_specie}" style="display: contents;">
-                                            <input type="checkbox" class="btn-check" name="specie" th:value="${spec.id}"
-                                                th:id="'specie_' + ${spec.id}" />
-                                            <label class="btn btn-outline-primary" th:for="'specie_' + ${spec.id}">
-                                                <span th:text="${spec.nomeSpecie}">Nome Specie</span>
+                                        <div id="lista_specie" th:each="specie : ${lista_specie}" style="display: contents;">
+                                            <input
+                                                type="checkbox"
+                                                class="btn-check"
+                                                name="specie"
+                                                th:value="${specie.id}"
+                                                th:checked="${#lists.contains(lista_specie_selezionate, specie)}"
+                                                th:id="'specie_' + ${specie.id}"
+                                            />
+                                            <label class="btn btn-outline-primary" th:for="'specie_' + ${specie.id}">
+                                                <span th:text="${specie.nomeSpecie}">Nome Specie</span>
                                             </label>
                                         </div>
                                     </div>
@@ -89,14 +95,17 @@
                                 <!-- CERCARE LE PRESTAZIONI PER VETERINARIO -->
                                 <div>
                                     <label class="form-label">Prestazioni offerte:</label>
-                                    <div class="btn-group" role="group"
-                                        aria-label="prestazioni offerte dal veterinario">
-                                        <div th:each="prest : ${lista_prestazioni}" style="display: contents;">
-                                            <input type="checkbox" class="btn-check" name="prestazioni"
-                                                th:value="${prest.id}" th:id="'prestazione_' + ${prest.id}" />
-                                            <label class="btn btn-outline-primary"
-                                                th:for="'prestazione_' + ${prest.id}">
-                                                <span th:text="${prest.descrizione}">Nome Prestazione</span>
+                                    <div class="btn-group" role="group" aria-label="prestazioni offerte dal veterinario">
+                                        <div id="lista_prestazioni" th:each="prestazione : ${lista_prestazioni}" style="display: contents;">
+                                            <input
+                                                type="checkbox"
+                                                class="btn-check"
+                                                name="prestazioni"
+                                                th:value="${prestazione.id}"
+                                                th:checked="${#lists.contains(lista_prestazioni_selezionate, prestazione)}"
+                                                th:id="'prestazione_' + ${prestazione.id}" />
+                                            <label class="btn btn-outline-primary" th:for="'prestazione_' + ${prestazione.id}">
+                                                <span th:text="${prestazione.descrizione}">Nome Prestazione</span>
                                             </label>
                                         </div>
                                     </div>
@@ -141,69 +150,68 @@
 
         </div>
 
-        <div id="appuntamenti" class="container-fluid flex-column" style="display: none;"></div>
+        <div id="appuntamenti" class="container-fluid flex-column" style="display: none;">
 
-        <section class="dashboard-section">
-            <h2>I tuoi Appuntamenti</h2>
+            <section>
 
-            <form class="filter-form" th:action="@{/dash/appuntamenti}" method="get">
-                <input type="date" name="data" placeholder="Filtra per data">
-                <input type="text" name="veterinario" placeholder="Cerca per veterinario">
-                <button type="submit" class="btn">Filtra</button>
-            </form>
+                <h2>I tuoi Appuntamenti</h2>
 
-            <table class="table-appuntamenti">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Ora</th>
-                        <th
-                            th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
-                        </th>
-                        <th>Specie</th>
-                        <th>Motivo</th>
-                        <th>Stato</th>
-                        <th>Azioni</th>
-                    </tr>
-                </thead>
+                <form th:action="@{/dash/appuntamenti}" method="get">
+                    <input type="date" name="data" placeholder="Filtra per data">
+                    <input type="text" name="veterinario" placeholder="Cerca per veterinario">
+                    <button type="submit" class="btn btn-primary">Filtra</button>
+                </form>
 
-                <tbody>
-                    <tr th:each="app : ${lista_appuntamenti}">
-                        <td th:text="${app.data}"></td>
-                        <td th:text="${app.ora}"></td>
-                        <td
-                            th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? ${app.cliente.nome} : ${app.veterinario.nome}">
-                        </td>
-                        <td th:text="${app.specie}"></td>
-                        <td th:text="${app.motivo}"></td>
-                        <td th:text="${app.stato}"></td>
+                <table class="table-appuntamenti">
+                    <thead>
+                        <tr>
+                            <th th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'"></th>
+                            <th th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}">
+                                Indirizzo
+                            </th>
+                            <th>Telefono</th>
+                            <th>Data e Ora</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
 
-                        <td>
+                    <tbody>
+                        <tr th:each="appuntamento : ${lista_appuntamenti}">
+                            <td th:text="${appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"></td>
+                            <td 
+                                th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
+                                th:text="${appuntamento.indirizzoUtente}"
+                            ></td>
+                            <td th:text="${appuntamento.telefonoUtente}"></td>
+                            <td th:text="${appuntamento.dataOraAppuntamento}"></td>
+                            <td th:text="${appuntamento.noteAppuntamento}"></td>
 
-                            <div th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
-                                <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
-                                    <input type="hidden" name="_method" value="put" />
-                                    <input type="hidden" name="id" th:value="${app.id}" />
-                                    <button type="submit" class="btn btn-primary">Modifica</button>
-                                </form>
+                            <td>
+                                <div>
+                                    <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
+                                        <!-- <input type="hidden" name="id" th:value="${appuntamento.id}" /> -->
+                                        <button type="submit" class="btn btn-primary">Modifica</button>
+                                    </form>
 
-                                <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
-                                    <input type="hidden" name="_method" value="delete" />
-                                    <input type="hidden" name="id" th:value="${app.id}" />
-                                    <button type="submit" class="btn btn-danger">Elimina</button>
-                                </form>
-                            </div>
+                                    <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
+                                        <!-- <input type="hidden" name="id" th:value="${appuntamento.id}" /> -->
+                                        <button type="submit" class="btn btn-danger">Elimina</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
 
-                        </td>
-                    </tr>
+                    </tbody>
 
-                </tbody>
+                </table>
 
-            </table>
+                <div th:if="${#lists.isEmpty(lista_appuntamenti)}" class="no-data">
+                    <p>Nessun appuntamento trovato.</p>
+                </div>
 
-            <div th:if="${#lists.isEmpty(lista_appuntamenti)}" class="no-data">
-                <p>Nessun appuntamento trovato.</p>
-            </div>
+            </section>
+
+        </div>
 
             <!-- Prenotazione (solo cliente) -->
             <!-- <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}" class="nuovo-appuntamento">

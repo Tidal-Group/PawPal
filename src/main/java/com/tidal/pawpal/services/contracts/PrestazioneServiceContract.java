@@ -83,4 +83,7 @@ public abstract class PrestazioneServiceContract extends GenericService<Prestazi
     @PreAuthorize("permitAll")
     public abstract Set<Prestazione> cercaPerRangePrezzo(Double prezzoMin, Double prezzoMax);
 
+    @PreAuthorize("permitAll")
+    public abstract Set<Prestazione> cercaPerVeterinario(Long idVeterinario);
+
 }
