@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/css/auth_fragments.css}">
+<link rel="stylesheet" th:href="@{/css/veterinari.css}">
 
 <head th:replace="fragments/generic_fragments :: head('Veterinari')"></head>
 
@@ -23,8 +24,10 @@
                             <!-- <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]"> -->
                             <h3 th:text="${vet.nome + ' ' + vet.cognome}"></h3>
                             <p th:text="${vet.specializzazione}"></p>
+                            <!-- <p th:each="prest : ${vet.prestazioniOfferte}" th:text="${prest.descrizione}"></p>
+                            <p th:each="spec : ${vet.specieTrattate}" th:text="${spec.nomeSpecie}"></p> -->
                             <p th:text="${vet.indirizzoStudio}"></p>
-                            <a th:href="@{/dash/profilo}" class="btn-profilo">Visualizza profilo</a>
+                            <a th:href="@{/veterinari/lista_veterinari/{veterinarioId}(veterinarioId=${vet.id})}" class="btn-profilo">Visualizza profilo</a>
                         </div>
                     </div>
 
