@@ -4,7 +4,6 @@
 <link rel="stylesheet" th:href="@{/css/veterinari.css}">
 
 <head th:replace="fragments/generic_fragments :: head('Veterinari')"></head>
-<link rel="stylesheet" th:href="@{/css/fragments.css}">
 
 <body>
     
@@ -12,33 +11,13 @@
 
     <main>
         <div class="container">
-            <h1>Lista Veterinari</h1>
-
             
-            <form th:action="@{/lista_veterinari}" method="get" class="filtri-form">
-                
-                <select name="citta">
-                    <option value="">Tutte le città</option>
-                    <option th:each="c : ${cittaDisponibili}" 
-                            th:value="${c}" 
-                            th:text="${c}"></option>
-                </select>
+            <main>
 
-                
-                <select name="specialistica">
-                    <option value="">Tutte le specialistiche</option>
-                    <option th:each="s : ${specialisticaDisponibile}" 
-                            th:value="${s}" 
-                            th:text="${s}"></option>
-                </select>
+                <section th:replace="fragments/veterinari_fragments :: ricerca_veterinari"></section>
 
-                
-                <select name="specie">
-                    <option value="">Tutte le specie</option>
-                    <option th:each="sp : ${specieDisponibili}" 
-                            th:value="${sp}" 
-                            th:text="${sp}"></option>
-                </select>
+                <section>
+                    <h1>Lista Veterinari</h1>
 
                     <div class="veterinari-list">
                         <div th:each="vet : ${lista_veterinari}" class="veterinario-card">
@@ -56,16 +35,6 @@
 
             </main>
 
-            
-            <div class="veterinari-list">
-                <div th:each="vet : ${veterinari}" class="veterinario-card">
-                    <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]">
-                    <h3 th:text="${vet.nome}"></h3>
-                    <p th:text="${vet.specialita}"></p>
-                    <p th:text="${vet.citta}"></p>
-                    <a th:href="@{/dash/profilo}" class="btn-profilo">Visualizza profilo</a>
-                </div>
-            </div>
         </div>
     </main>
 
