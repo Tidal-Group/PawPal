@@ -160,6 +160,7 @@ function validaIscrizioneAlbo(input) {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
 
     verificaPasswordGenerica('password_cliente', 'check_password_cliente', 'check_password_error_cliente');
@@ -185,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-     const formVet = document.querySelector('#auth\\/register_veterinario form');
+    const formVet = document.querySelector('#auth\\/register_veterinario form');
     if (formVet) {
         const indirizzo = formVet.querySelector('#indirizzo_studio_veterinario');
         const iscrizione = formVet.querySelector('#iscrizione_albo_veterinario');
@@ -242,6 +243,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (error) error.style.display = 'none';
             });
         });
+    });
+
+    const checkFormChanges = () => {
+        const formCliente = document.querySelector('#auth\\/register_cliente form');
+        const formVet = document.querySelector('#auth\\/register_veterinario form');
+
+        const forms = [formCliente, formVet].filter(f => f !== null);
+
+        for (const form of forms) {
+            const inputs = form.querySelectorAll('input, textarea, select');
+
+            const hasChanges = Array.from(inputs).some(input => !isPristine(input));
+            if (hasChanges) {
+                return true; 
+            }
+        }
+        return false; 
+    };
+
+    window.addEventListener('beforeunload', (e) => {
+        if (checkFormChanges()) {
+            
+            e.preventDefault(); 
+            e.returnValue = ''; 
+        }
     });
 
 });
