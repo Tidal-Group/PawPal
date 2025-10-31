@@ -138,7 +138,7 @@ public class DashController {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 userService.modificaUsername(utente.getId(), newUsername, confirmPassword);
             });
-            return "redirect:/dash/#modifica_account";
+            return "redirect:/dash#modifica_account";
         } catch(ExistingUsernameException | AuthenticationFailureException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
             redirectAttributes.addFlashAttribute("openModal", "modal-username");
