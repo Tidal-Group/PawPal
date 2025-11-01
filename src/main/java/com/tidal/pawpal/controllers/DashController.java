@@ -258,6 +258,9 @@ public class DashController {
     @PostMapping("/profilo/modifica_dati")
     public String handleProfileUpdate(
         Principal principal,
+        RedirectAttributes redirectAttributes,
+        @RequestParam(name="specie", required=false) List<Long> listaIdSpecie,
+        @RequestParam(name="prestazioni", required=false) List<Long> listaIdPrestazioni,
         @RequestParam Map<String, String> data
     ) {
         try {
@@ -265,8 +268,10 @@ public class DashController {
                 if(isCliente(authentication))
                     clienteService.modifica(utente.getId(), data);
                 else if(isVeterinario(authentication))
-                    veterinarioService.modifica(utente.getId(), data);
+                    System.out.println("*****************" + listaIdSpecie);
+                    veterinarioService.modifica(utente.getId(), listaIdSpecie, listaIdPrestazioni, data);
             });
+            redirectAttributes.addFlashAttribute("successMessage", "Modifiche effettuate con successo");
             return "redirect:/dash#modifica_dati";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING

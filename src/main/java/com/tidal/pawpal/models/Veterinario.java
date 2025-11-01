@@ -71,4 +71,28 @@ public class Veterinario extends User {
         joinColumns = @JoinColumn(name = "veterinario_id"),
         inverseJoinColumns = @JoinColumn(name = "prestazione_id"))
     private Set<Prestazione> prestazioniOfferte;
+
+    public void addSpecie(Specie specie) {
+        this.getSpecieTrattate().add(specie);
+        specie.getVeterinari().add(this);
+    }
+
+    public void removeSpecie(Specie specie) {
+        if (this.getSpecieTrattate().contains(specie)) {
+            this.getSpecieTrattate().remove(specie);
+            specie.getVeterinari().remove(this);
+        }
+    }
+
+    public void addPrestazione(Prestazione prestazione) {
+        this.getPrestazioniOfferte().add(prestazione);
+        prestazione.getVeterinari().add(this);
+    }
+
+    public void removePrestazione(Prestazione prestazione) {
+        if (this.getPrestazioniOfferte().contains(prestazione)) {
+            this.getPrestazioniOfferte().remove(prestazione);
+            prestazione.getVeterinari().remove(this);
+        }
+    }
 }

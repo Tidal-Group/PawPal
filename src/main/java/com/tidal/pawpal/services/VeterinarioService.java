@@ -138,6 +138,7 @@ package com.tidal.pawpal.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -182,9 +183,40 @@ public class VeterinarioService extends VeterinarioServiceContract {
     public Veterinario registra(List<Long> listaIdSpecie, List<Long> listaIdPrestazione, Map<String, String> data) {
         return super.registra(data, (veterinario) -> {
             for(Long id : listaIdSpecie)
-                veterinario.getSpecieTrattate().add(specieService.cercaPerId(id));
+                veterinario.addSpecie(specieService.cercaPerId(id));
             for(Long id : listaIdPrestazione)
-                veterinario.getPrestazioniOfferte().add(prestazioneService.cercaPerId(id));
+                veterinario.addPrestazione(prestazioneService.cercaPerId(id));
+        });
+    }
+
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public Veterinario modifica(Long id, List<Long> listaIdSpecie, List<Long> listaIdPrestazione, Map<String, String> data) {
+        return super.modifica(id, data, (veterinario) -> {
+
+            List<Long> idSpecieTotali = specieService.elencaTutti()
+                                      .stream()
+                                      .map((specie) -> specie.getId())
+                                      .collect(Collectors.toList());
+
+            List<Long> idPrestazioniTotali = prestazioneService.elencaTutti()
+                                           .stream()
+                                           .map((prestazione) -> prestazione.getId())
+                                           .collect(Collectors.toList());
+
+            for(Long idSpecie : listaIdSpecie)
+                veterinario.addSpecie(specieService.cercaPerId(idSpecie));
+            for(Long idPrestazione : listaIdPrestazione)
+                veterinario.addPrestazione(prestazioneService.cercaPerId(idPrestazione));
+
+            for(Long idSpecie : idSpecieTotali)
+                if(!listaIdSpecie.contains(idSpecie))
+                    veterinario.removeSpecie(specieService.cercaPerId(idSpecie));
+
+            for(Long idPrestazione : idPrestazioniTotali)
+                if(!listaIdPrestazione.contains(idPrestazione))
+                    veterinario.removePrestazione(prestazioneService.cercaPerId(idPrestazione));
+
         });
     }
 
