@@ -36,6 +36,13 @@ public class RecensioneService extends RecensioneServiceContract {
     }
 
     @Override
+    public void elimina(Long id) {
+        super.elimina(id, (recensione) -> {
+            recensione.detachFromParents();
+        });
+    }
+
+    @Override
     public List<RecensioneDto> cercaPerVeterinario(Long Veterinario) {
         return recensioneRepository.findByVeterinario(Veterinario);
     }

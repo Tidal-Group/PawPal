@@ -268,7 +268,6 @@ public class DashController {
                 if(isCliente(authentication))
                     clienteService.modifica(utente.getId(), data);
                 else if(isVeterinario(authentication))
-                    System.out.println("*****************" + listaIdSpecie);
                     veterinarioService.modifica(utente.getId(), listaIdSpecie, listaIdPrestazioni, data);
             });
             redirectAttributes.addFlashAttribute("successMessage", "Modifiche effettuate con successo");
@@ -280,6 +279,7 @@ public class DashController {
         }
     }
 
+    // DEBUG: risolvere problema riferimenti circolari
     @PostMapping("/profilo/elimina_account")
     public String handleAccountDeletion(
         Principal principal,
@@ -307,10 +307,12 @@ public class DashController {
     }
 
     @PostMapping("/appuntamenti/elimina_appuntamento")
-    public String handleAppuntamentoDeletion(@RequestParam Long id) {
+    public String handleAppuntamentoDeletion(
+        @RequestParam Long idAppuntamento
+    ) {
         try {
-            appuntamentoService.elimina(id);
-            return "redirect:/dash/appuntamenti";
+            appuntamentoService.elimina(idAppuntamento);
+            return "redirect:/dash#appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -322,7 +324,7 @@ public class DashController {
     public String handleRecensioneDeletion(@RequestParam Long id) {
         try {
             recensioneService.elimina(id);
-            return "redirect:/dash/recensioni";
+            return "redirect:/dash#recensioni";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();

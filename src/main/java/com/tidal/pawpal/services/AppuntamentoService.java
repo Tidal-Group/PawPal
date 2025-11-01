@@ -36,6 +36,13 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
     }
 
     @Override
+    public void elimina(Long id) {
+        super.elimina(id, (appuntamento) -> {
+            appuntamento.detachFromParents();
+        });
+    }
+
+    @Override
     public List<AppuntamentoDto> cercaPerVeterinario(Long idVeterinario) {
         return appuntamentoRepository.findByVeterinario(idVeterinario);
     }

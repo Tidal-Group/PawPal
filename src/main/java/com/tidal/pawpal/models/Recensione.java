@@ -46,4 +46,16 @@ public class Recensione extends GenericEntity {
     @JoinColumn(name = "veterinario_id", nullable = true)
     @ToString.Exclude
     private Veterinario veterinario;
+
+    public void detachFromParents() {
+        if (this.veterinario != null) {
+            this.veterinario.getRecensioni().remove(this);
+            this.veterinario = null;
+        }
+
+        if (this.cliente != null) {
+            this.cliente.getRecensioni().remove(this);
+            this.cliente = null;
+        }
+    }
 }

@@ -182,29 +182,80 @@
                             <th>Telefono</th>
                             <th>Data e Ora</th>
                             <th>Note</th>
+                            <th></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr th:each="appuntamento : ${lista_appuntamenti}">
-                            <td th:text="${appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"></td>
-                            <td 
-                                th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
-                                th:text="${appuntamento.indirizzoUtente}"
-                            ></td>
-                            <td th:text="${appuntamento.telefonoUtente}"></td>
-                            <td th:text="${#temporals.format(appuntamento.dataOraAppuntamento, 'dd/MM/yyyy HH:mm')}"></td>
-                            <td th:text="${appuntamento.noteAppuntamento}"></td>
+                            <form
+                                th:id="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
+                                th:action="@{/dash/appuntamenti/modifica_appuntamento}"
+                                method="post"
+                            >
+                                <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="idAppuntamento">
+
+                                <td th:text="${appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"></td>
+
+                                <td 
+                                    th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
+                                    th:text="${appuntamento.indirizzoUtente}"
+                                ></td>
+
+                                <td th:text="${appuntamento.telefonoUtente}"></td>
+
+                                <!-- DEBUG: limitare input possibili per data e ora -->
+                                <td>
+                                    <input
+                                        th:id="${'dataOraAppuntamento' + appuntamento.idAppuntamento}"
+                                        type="datetime-local"
+                                        th:value="${appuntamento.dataOraAppuntamento}"
+                                        readonly
+                                    >
+                                </td>
+
+                                <td>
+                                    <textarea
+                                        name="noteAppuntamento"
+                                        th:id="${'noteAppuntamento' + appuntamento.idAppuntamento}"
+                                        th:text="${appuntamento.noteAppuntamento}"
+                                        readonly
+                                    ></textarea>
+                                </td>
+
+                            </form>
 
                             <td>
                                 <div>
-                                    <form th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
-                                        <button type="submit" class="btn btn-primary">Modifica</button>
-                                    </form>
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        th:onclick="
+                                            |document.getElementById('submitModifica${appuntamento.idAppuntamento}').style.display = 'block';
+                                             this.style.display = 'none';
+                                             document.getElementById('dataOraAppuntamento${appuntamento.idAppuntamento}').readOnly = false
+                                             document.getElementById('noteAppuntamento${appuntamento.idAppuntamento}').readOnly = false|
+                                        "
+                                    >
+                                        Modifica
+                                    </button>
+
+                                    <button
+                                        th:id="${'submitModifica' + appuntamento.idAppuntamento}"
+                                        type="submit"
+                                        th:form="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
+                                        class="btn btn-primary"
+                                        style="display: none;"
+                                    >
+                                        Conferma
+                                    </button>
 
                                     <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
+                                        <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="idAppuntamento">
                                         <button type="submit" class="btn btn-danger">Elimina</button>
                                     </form>
+
                                 </div>
                             </td>
                         </tr>

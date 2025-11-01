@@ -111,14 +111,14 @@
     </script>
 
     <div class="modal fade" th:id="${nome_campo + 'Modal'}" aria-hidden="true"
-        th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
+        th:aria-labelledby="${nome_campo + 'Label'}" tabindex="-1">
 
         <div class="modal-dialog modal-dialog-centered">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="${'label-' + nome_campo}" th:text="|Modifica ${nome_campo}|">
+                    <h1 class="modal-title fs-5" th:id="${nome_campo + 'Label'}" th:text="|Modifica ${nome_campo}|">
                         Modifica campo</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>

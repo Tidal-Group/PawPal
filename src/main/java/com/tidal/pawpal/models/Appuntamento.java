@@ -24,7 +24,7 @@ public class Appuntamento extends GenericEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "data_Ora",nullable = false)
+ @Column(name = "data_Ora",nullable = false)
   private LocalDateTime dataOra;
 
   @Column(name = "note", length = 1000)
@@ -43,5 +43,17 @@ public class Appuntamento extends GenericEntity {
   @JoinColumn(name = "veterinario_id", nullable = true)
   @ToString.Exclude
   private Veterinario veterinario;
+
+  public void detachFromParents() {
+    if (this.veterinario != null) {
+        this.veterinario.getAppuntamenti().remove(this);
+        this.veterinario = null;
+    }
+
+    if (this.cliente != null) {
+        this.cliente.getAppuntamenti().remove(this);
+        this.cliente = null;
+    }
+  }
 
 }
