@@ -9,11 +9,16 @@
     <div th:replace="fragments/generic_fragments :: navbar(dashboard)"></div>
     <div th:replace="fragments/dashboard_fragments :: dashboard-sidebar"></div>
 
+    <div th:replace="fragments/generic_fragments :: backend_message"></div>
+
+
     <main>
 
         <div id="modifica_dati" class="showable container-fluid flex-column" style="display: none;">
 
             <section>
+
+                <div th:replace="fragments/generic_fragments :: backend_message"></div>
 
                 <h2>Modifica dati</h2>
 
@@ -60,8 +65,8 @@
                                 <legend>Informazioni professionali</legend>
 
                                 <div>
-                                    <label class="form-label" for="indirizzo">Indirizzo</label>
-                                    <input class="form-control" id="indirizzo" name="indirizzo" type="text"
+                                    <label class="form-label" for="indirizzoStudio">Indirizzo</label>
+                                    <input class="form-control" id="indirizzoStudio" name="indirizzoStudio" type="text"
                                         th:value="${#strings.defaultString(user.indirizzoStudio,'')}" />
                                 </div>
 
@@ -301,6 +306,7 @@
     <div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
 
     <script th:src="@{/js/dashboard.js}" defer></script>
+    <div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
 
 </body>
 

@@ -30,7 +30,6 @@
 
     </script>
 
-
     <nav id="dashboard-sidebar" class="nav flex-column border p-2 bg-light vh-100 position-fixed top-0 start-0"
         style="width: 200px;">
 
@@ -56,7 +55,7 @@
 
                         <button
                             class="btn btn-secondary"
-                            data-bs-target="#modal-email"
+                            data-bs-target="#emailModal"
                             data-bs-toggle="modal"
                         >
                             Cambia email
@@ -64,7 +63,7 @@
 
                         <button
                             class="btn btn-secondary"
-                            data-bs-target="#modal-username"
+                            data-bs-target="#usernameModal"
                             data-bs-toggle="modal"
                         >
                             Cambia username
@@ -72,7 +71,7 @@
 
                         <button
                             class="btn btn-secondary"
-                            data-bs-target="#modal-password"
+                            data-bs-target="#passwordModal"
                             data-bs-toggle="modal"
                         >
                             Cambia password
@@ -105,7 +104,13 @@
 
 <div th:fragment="modifica_conto(nome_campo, verifica_vecchio)">
 
-    <div class="modal fade" th:id="${'modal-' + nome_campo}" aria-hidden="true"
+    <script th:inline="javascript">
+        /*[# th:if="${nome_campo}"]*/
+        showCallbacks[(/*[[${nome_campo}]]*/ 'campo') + 'Modal'] = modalShowCallback;
+        /*[/]*/
+    </script>
+
+    <div class="modal fade" th:id="${nome_campo + 'Modal'}" aria-hidden="true"
         th:aria-labelledby="${'label-' + nome_campo}" tabindex="-1">
 
         <div class="modal-dialog modal-dialog-centered">
@@ -120,11 +125,11 @@
 
                 <div class="modal-body text-center">
 
-                    <form th:action="@{/dash/profilo/modifica_} + ${nome_campo}" method="post">
+                    <form th:action="@{/dash/modifica_} + ${nome_campo}" method="post">
 
                         <div class="col-12">
                             <fieldset>
-                                <div th:replace="fragments/generic_fragments :: error_message"></div>
+                                <div th:replace="fragments/generic_fragments :: backend_message"></div>
 
                                 <div th:if="${verifica_vecchio} == 'true'">
                                     <label class="form-label" th:for="${'current_' + nome_campo}"
@@ -150,7 +155,7 @@
                                     Confermare campo
                                 </label>
                                 <input class="form-control"
-                                    th:id="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
+                                    th:id="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : ('password_' + nome_campo))}"
                                     th:name="${'confirm_' + (verifica_vecchio == 'true' ? nome_campo : 'password')}"
                                     th:type="${verifica_vecchio == 'true' ? (nome_campo == 'password' ? 'password' : (nome_campo == 'email' ? 'email' : 'text')) : 'password'}"
                                     required>

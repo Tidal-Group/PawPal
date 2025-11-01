@@ -12,10 +12,10 @@ import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
-@ToString(callSuper = true)
+@ToString(callSuper=true)
 @Entity
-@Table(name = "clienti")
-@PrimaryKeyJoinColumn(name = "cliente_id")
+@Table(name="clienti")
+@PrimaryKeyJoinColumn(name="cliente_id")
 public class Cliente extends User {
 
     @OneToMany(mappedBy = "cliente")

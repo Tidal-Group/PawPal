@@ -17,4 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     User findByNomeAndCognome(String nome, String cognome);
 
-} 
+}

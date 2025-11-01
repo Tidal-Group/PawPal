@@ -27,7 +27,8 @@ public class AuthController {
             URI refererUri = new URI(refererUrl);
             requestPath = refererUri.getPath();
         } catch (URISyntaxException | NullPointerException exception) {
-
+            // DO NOTHING: will redirect to home
+            // OPTIONAL: IMPLEMENT CUSTOM ERROR HANDLING
         }
         return "redirect:" + requestPath;
     }
@@ -54,7 +55,7 @@ public class AuthController {
     public PrestazioneService prestazioneService;
 
     @PostMapping("/register_veterinario")
-    public String sendRegisterVeterinarioData(
+    public String submitVeterinarioRegistrationData(
         @RequestHeader(value="Referer", required=false) String refererUrl,
         RedirectAttributes redirectAttributes,
         @RequestParam("specie") List<Long> listaIdSpecie,
@@ -72,7 +73,7 @@ public class AuthController {
     }
 
     @PostMapping("/register_cliente")
-    public String sendRegisterClienteData(
+    public String submitClienteRegistrationData(
         @RequestHeader(value="Referer", required=false) String refererUrl,
         RedirectAttributes redirectAttributes,
         @RequestParam Map<String, String> clienteData
