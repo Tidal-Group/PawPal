@@ -3,10 +3,14 @@ package com.tidal.pawpal.controllers;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -39,6 +43,8 @@ import com.tidal.pawpal.services.RecensioneService;
 import com.tidal.pawpal.services.SpecieService;
 import com.tidal.pawpal.services.UserService;
 import com.tidal.pawpal.services.VeterinarioService;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/dash")
@@ -143,9 +149,26 @@ public class DashController {
     @GetMapping("")
     public String showDashboard(
         Principal principal,
-        Model model
+        Model model,
+        @RequestParam(required=false) Optional<LocalDate> filtroData,
+        @RequestParam(required=false) Optional<String> filtroNominativo,
+        @RequestParam(required=false) Optional<String> view
     ) {
         try {
+            Map<String, Object> filtriAppuntamento = new HashMap<>();
+
+            if(filtroData.isPresent()) {
+                LocalDate date = filtroData.get();
+                filtriAppuntamento.put("data", date);
+                model.addAttribute("filtroData", date.format(DateTimeFormatter.ISO_DATE));
+            }
+
+            if(filtroNominativo.isPresent()) {
+                String nominativo = filtroNominativo.get();
+                filtriAppuntamento.put("nominativo", nominativo);
+                model.addAttribute("filtroNominativo", nominativo);
+            }
+
             acceptAuthenticated(principal, (authentication, utente) -> {
 
                 // passo i dati dell'utente
@@ -154,12 +177,12 @@ public class DashController {
                 // passo i dati relativi alle relazioni comuni a utente e veterinario
                 List<AppuntamentoDto> listaAppuntamenti = new ArrayList<>();
                 List<RecensioneDto> listaRecensioni = new ArrayList<>();
-                if(isCliente(authentication)) {
-                    listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
-                    listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
-                } else if(isVeterinario(authentication)) {
-                    listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
-                    listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
+                if(filtriAppuntamento.isEmpty()) {
+                    if(isCliente(authentication)) listaAppuntamenti = appuntamentoService.cercaPerCliente(utente.getId());
+                    if(isVeterinario(authentication)) listaAppuntamenti = appuntamentoService.cercaPerVeterinario(utente.getId());
+                } else {
+                    if(isCliente(authentication)) listaAppuntamenti = appuntamentoService.cercaPerClienteConFiltri(utente.getId(), filtriAppuntamento);
+                    if(isVeterinario(authentication)) listaAppuntamenti = appuntamentoService.cercaPerVeterinarioConFiltri(utente.getId(), filtriAppuntamento);
                 }
 
                 model.addAttribute("lista_appuntamenti", listaAppuntamenti);
@@ -176,13 +199,14 @@ public class DashController {
                     model.addAttribute("lista_prestazioni_selezionate", listaPrestazioniSelezionate);
                 }
             });
+
             return "dashboard_utente";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
             return "redirect:/error";
         }
-    }    
+    }
 
     @PostMapping("/modifica_username")
     public String submitNewUsername(
@@ -294,6 +318,24 @@ public class DashController {
             return "redirect:/error";
         }
     }
+
+    @PostMapping("/appuntamenti/filtra")
+    public String filterAppuntamenti(
+        @RequestParam(required=false) Optional<LocalDate> filtroData,
+        @RequestParam(required=false) Optional<String> filtroNominativo,
+        RedirectAttributes redirectAttributes
+    ) {
+        if(filtroData.isPresent())
+            redirectAttributes.addAttribute("filtroData", filtroData.get());
+
+        if(filtroNominativo.isPresent())
+            redirectAttributes.addAttribute("filtroNominativo", filtroNominativo.get());
+
+        redirectAttributes.addAttribute("view", "appuntamenti");
+
+        return "redirect:/dash#appuntamenti";
+    }
+    
 
     @PostMapping("/appuntamenti/modifica_appuntamento")
     public String handleAppuntamentoUpdate(@RequestParam Map<String, String> data) {

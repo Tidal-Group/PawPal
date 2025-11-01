@@ -90,4 +90,10 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     public abstract List<AppuntamentoDto> cercaPerCliente(Long idCliente);
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIO')")
+    public abstract List<AppuntamentoDto> cercaPerVeterinarioConFiltri(Long idVeterinario, Map<String, Object> filtri);
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
+    public abstract List<AppuntamentoDto> cercaPerClienteConFiltri(Long idCliente, Map<String, Object> filtri);    
+
 }

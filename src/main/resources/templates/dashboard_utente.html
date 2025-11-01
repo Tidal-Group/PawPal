@@ -166,18 +166,20 @@
 
                 <h2>I tuoi Appuntamenti</h2>
 
-                <form action="" method="get">
+                <form th:action="@{/dash/appuntamenti/filtra}" method="post">
                     <input
                         id="filtroData"
                         name="filtroData"
                         type="date"
                         placeholder="Filtra per data"
+                        th:value="${filtroData != null ? filtroData : ''}"
                     >
 
                     <input
-                        id="filtroVeterinario"
-                        name="filtroVeterinario"
+                        id="filtroNominativo"
+                        name="filtroNominativo"
                         type="text"
+                        th:value="${filtroNominativo}"
                         th:placeholder="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') ? 'Cerca per veterinario' : 'Cerca per cliente'}"
                     >
 
