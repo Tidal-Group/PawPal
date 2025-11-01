@@ -166,10 +166,23 @@
 
                 <h2>I tuoi Appuntamenti</h2>
 
-                <form th:action="@{/dash/appuntamenti}" method="get">
-                    <input type="date" name="data" placeholder="Filtra per data">
-                    <input type="text" name="veterinario" placeholder="Cerca per veterinario">
+                <form action="" method="get">
+                    <input
+                        id="filtroData"
+                        name="filtroData"
+                        type="date"
+                        placeholder="Filtra per data"
+                    >
+
+                    <input
+                        id="filtroVeterinario"
+                        name="filtroVeterinario"
+                        type="text"
+                        th:placeholder="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') ? 'Cerca per veterinario' : 'Cerca per cliente'}"
+                    >
+
                     <button type="submit" class="btn btn-primary">Filtra</button>
+
                 </form>
 
                 <table class="table-appuntamenti">
@@ -193,7 +206,7 @@
                                 th:action="@{/dash/appuntamenti/modifica_appuntamento}"
                                 method="post"
                             >
-                                <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="idAppuntamento">
+                                <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="id">
 
                                 <td th:text="${appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"></td>
 
@@ -208,6 +221,7 @@
                                 <td>
                                     <input
                                         th:id="${'dataOraAppuntamento' + appuntamento.idAppuntamento}"
+                                        name="dataOra"
                                         type="datetime-local"
                                         th:value="${appuntamento.dataOraAppuntamento}"
                                         readonly
@@ -216,8 +230,8 @@
 
                                 <td>
                                     <textarea
-                                        name="noteAppuntamento"
                                         th:id="${'noteAppuntamento' + appuntamento.idAppuntamento}"
+                                        name="note"
                                         th:text="${appuntamento.noteAppuntamento}"
                                         readonly
                                     ></textarea>
@@ -231,6 +245,8 @@
                                     <button
                                         type="button"
                                         class="btn btn-primary"
+                                        th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
+                                                appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()}"
                                         th:onclick="
                                             |document.getElementById('submitModifica${appuntamento.idAppuntamento}').style.display = 'block';
                                              this.style.display = 'none';
@@ -242,6 +258,8 @@
                                     </button>
 
                                     <button
+                                        th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
+                                                appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()}"
                                         th:id="${'submitModifica' + appuntamento.idAppuntamento}"
                                         type="submit"
                                         th:form="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
@@ -251,9 +269,13 @@
                                         Conferma
                                     </button>
 
-                                    <form th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
+                                    <form 
+                                        th:if="${appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()}"
+                                        th:action="@{/dash/appuntamenti/elimina_appuntamento}"
+                                        method="post"
+                                    >
                                         <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="idAppuntamento">
-                                        <button type="submit" class="btn btn-danger">Elimina</button>
+                                        <button type="submit" class="btn btn-danger">Annulla</button>
                                     </form>
 
                                 </div>

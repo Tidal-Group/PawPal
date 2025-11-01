@@ -54,7 +54,7 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyRole('CLIENTE', 'VETERINARIO')")
+    @PreAuthorize("hasRole('CLIENTE')")
     // DEBUG: SICUREZZA! Si possono modificare gli appuntamenti di tutti!
     public Appuntamento modifica(Long id, Map<String, String> data, Consumer<Appuntamento> consumer) {
         return UpdateService.super.modifica(id, data, consumer);
@@ -62,7 +62,7 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyRole('CLIENTE', 'VETERINARIO')")
+    @PreAuthorize("hasRole('CLIENTE')")
     // DEBUG: SICUREZZA! Si possono modificare gli appuntamenti di tutti!
     public Appuntamento modifica(Long id, Map<String, String> data) {
         return UpdateService.super.modifica(id, data);

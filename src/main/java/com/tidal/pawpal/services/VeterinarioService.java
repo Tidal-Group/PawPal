@@ -145,6 +145,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.exceptions.MissingRequiredFieldException;
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.repositories.VeterinarioRepository;
 import com.tidal.pawpal.services.contracts.VeterinarioServiceContract;
@@ -181,6 +182,13 @@ public class VeterinarioService extends VeterinarioServiceContract {
     @Transactional
     @PreAuthorize("permitAll")
     public Veterinario registra(List<Long> listaIdSpecie, List<Long> listaIdPrestazione, Map<String, String> data) {
+
+        if(data.get("password") == null || data.get("password").isEmpty()) throw new MissingRequiredFieldException();
+        else {
+            String password = data.get("password");
+            // effettuare controlli
+        }
+
         return super.registra(data, (veterinario) -> {
             for(Long id : listaIdSpecie)
                 veterinario.addSpecie(specieService.cercaPerId(id));

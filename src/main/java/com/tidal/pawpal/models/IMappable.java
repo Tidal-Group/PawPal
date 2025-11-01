@@ -2,6 +2,7 @@ package com.tidal.pawpal.models;
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -39,6 +40,9 @@ public interface IMappable {
                             break;
                             case "long":
                                 m.invoke(this, Long.parseLong(valoreAssociato));
+                            break;
+                            case "localdatetime":
+                                m.invoke(this, LocalDateTime.parse(valoreAssociato));
                             break;
                         }
                     } catch (Exception ex) {

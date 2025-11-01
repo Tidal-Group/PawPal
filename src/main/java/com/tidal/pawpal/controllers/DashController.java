@@ -299,9 +299,12 @@ public class DashController {
     public String handleAppuntamentoUpdate(@RequestParam Map<String, String> data) {
         try {
             appuntamentoService.modifica(Long.parseLong(data.get("id")), data);
-            return "redirect:/dash/appuntamenti";
+            // IMPLEMENT: aggiungere un modo per essere riportati
+            // alla posizione dell'appuntamento nella lista
+            return "redirect:/dash#appuntamenti";
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
+            exception.printStackTrace();
             return "redirect:/error";
         }
     }

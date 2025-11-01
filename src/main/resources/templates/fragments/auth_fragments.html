@@ -167,6 +167,8 @@
                 <div class="modal-body text-center">
                     <form th:action="@{/auth/register_veterinario}" method="post" style="display: contents;">
 
+                        <div th:replace="fragments/generic_fragments :: backend_message"></div>
+
                         <div>
                             <label class="form-label" for="nome_veterinario">Nome:</label>
                             <input class="form-control" type="text" id="nome_veterinario" name="nome" required>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tidal.pawpal.exceptions.MissingRequiredFieldException;
 import com.tidal.pawpal.services.AuthService;
 import com.tidal.pawpal.services.PrestazioneService;
 import com.tidal.pawpal.services.SpecieService;
@@ -66,6 +67,9 @@ public class AuthController {
             authService.registraVeterinario(listaIdSpecie, listaIdPrestazioni, veterinarioData);
             redirectAttributes.addFlashAttribute("successMessage", "Registrazione effettuata con successo");
             return redirectToLoginModal(refererUrl);
+        } catch(MissingRequiredFieldException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+            return redirectToRegisterVeterinarioModal(refererUrl);
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             return "redirect:/error";
