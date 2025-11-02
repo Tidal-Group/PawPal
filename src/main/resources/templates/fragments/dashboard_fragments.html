@@ -5,26 +5,17 @@
     <script th:inline="javascript">
 
         document.addEventListener("DOMContentLoaded", () => {
-
-            function apriSezione(...nomiSezioni) {
-                const sezioneAperta = document.getElementById(nomiSezioni[0]);
-                if(sezioneAperta) {
-                    sezioneAperta.style.display = "flex";
-                    sezioneAperta.dispatchEvent(showEvent);
-                }
-                for(let i = 1; i < nomiSezioni.length; i++) {
-                    const sezioneChiusa = document.getElementById(nomiSezioni[i]);
-                    if(sezioneChiusa) {
-                        sezioneChiusa.style.display = "none";
-                        sezioneChiusa.dispatchEvent(hiddenEvent);
+            
+            document.querySelectorAll('.sidebar-view-trigger').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    const targetViewId = this.getAttribute('data-view-id');
+                    const targetElement = document.getElementById(targetViewId);
+                    if (targetElement) {
+                        targetElement.dispatchEvent(new Event('show.element'));
+                        window.dispatchEvent(new PopStateEvent('popstate'));
                     }
-                }
-            }
-
-            showCallbacks["modifica_dati"] = apriSezione;
-            showCallbacks["appuntamenti"] = apriSezione;
-            showCallbacks["recensioni"] = apriSezione;
-            showCallbacks["linee_guida"] = apriSezione;
+                });
+            });
 
         });
 
@@ -46,8 +37,8 @@
                     <div class="card card-body p-0 border-0">
 
                         <button
-                            onclick="showCallbacks['modifica_dati']('modifica_dati', 'appuntamenti', 'recensioni', 'linee_guida');"
-                            class="btn btn-secondary"
+                            data-view-id="modifica_dati"
+                            class="btn btn-secondary sidebar-view-trigger"
                             th:classappend="${active} == 'profilo' ? ' active' : ''"
                         >
                             Modifica dati
@@ -82,18 +73,33 @@
             </li>
 
             <li class="nav-item">
-                <button onclick="showCallbacks['appuntamenti']('appuntamenti', 'modifica_dati', 'recensioni', 'linee_guida')" class="btn btn-secondary"
-                    th:classappend="${active} == 'appuntamenti' ? ' active' : ''">Appuntamenti</a>
+                <button
+                    data-view-id="appuntamenti"
+                    class="btn btn-secondary sidebar-view-trigger"
+                    th:classappend="${active} == 'appuntamenti' ? ' active' : ''"
+                >
+                    Appuntamenti
+                </button>
             </li>
 
             <li class="nav-item">
-                <button onclick="showCallbacks['recensioni']('recensioni', 'appuntamenti', 'modifica_dati', 'linee_guida')" class="btn btn-secondary"
-                    th:classappend="${active} == 'recensioni' ? ' active' : ''">Recensioni</a>
+                <button
+                    data-view-id="recensioni"
+                    class="btn btn-secondary sidebar-view-trigger"
+                    th:classappend="${active} == 'recensioni' ? ' active' : ''"
+                >
+                    Recensioni
+                </button>
             </li>
 
             <li class="nav-item" th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
-                <button onclick="showCallbacks['linee_guida']('linee_guida', 'recensioni', 'appuntamenti', 'modifica_dati')" class="btn btn-secondary"
-                    th:classappend="${active} == 'linee_guida' ? ' active' : ''">Linee guida</a>
+                <button
+                    data-view-id="linee_guida"
+                    class="btn btn-secondary sidebar-view-trigger"
+                    th:classappend="${active} == 'linee_guida' ? ' active' : ''"
+                >
+                    Linee guida
+                </button>
             </li>
 
         </ul>
@@ -103,12 +109,6 @@
 </header>
 
 <div th:fragment="modifica_conto(nome_campo, verifica_vecchio)">
-
-    <script th:inline="javascript">
-        /*[# th:if="${nome_campo}"]*/
-        showCallbacks[(/*[[${nome_campo}]]*/ 'campo') + 'Modal'] = modalShowCallback;
-        /*[/]*/
-    </script>
 
     <div class="modal fade" th:id="${nome_campo + 'Modal'}" aria-hidden="true"
         th:aria-labelledby="${nome_campo + 'Label'}" tabindex="-1">

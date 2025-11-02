@@ -1,10 +1,6 @@
 <section th:fragment="login">
     <link rel="stylesheet" th:href="@{/css/auth_fragments.css}">
 
-    <script>
-        showCallbacks["loginModal"] = modalShowCallback;
-    </script>
-
     <div class="modal fade" id="loginModal" aria-hidden="true" aria-labelledby="loginLabel" tabindex="-1">
 
         <div class="modal-dialog modal-dialog-centered">
@@ -57,10 +53,6 @@
 </section>
 
 <section th:fragment="registrazione_cliente">
-
-    <script>
-        showCallbacks["registrazioneClienteModal"] = modalShowCallback;
-    </script>
 
     <div class="modal fade" id="registrazioneClienteModal" aria-hidden="true"
         aria-labelledby="registrazioneClienteLabel" tabindex="-1">
@@ -147,10 +139,6 @@
 </section>
 
 <section th:fragment="registrazione_veterinario">
-
-    <script>
-        showCallbacks["registrazioneVeterinarioModal"] = modalShowCallback;
-    </script>
 
     <div class="modal fade" id="registrazioneVeterinarioModal" aria-hidden="true"
         aria-labelledby="registrazioneVeterinarioLabel" tabindex="-1">

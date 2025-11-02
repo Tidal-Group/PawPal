@@ -22,32 +22,46 @@
     <!-- BOOTSTRAP -->
 
     <script>
-        var showCallbacks = {};
-        var showEvent = new Event('show.element');
-        var hiddenEvent = new Event('hidden.element');
+        const showEvent = new Event('show.element');
+        const hiddenEvent = new Event('hidden.element');
 
-        var modalShowCallback = (modalElementId) => {
-            const el = document.getElementById(modalElementId);
-            if (el && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                const modalInstance = bootstrap.Modal.getOrCreateInstance(el);
-                modalInstance.show();
+        const renderCallbacks = {
+            modalShowCallback: (element) => {
+                if (element && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    const modalInstance = bootstrap.Modal.getOrCreateInstance(element);
+                    modalInstance.show();
+                }
+            },
+            modalHideCallback:  (element) => {
+                if (element && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    const modalInstance = bootstrap.Modal.getInstance(element);
+                    if (modalInstance && element.classList.contains('show'))
+                        modalInstance.hide();
+                }
+            },
+            viewShowCallback: (element) => {
+                element.style.display = "flex";
+            },
+            viewHideCallback: (element) => {
+                element.style.display = "none";
             }
-        };;
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
-            document.querySelectorAll('form').forEach(form => {
 
-                form.addEventListener('submit', () => {
-                    const hashInput = document.createElement('input');
-                    
-                    hashInput.type = 'hidden';
-                    hashInput.name = 'existing_hash';
-                    hashInput.value = window.location.hash;
+            document.querySelectorAll("form[method='post']").forEach((form) => {
+                form.addEventListener("submit", () => {
+                    const redirectUrl = window.location.pathname + window.location.search + window.location.hash;
 
-                    form.appendChild(hashInput);
-                })
+                    const redirectUrlHiddenInput = document.createElement("input");
+                    redirectUrlHiddenInput.type = "hidden";
+                    redirectUrlHiddenInput.name = "redirectUrl";
+                    redirectUrlHiddenInput.value = redirectUrl;
+                    form.appendChild(redirectUrlHiddenInput);
 
+                });
             });
+
         });
     </script>
 
@@ -290,154 +304,83 @@
 
 <div th:fragment="show_views_scripts">
 
-    <!-- SCRIPT TO SHOW VIEWS (INCLUDING MODALS) ON REDIRECT -->
-    <script th:inline="javascript">
-        document.addEventListener("DOMContentLoaded", () => {
-            const fullHash = window.location.hash;
-            const elementIds = fullHash.substring(1).split('#');
-            elementIds.forEach((elementId) => {
-                if(elementId && showCallbacks[elementId])
-                    showCallbacks[elementId](elementId);
-            });
-        });
-    </script>
-    <!-- SCRIPT TO SHOW VIEWS (INCLUDING MODALS) ON REDIRECT -->
-
-    <!-- DEBUG: LEGGERE I COMMENTI DI GEMINI E AGGIUSTARE IL POPSTATE -->
     <!-- SCRIPT TO CHANGE URL WHEN SHOWING/HIDING VIEWS (INCLUDING MODALS) -->
     <script th:inline="javascript">
-
-        // The current URL path/search part (without hash)
-        let originalFullUrl = window.location.pathname + window.location.search;
-
-        var updateUrl = (element, showEvent, hideEvent, hideCallback, raceConditionChecker) => {
-            const elementId = element.getAttribute('id');
-            const isModal = element.classList.contains('modal');
-
-            // --- SHOW EVENT LISTENER (history.pushState) ---
-            element.addEventListener(showEvent, function () {
-                // Get the current hash IDs, filtering out empty strings
-                const currentHashIDs = window.location.hash.substring(1).split('#').filter(id => id);
-                
-                let newHashIDs = [...currentHashIDs];
-                
-                if (isModal) {
-                    // MODAL LOGIC: Replace the LAST hash ID if it was also a modal
-                    const lastId = newHashIDs.length > 0 ? newHashIDs[newHashIDs.length - 1] : null;
-                    const lastElement = lastId ? document.getElementById(lastId) : null;
-                    
-                    // Check if the last hash element is also a modal
-                    if (lastElement && lastElement.classList.contains('modal')) {
-                        // Substitutes the old modal ID with the new one
-                        newHashIDs[newHashIDs.length - 1] = elementId; 
-                    } else {
-                        // Add the new modal ID to the end
-                        newHashIDs.push(elementId);
-                    }
-                } else {
-                    // SHOWABLE LOGIC: Always append (Stack behavior)
-                    if (!newHashIDs.includes(elementId)) {
-                        newHashIDs.push(elementId);
-                    }
-                }
-
-                // Reconstruct the new hash string and push the state
-                const newHash = newHashIDs.length > 0 ? "#" + newHashIDs.join('#') : "";
-                history.pushState(null, '', originalFullUrl + newHash);
-            });
-
-            // --- HIDE EVENT LISTENER (history.replaceState) ---
-            element.addEventListener(hideEvent, function () {
-                // Get current hash IDs, filtering out the ID of the element being hidden
-                let newHashIDs = window.location.hash.substring(1)
-                                    .split('#')
-                                    .filter(id => id && id !== elementId); 
-                
-                // Note: The raceConditionChecker logic is removed/simplified here 
-                // as its original implementation might conflict with the new hash logic.
-                // It's generally better to rely on `replaceState` and let the `popstate`
-                // handler (which runs later) handle the final state.
-
-                // If the element being hidden is NOT the last element in the hash,
-                // we should only perform replaceState if it was in the current hash.
-                // But since we filtered it out, we just need to update the URL.
-                
-                const newHash = newHashIDs.length > 0 ? "#" + newHashIDs.join('#') : "";
-
-                // Use replaceState to clear the current history entry
-                history.replaceState(null, '', originalFullUrl + newHash);
-            });
-            
-            // --- POPSTATE LISTENER (Browser Back/Forward) ---
-            if(hideCallback) {
-                window.addEventListener('popstate', function() {
-                    const currentHashIDs = window.location.hash.substring(1).split('#').filter(id => id);
-                    
-                    // If the element's ID is NO LONGER in the hash, hide it.
-                    if (!currentHashIDs.includes(elementId)) {
-                        // Check if the element is currently visible before calling hideCallback
-                        // This prevents unnecessary hiding or double-hiding.
-                        if (isModal && element.classList.contains('show')) {
-                            hideCallback(element);
-                        } else if (!isModal && element.style.display !== 'none') {
-                            hideCallback(element);
-                        }
-                    }
-                    // OPTIONAL: If the element's ID *IS* in the hash, ensure it is shown
-                    else if (currentHashIDs.includes(elementId)) {
-                        if (showCallbacks[elementId]) {
-                            showCallbacks[elementId](elementId);
-                        }
-                    }
-                });
-            }
-        };
+        const isModal = (element) => element.classList.contains('modal');
 
         document.addEventListener("DOMContentLoaded", () => {
-            // ... originalFullUrl defined globally above ...
-            const elementIds = window.location.hash.substring(1).split('#');
 
-            // --- MODALS SETUP ---
+            function updateUrl(element, showEvent, hideEvent, showCallback, hideCallback) {
+                const elementId = element.getAttribute('id');
+
+                element.addEventListener(showEvent, function () {
+                    const pathname = window.location.pathname;
+                    const params = new URLSearchParams(window.location.search);
+                    const hash = window.location.hash;
+
+                    if(isModal(element)) params.set("modal", elementId);
+                    else params.set("view", elementId);
+
+                    const separator = params.toString() ? '?' : '';
+                    history.pushState(null, '', `${pathname}${separator}${params}${hash}`);
+                });
+
+                element.addEventListener(hideEvent, function () {
+                    const pathname = window.location.pathname;
+                    const params = new URLSearchParams(window.location.search);   
+                    const hash = window.location.hash;
+
+                    if(isModal(element)) {
+                        params.delete("modal");
+                        // prevents the modal url from being saved in browser navigation history
+                        const separator = params.toString() ? '?' : '';
+                        history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
+                    }
+                    else {
+                        params.delete("view");
+                        history.pushState(null, '', `${pathname}${separator}${params}${hash}`);
+                    }
+                });
+
+                window.addEventListener('popstate', function() {
+                    const params = new URLSearchParams(window.location.search);
+                    const stateKey = isModal(element) ? "modal" : "view";
+                    if(params.get(stateKey) == elementId) showCallback(element);
+                    else hideCallback(element);
+                });
+            };
+
             document.querySelectorAll('.modal').forEach((modalElement) => {
-                const modalId = modalElement.getAttribute('id');
-
                 updateUrl(
                     modalElement,
                     'show.bs.modal',
                     'hidden.bs.modal',
-                    originalFullUrl,
-                    // hideCallback function: hides the modal
-                    (modalElement) => {
-                        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if (modalInstance && modalElement.classList.contains('show'))
-                            modalInstance.hide();
-                    }
-                    // raceConditionChecker is now obsolete with this logic
+                    renderCallbacks.modalShowCallback,
+                    renderCallbacks.modalHideCallback
                 );
             });
 
-            // --- SHOWABLES SETUP ---
             document.querySelectorAll('.showable').forEach((showableElement) => {
-                const showableId = showableElement.getAttribute('id');
-                
                 updateUrl(
                     showableElement,
                     'show.element',
                     'hidden.element',
-                    originalFullUrl
-                    // hideCallback function: hides the showable
-                    // (showableElement) => {
-                    //     showableElement.style.display = 'none';
-                    // }
+                    renderCallbacks.viewShowCallback,
+                    renderCallbacks.viewHideCallback
                 );
             });
 
-            // --- INITIAL LOAD ---
-            elementIds.forEach((elementId) => {
-                if(elementId && showCallbacks[elementId]) {
-                    showCallbacks[elementId](elementId);
-                }
-            });
+            const params = new URLSearchParams(window.location.search);
+            const viewId = params.get("view");
+            const modalId = params.get("modal");
+            if(viewId) {
+                const view = document.getElementById(viewId);
+                if(view) renderCallbacks.viewShowCallback(view);
+            }
+            if(modalId) {
+                const modal = document.getElementById(modalId);
+                if(modal) renderCallbacks.modalShowCallback(modal);
+            }
 
         });
 
