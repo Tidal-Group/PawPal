@@ -21,14 +21,59 @@
 
                     <div class="veterinari-list">
                         <div th:each="vet : ${lista_veterinari}" class="">
+
                             <!-- <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]"> -->
                             <h3 th:text="${vet.id}"></h3>
                             <h3 th:text="${vet.nome + ' ' + vet.cognome}"></h3>
                             <p th:text="${vet.specializzazione}"></p>
                             <p th:text="${vet.indirizzoStudio}"></p>
-                            <form th:action="@{/veterinari/lista_veterinari/{idVeterinario}(idVeterinario=${vet.id})}" method="post">
-                                <button type="submit" class="btn btn-secondary" data-bs-target="#cardVeterinarioModal" data-bs-toggle="modal">Visualizza Profilo</button>
-                            </form>
+                            <button
+                                type="button"
+                                class="btn btn-secondary showCardVeterinario"
+                                th:data-idveterinario="${vet.id}"
+                                data-bs-target="#cardVeterinarioModal"
+                                data-bs-toggle="modal"
+                            >
+                                Visualizza Profilo
+                            </button>
+
+                            <script>
+
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    document.querySelectorAll('.showCardVeterinario').forEach(button => {
+                                        
+                                        button.addEventListener('click', (event) => {
+
+                                            const idVeterinario = event.currentTarget.dataset.idveterinario;
+                                            const modalElement = document.getElementById('cardVeterinarioModal');
+                                            
+                                            fetch(`/veterinari/lista_veterinari/${idVeterinario}`)
+                                            .then(response => {
+                                                if (!response.ok) throw new Error(`Failed to fetch profile for ID: ${idVeterinario}. Status: ${response.status}`);
+                                                return response.json();
+                                            })
+                                            .then(data => {
+                                                console.log(data)
+                                                document.getElementById('registrazioneVeterinarioLabel').textContent = data.nome + " " + data.cognome;
+                                                document.getElementById('specializzazione_veterinario').value = data.specializzazione;
+                                                document.getElementById('iscrizione_albo_veterinario').value = data.iscrizioneAlbo;
+                                                document.getElementById('descrizione_veterinario').value = data.descrizione;
+                                                document.getElementById('disponibilita_veterinario').value = data.disponibilita;
+                                                document.getElementById('indirizzo_studio_veterinario').value = data.indirizzoStudio;
+                                                document.getElementById('telefono_veterinario').value = data.telefono;
+                                                document.getElementById('email_veterinario').value = data.email;
+                                            })
+                                            .catch(error => {
+                                                console.error('AJAX Error:', error);
+                                                alert("Could not load veterinarian profile.");
+                                            });
+
+                                        });
+                                    });
+                                });
+
+                            </script>
+
                         </div>
                     </div>
 
@@ -44,7 +89,7 @@
     
     <footer th:replace="fragments/generic_fragments :: footer"></footer>
 
-    <script th:src="@{/js/script.js}"></script>
+    <!-- <script th:src="@{/js/script.js}"></script> -->
     <div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
 
 </body>

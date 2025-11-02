@@ -50,14 +50,15 @@
         document.addEventListener("DOMContentLoaded", () => {
 
             document.querySelectorAll("form[method='post']").forEach((form) => {
-                form.addEventListener("submit", () => {
+                form.addEventListener("submit", (event) => {
+                    event.preventDefault();
                     const redirectUrl = window.location.pathname + window.location.search + window.location.hash;
-
                     const redirectUrlHiddenInput = document.createElement("input");
                     redirectUrlHiddenInput.type = "hidden";
                     redirectUrlHiddenInput.name = "redirectUrl";
                     redirectUrlHiddenInput.value = redirectUrl;
                     form.appendChild(redirectUrlHiddenInput);
+                    form.submit();
                 });
             });
 

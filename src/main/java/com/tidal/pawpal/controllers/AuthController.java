@@ -32,7 +32,6 @@ public class AuthController {
         try {
             authService.registraVeterinario(listaIdSpecie, listaIdPrestazioni, veterinarioData);
             redirectAttributes.addFlashAttribute("successMessage", "Registrazione effettuata con successo");
-
             return ControllerUtils.redirectToModal(redirectUrl, "loginModal");
         } catch(MissingRequiredFieldException exception) {
             redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());

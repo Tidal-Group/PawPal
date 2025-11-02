@@ -242,15 +242,118 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="registrazioneVeterinarioLabel">Registrazione Veterinario</h1>
+                    <h1 class="modal-title fs-5" id="registrazioneVeterinarioLabel"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body text-center">
-                    <div th:text="${veterinario != null ? veterinario.descrizione : ''}"></div>
-                </div>
 
-                <div class="modal-footer">
+                    <div>
+                        <label class="form-label" for="specializzazione_veterinario">Specializzazione: </label>
+                        <input 
+                            class="form-control"
+                            type="text"
+                            id="specializzazione_veterinario"
+                            name="specializzazione_veterinario"
+                            readonly
+                        >
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="iscrizione_albo_veterinario">Numero di iscrizione all'albo:</label>
+                        <input 
+                            class="form-control"
+                            type="text"
+                            id="iscrizione_albo_veterinario"
+                            name="iscrizione_albo_veterinario"
+                            readonly
+                        >
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="descrizione_veterinario">Descrizione:</label>
+                        <textarea
+                            class="form-control"
+                            name="descrizione_veterinario"
+                            id="descrizione_veterinario"
+                            readonly
+                        ></textarea>
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="disponibilita_veterinario">Disponibilita:</label>
+                        <input 
+                            class="form-control"
+                            type="text"
+                            id="disponibilita_veterinario"
+                            name="disponibilita_veterinario"
+                            readonly
+                        >
+                    </div>
+
+                    <br>
+                    <h3>Recapiti</h3>
+
+                    <div>
+                        <label class="form-label" for="indirizzo_studio_veterinario">Indirizzo:</label>
+                        <input 
+                            class="form-control"
+                            type="text"
+                            id="indirizzo_studio_veterinario"
+                            name="indirizzo_studio_veterinario"
+                            readonly
+                        >
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="telefono_veterinario">Telefono:</label>
+                        <input 
+                            class="form-control"
+                            type="text"
+                            id="telefono_veterinario"
+                            name="telefono_veterinario"
+                            readonly
+                        >
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="email_veterinario">Email:</label>
+                        <input 
+                            class="form-control"
+                            type="text"
+                            id="email_veterinario"
+                            name="email_veterinario"
+                            readonly
+                        >
+                    </div>
+
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                            Prenota un appuntamento
+                        </button>
+                        <form class="dropdown-menu p-4">
+                            <div class="mb-3">
+                            <label for="exampleDropdownFormEmail2" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="email@example.com">
+                            </div>
+                            <div class="mb-3">
+                            <label for="exampleDropdownFormPassword2" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password">
+                            </div>
+                            <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck2">
+                                <label class="form-check-label" for="dropdownCheck2">
+                                Remember me
+                                </label>
+                            </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </form>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
                 </div>
 
             </div>

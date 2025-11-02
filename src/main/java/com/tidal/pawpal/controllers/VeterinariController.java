@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tidal.pawpal.models.Veterinario;
 import com.tidal.pawpal.services.AppuntamentoService;
@@ -120,22 +120,21 @@ public class VeterinariController extends AuthenticatedController {
         queryParams.put("filtroSpecie", filtroSpecie.isPresent() ? String.valueOf(filtroSpecie.get()) : "");
 
         return ControllerUtils.redirectToQueryParams(redirectUrl, queryParams);
-    }
-    
+    }    
 
-    @PostMapping("/lista_veterinari/{idVeterinario}")
-    public String showCardVeterinario(
-        @RequestParam String redirectUrl,
-        @PathVariable Long idVeterinario,
-        RedirectAttributes redirectAttributes
+    @GetMapping("/lista_veterinari/{idVeterinario}")
+    @ResponseBody
+    public Veterinario getVetProfileDataForModal(
+        @PathVariable Long idVeterinario
     ) {
-        redirectAttributes.addFlashAttribute("veterinario", veterinarioService.cercaPerId(idVeterinario));
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + redirectUrl);
-        return ControllerUtils.redirectToModal(redirectUrl, "cardVeterinarioModal");
+        return veterinarioService.cercaPerId(idVeterinario);
     }
     
     @PostMapping("/inserisci_appuntamento")
-    public String sendAppuntamentoData(@RequestParam Map<String, String> data, Principal principal) {        
+    public String sendAppuntamentoData(
+        @RequestParam Map<String, String> data,
+        Principal principal
+    ) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 // nel frontend, passare l'idCliente con {#authentication.id}
@@ -151,7 +150,10 @@ public class VeterinariController extends AuthenticatedController {
     }
 
     @PostMapping("/inserisci_recensione")
-    public String sendRecensioneData(@RequestParam Map<String, String> data, Principal principal) {        
+    public String sendRecensioneData(
+        @RequestParam Map<String, String> data,
+        Principal principal
+    ) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
                 // nel frontend, passare l'idCliente con {#authentication.id}
