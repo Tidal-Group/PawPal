@@ -17,13 +17,13 @@ public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
     
     @Query(
         "SELECT new com.tidal.pawpal.dto.RecensioneDto(r.id, c.id, r.voto, r.commento, r.dataRecensione, c.username, NULL, NULL) " + 
-        "FROM Recensione r JOIN r.veterinario v JOIN r.cliente c WHERE v.id = :id_veterinario"
+        "FROM Recensione r LEFT JOIN r.veterinario v LEFT JOIN r.cliente c WHERE v.id = :id_veterinario"
     )
     List<RecensioneDto> findByVeterinario(@Param("id_veterinario") Long idVeterinario);
 
     @Query(
         "SELECT new com.tidal.pawpal.dto.RecensioneDto(r.id, c.id, r.voto, r.commento, r.dataRecensione, NULL, v.nome, v.cognome) " + 
-        "FROM Recensione r JOIN r.veterinario v JOIN r.cliente c WHERE c.id = :id_cliente"
+        "FROM Recensione r LEFT JOIN r.veterinario v LEFT JOIN r.cliente c WHERE c.id = :id_cliente"
     )
     List<RecensioneDto> findByCliente(@Param("id_cliente") Long idCliente);
 

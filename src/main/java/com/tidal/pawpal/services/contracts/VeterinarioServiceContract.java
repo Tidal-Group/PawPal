@@ -80,7 +80,7 @@ public abstract class VeterinarioServiceContract extends GenericService<Veterina
     }
 
     @PreAuthorize("permitAll")
-    public abstract List<Veterinario> cercaConFiltri(Map<String, String> filtri);
+    public abstract List<Veterinario> cercaConFiltri(Map<String, Object> filtri);
 
     @PreAuthorize("permitAll")
     public abstract List<Veterinario> cercaPerSpecie(String nomeSpecie);

@@ -3,17 +3,12 @@ package com.tidal.pawpal.dto;
 import lombok.Data;
 
 @Data
-public class VeterinarioDto  {
+public class VeterinarioSimplifiedDto {
 
     private final Long id;
     private final String nome;
     private final String cognome;
-    private final String telefono;
-    private final String email;
     private final String specializzazione;
-    private final String iscrizioneAlbo;
-    private final String descrizione;
     private final String indirizzoStudio;
-    private final String disponibilita;
 
 }

@@ -9,11 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,38 +26,19 @@ import com.tidal.pawpal.exceptions.ExistingEmailException;
 import com.tidal.pawpal.exceptions.ExistingUsernameException;
 import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.models.Specie;
-import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.services.AppuntamentoService;
 import com.tidal.pawpal.services.AuthService;
 import com.tidal.pawpal.services.ClienteService;
-import com.tidal.pawpal.services.CustomUserDetailsService;
 import com.tidal.pawpal.services.PrestazioneService;
 import com.tidal.pawpal.services.RecensioneService;
 import com.tidal.pawpal.services.SpecieService;
-import com.tidal.pawpal.services.UserService;
 import com.tidal.pawpal.services.VeterinarioService;
 import com.tidal.pawpal.utils.ControllerUtils;
 
 
 @Controller
 @RequestMapping("/dash")
-public class DashController {
-
-    private static boolean isCliente(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"));
-    }
-
-    private static boolean isVeterinario(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_VETERINARIO"));
-    }
-
-    private void acceptAuthenticated(Principal principal, BiConsumer<Authentication, User> consumer) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetailsService.SecuredUser securedUser = (CustomUserDetailsService.SecuredUser) authentication.getPrincipal();
-        // IMPLEMENT: sostituire con un DTO
-        User utente = userService.cercaPerId(securedUser.getId());
-        consumer.accept(authentication, utente);
-    }
+public class DashController extends AuthenticatedController {
 
     @Autowired
     public ClienteService clienteService;
@@ -79,9 +57,6 @@ public class DashController {
 
     @Autowired
     public RecensioneService recensioneService;
-
-    @Autowired
-    public UserService userService;
 
     @Autowired
     public AuthService authService;
@@ -123,6 +98,9 @@ public class DashController {
                     if(isCliente(authentication)) listaAppuntamenti = appuntamentoService.cercaPerClienteConFiltri(utente.getId(), filtriAppuntamento);
                     if(isVeterinario(authentication)) listaAppuntamenti = appuntamentoService.cercaPerVeterinarioConFiltri(utente.getId(), filtriAppuntamento);
                 }
+
+                if(isCliente(authentication)) listaRecensioni = recensioneService.cercaPerCliente(utente.getId());
+                if(isVeterinario(authentication)) listaRecensioni = recensioneService.cercaPerVeterinario(utente.getId());
 
                 model.addAttribute("lista_appuntamenti", listaAppuntamenti);
                 model.addAttribute("lista_recensioni", listaRecensioni);
@@ -266,7 +244,6 @@ public class DashController {
     @PostMapping("/appuntamenti/filtra")
     public String filterAppuntamenti(
         @RequestParam String redirectUrl,
-        RedirectAttributes redirectAttributes,
         @RequestParam(required=false) Optional<LocalDate> filtroData,
         @RequestParam(required=false) Optional<String> filtroNominativo
     ) {

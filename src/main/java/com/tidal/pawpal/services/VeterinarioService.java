@@ -139,35 +139,35 @@ public class VeterinarioService extends VeterinarioServiceContract {
 
     // IMPLEMENT: error handling
     @Override
-    public List<Veterinario> cercaConFiltri(Map<String, String> filtri) {
+    public List<Veterinario> cercaConFiltri(Map<String, Object> filtri) {
 
         Specification<Veterinario> specification = (root, query, criteriaBuilder) -> {
             
             List<Predicate> predicates = new ArrayList<>();
 
-            if(filtri.containsKey("idPrestazione")) {
-                Long idPrestazione = Long.parseLong(filtri.get("idPrestazione"));
-                predicates.add(criteriaBuilder.equal(root.join("prestazioni").get("id"), idPrestazione));
+            if(filtri.containsKey("prestazione")) {
+                Long idPrestazione = (Long) filtri.get("prestazione");
+                predicates.add(criteriaBuilder.equal(root.join("prestazioniOfferte").get("id"), idPrestazione));
             }
             
-            if(filtri.containsKey("idSpecie")) {
-                Long idSpecie = Long.parseLong(filtri.get("idSpecie"));
-                predicates.add(criteriaBuilder.equal(root.join("specie").get("id"), idSpecie));
+            if(filtri.containsKey("specie")) {
+                Long idSpecie = (Long) filtri.get("specie");
+                predicates.add(criteriaBuilder.equal(root.join("specieTrattate").get("id"), idSpecie));
             }
 
             if(filtri.containsKey("nome")) {
-                String nome = filtri.get("nome").toLowerCase();
+                String nome = ((String)filtri.get("nome")).toLowerCase();
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("nome")), "%" + nome + "%"));
             }
 
             if(filtri.containsKey("cognome")) {
-                String cognome = filtri.get("cognome").toLowerCase();
+                String cognome = ((String)filtri.get("cognome")).toLowerCase();
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("cognome")), "%" + cognome + "%"));
             }
 
             if(filtri.containsKey("citta")) {
-                String citta = filtri.get("citta").toLowerCase();
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("indirizzo")), "%" + citta + "%"));
+                String citta = ((String)filtri.get("citta")).toLowerCase();
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("indirizzoStudio")), "%" + citta + "%"));
             }
             
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

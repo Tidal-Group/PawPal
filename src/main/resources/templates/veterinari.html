@@ -3,7 +3,7 @@
 <link rel="stylesheet" th:href="@{/css/auth_fragments.css}">
 <link rel="stylesheet" th:href="@{/css/veterinari.css}">
 
-<head th:replace="fragments/generic_fragments :: head('Veterinari')"></head>
+<head th:replace="fragments/generic_fragments :: head('Veterinari - Pawpal')"></head>
 
 <body>
     
@@ -20,14 +20,15 @@
                     <h1>Lista Veterinari</h1>
 
                     <div class="veterinari-list">
-                        <div th:each="vet : ${lista_veterinari}" class="veterinario-card">
+                        <div th:each="vet : ${lista_veterinari}" class="">
                             <!-- <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]"> -->
+                            <h3 th:text="${vet.id}"></h3>
                             <h3 th:text="${vet.nome + ' ' + vet.cognome}"></h3>
                             <p th:text="${vet.specializzazione}"></p>
-                            <!-- <p th:each="prest : ${vet.prestazioniOfferte}" th:text="${prest.descrizione}"></p>
-                            <p th:each="spec : ${vet.specieTrattate}" th:text="${spec.nomeSpecie}"></p> -->
                             <p th:text="${vet.indirizzoStudio}"></p>
-                            <a th:href="@{/veterinari/lista_veterinari/{veterinarioId}(veterinarioId=${vet.id})}" class="btn-profilo">Visualizza profilo</a>
+                            <form th:action="@{/veterinari/lista_veterinari/{idVeterinario}(idVeterinario=${vet.id})}" method="post">
+                                <button type="submit" class="btn btn-secondary" data-bs-target="#cardVeterinarioModal" data-bs-toggle="modal">Visualizza Profilo</button>
+                            </form>
                         </div>
                     </div>
 
@@ -37,6 +38,8 @@
 
         </div>
     </main>
+
+    <div th:replace="fragments/veterinari_fragments :: card_veterinario"></div>
 
     
     <footer th:replace="fragments/generic_fragments :: footer"></footer>

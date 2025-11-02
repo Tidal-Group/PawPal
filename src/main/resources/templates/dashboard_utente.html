@@ -239,14 +239,19 @@
                             >
                                 <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="id">
 
-                                <td th:text="${appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"></td>
+                                <td
+                                    th:text="${(appuntamento.nomeUtente == null || appuntamento.cognomeUtente == null) ? 
+                                             'Sconosciuto' : appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}"
+                                ></td>
 
                                 <td 
                                     th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
-                                    th:text="${appuntamento.indirizzoUtente}"
+                                    th:text="${appuntamento.indirizzoUtente == null ? 'Sconosciuto' : appuntamento.indirizzoUtente}"
                                 ></td>
 
-                                <td th:text="${appuntamento.telefonoUtente}"></td>
+                                <td 
+                                    th:text="${appuntamento.telefonoUtente == null ? 'Sconosciuto' : appuntamento.telefonoUtente}"
+                                ></td>
 
                                 <!-- DEBUG: limitare input possibili per data e ora -->
                                 <td>
@@ -277,7 +282,8 @@
                                         type="button"
                                         class="btn btn-primary"
                                         th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
-                                                appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()}"
+                                                appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()} and 
+                                                appuntamento.idUtente != null"
                                         th:onclick="
                                             |document.getElementById('submitModifica${appuntamento.idAppuntamento}').style.display = 'block';
                                              this.style.display = 'none';
@@ -301,7 +307,8 @@
                                     </button>
 
                                     <form 
-                                        th:if="${appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()}"
+                                        th:if="${appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()} and 
+                                               appuntamento.idUtente != null"
                                         th:action="@{/dash/appuntamenti/elimina_appuntamento}"
                                         method="post"
                                     >
@@ -350,8 +357,9 @@
                         <div class="rec-header">
                             <strong class="rec-vet">
                                 <span 
-                                    th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ?
-                                             recensione.nomeUtente + ' ' + recensione.cognomeUtente : recensione.usernameUtente}"
+                                    th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ? 
+                                             ((recensione.nomeUtente == null || recensione.cognomeUtente == null) ? 'Sconosciuto' : (recensione.nomeUtente + ' ' + recensione.cognomeUtente)) : 
+                                             (recensione.usernameUtente == null ? 'Sconosciuto' : recensione.usernameUtente)}"
                                 ></span>
                             </strong>
                             <span
