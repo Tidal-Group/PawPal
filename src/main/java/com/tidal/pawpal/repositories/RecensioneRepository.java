@@ -2,12 +2,15 @@ package com.tidal.pawpal.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tidal.pawpal.dto.RecensioneDto;
 import com.tidal.pawpal.models.Recensione;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
@@ -26,5 +29,15 @@ public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
 
     @Query("SELECT avg(r.voto) FROM Recensione r JOIN r.veterinario v WHERE v.id = :id_veterinario")
     Double calculateAverageRatingVeterinario(@Param("id_veterinario") Long idVeterinario);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Recensione r SET r.cliente = NULL WHERE r.cliente.id = :id_cliente")
+    Integer clearClienteForeignKey(@Param("id_cliente") Long clienteId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Recensione r SET r.veterinario = NULL WHERE r.veterinario.id = :id_veterinario")
+    Integer clearVeterinarioForeignKey(@Param("id_veterinario") Long veterinarioId);
 
 }

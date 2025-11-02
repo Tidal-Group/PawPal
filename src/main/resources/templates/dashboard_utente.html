@@ -152,7 +152,38 @@
 
             <section>
 
-                <!-- AGGIUNGERE ELIMINAZIONE ACCOUNT -->
+                <h2>Elimina Account</h2>
+
+                <div class="row">
+
+                    <form th:action="@{/dash/profilo/elimina_account}" method="post" style="display: contents;">
+
+                        <div class="col-12">
+
+                            <fieldset>
+
+                                <legend>Attenzione: operazione irreversibile!</legend>
+
+                                <div>
+                                    <label class="form-label"
+                                        for="password_conferma_eliminazione_conto">Inserire password per confermare l'eliminazione:</label>
+                                    <input 
+                                        class="form-control"
+                                        type="password"
+                                        id="password_conferma_eliminazione_conto"
+                                        name="password"
+                                        required
+                                    />
+                                    <button class="btn btn-danger" type="submit">Elimina</button>
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </form>
+
+                </div>
 
             </section>
 

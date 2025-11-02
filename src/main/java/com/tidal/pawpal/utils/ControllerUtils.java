@@ -1,4 +1,4 @@
-package com.tidal.pawpal.controllers;
+package com.tidal.pawpal.utils;
 
 import java.util.Map;
 

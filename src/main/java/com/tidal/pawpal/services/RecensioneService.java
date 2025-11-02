@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tidal.pawpal.dto.RecensioneDto;
+import com.tidal.pawpal.events.UserDeletionEvent;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Recensione;
 import com.tidal.pawpal.models.Veterinario;
@@ -40,6 +41,16 @@ public class RecensioneService extends RecensioneServiceContract {
         super.elimina(id, (recensione) -> {
             recensione.detachFromParents();
         });
+    }
+
+    @Override
+    public Integer gestisciEliminazioneCliente(UserDeletionEvent event) {
+        return recensioneRepository.clearClienteForeignKey(event.getUserId());
+    }
+
+    @Override
+    public Integer gestisciEliminazioneVeterinario(UserDeletionEvent event) {
+        return recensioneRepository.clearVeterinarioForeignKey(event.getUserId());
     }
 
     @Override

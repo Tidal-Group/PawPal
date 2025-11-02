@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tidal.pawpal.exceptions.MissingRequiredFieldException;
 import com.tidal.pawpal.services.AuthService;
+import com.tidal.pawpal.utils.ControllerUtils;
 
 @Controller
 @RequestMapping("/auth")

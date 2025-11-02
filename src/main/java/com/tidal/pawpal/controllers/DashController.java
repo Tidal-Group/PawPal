@@ -31,6 +31,7 @@ import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.models.Specie;
 import com.tidal.pawpal.models.User;
 import com.tidal.pawpal.services.AppuntamentoService;
+import com.tidal.pawpal.services.AuthService;
 import com.tidal.pawpal.services.ClienteService;
 import com.tidal.pawpal.services.CustomUserDetailsService;
 import com.tidal.pawpal.services.PrestazioneService;
@@ -38,6 +39,7 @@ import com.tidal.pawpal.services.RecensioneService;
 import com.tidal.pawpal.services.SpecieService;
 import com.tidal.pawpal.services.UserService;
 import com.tidal.pawpal.services.VeterinarioService;
+import com.tidal.pawpal.utils.ControllerUtils;
 
 
 @Controller
@@ -80,6 +82,9 @@ public class DashController {
 
     @Autowired
     public UserService userService;
+
+    @Autowired
+    public AuthService authService;
 
     @GetMapping("")
     public String showDashboard(
@@ -235,15 +240,22 @@ public class DashController {
         }
     }
 
-    // DEBUG: risolvere problema riferimenti circolari
     @PostMapping("/profilo/elimina_account")
     public String handleAccountDeletion(
         Principal principal,
-        @RequestParam String password
+        @RequestParam String password,
+        @RequestParam String redirectUrl,
+        RedirectAttributes redirectAttributes
     ) {
         try {
-            // TODO IMPLEMENT
-            return "redirect:/dash#elimina_account";
+            acceptAuthenticated(principal, (authentication, utente) -> {
+                if(isCliente(authentication)) authService.eliminaCliente(utente.getId(), password);
+                else if(isVeterinario(authentication)) authService.eliminaVeterinario(utente.getId(), password);
+            });
+            return "redirect:/logout";
+        } catch(AuthenticationFailureException exception) {
+            redirectAttributes.addFlashAttribute("errorMessage", exception.getMessage());
+            return ControllerUtils.redirectToSame(redirectUrl);
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();

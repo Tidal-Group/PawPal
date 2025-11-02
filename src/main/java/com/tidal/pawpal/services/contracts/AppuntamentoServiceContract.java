@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.tidal.pawpal.dto.AppuntamentoDto;
+import com.tidal.pawpal.events.UserDeletionEvent;
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.services.abstractions.CreateService;
 import com.tidal.pawpal.services.abstractions.DeleteService;
@@ -83,6 +85,16 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }
+
+    @Transactional
+    @EventListener
+    @PreAuthorize("isAuthenticated()")
+    public abstract Integer gestisciEliminazioneCliente(UserDeletionEvent event);
+
+    @Transactional
+    @EventListener
+    @PreAuthorize("isAuthenticated()")
+    public abstract Integer gestisciEliminazioneVeterinario(UserDeletionEvent event);
 
     @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIO')")
     public abstract List<AppuntamentoDto> cercaPerVeterinario(Long idVeterinario);

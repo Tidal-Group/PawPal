@@ -54,5 +54,19 @@ public class AuthService extends AuthServiceContract {
     public Veterinario registraVeterinario(List<Long> listaIdSpecie, List<Long> listaIdPrestazioni, Map<String, String> dati) {
         return veterinarioService.registra(listaIdSpecie, listaIdPrestazioni, dati);
     }
+
+    @Override
+    public void eliminaCliente(Long id, String password) {
+        User user = userService.cercaPerId(id);
+        if(!user.getPassword().equals(password)) throw new AuthenticationFailureException();
+        clienteService.elimina(id);
+    }
+
+    @Override
+    public void eliminaVeterinario(Long id, String password) {
+        User user = userService.cercaPerId(id);
+        if(!user.getPassword().equals(password)) throw new AuthenticationFailureException();
+        veterinarioService.elimina(id);
+    }
     
 }

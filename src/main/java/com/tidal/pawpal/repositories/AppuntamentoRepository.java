@@ -3,12 +3,15 @@ package com.tidal.pawpal.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tidal.pawpal.dto.AppuntamentoDto;
 import com.tidal.pawpal.models.Appuntamento;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface AppuntamentoRepository extends JpaRepository<Appuntamento, Long> {
@@ -24,5 +27,15 @@ public interface AppuntamentoRepository extends JpaRepository<Appuntamento, Long
         "FROM Appuntamento a JOIN a.cliente c JOIN a.veterinario v WHERE c.id = :id_cliente"
     )
     List<AppuntamentoDto> findByCliente(@Param("id_cliente") Long clienteId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Appuntamento a SET a.cliente = NULL WHERE a.cliente.id = :id_cliente")
+    Integer clearClienteForeignKey(@Param("id_cliente") Long clienteId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Appuntamento a SET a.veterinario = NULL WHERE a.veterinario.id = :id_veterinario")
+    Integer clearVeterinarioForeignKey(@Param("id_veterinario") Long veterinarioId);
 
 }

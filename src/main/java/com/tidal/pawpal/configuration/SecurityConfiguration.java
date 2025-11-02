@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +23,10 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+        RequestMatcher logoutGetAndPostMatcher = request -> 
+            request.getServletPath().equals("/logout") && 
+            (request.getMethod().equals("GET") || request.getMethod().equals("POST"));
+
         security
         .authorizeHttpRequests((authorizations) -> 
             authorizations
@@ -46,9 +51,12 @@ public class SecurityConfiguration {
             session
             .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
         )
-        .logout((logout) -> 
+        .logout((logout) ->
             logout
+            .logoutRequestMatcher(logoutGetAndPostMatcher)
             .logoutSuccessUrl("/")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
             .permitAll()
         );
 

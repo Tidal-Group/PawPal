@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.tidal.pawpal.dto.RecensioneDto;
+import com.tidal.pawpal.events.UserDeletionEvent;
 import com.tidal.pawpal.models.Recensione;
 
 import com.tidal.pawpal.services.abstractions.GenericService;
@@ -68,6 +70,16 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     public void elimina(Long id) {
         DeleteService.super.elimina(id);
     }
+
+    @Transactional
+    @EventListener
+    @PreAuthorize("isAuthenticated()")
+    public abstract Integer gestisciEliminazioneCliente(UserDeletionEvent event);
+
+    @Transactional
+    @EventListener
+    @PreAuthorize("isAuthenticated()")
+    public abstract Integer gestisciEliminazioneVeterinario(UserDeletionEvent event);
 
     @PreAuthorize("permitAll")
     public abstract List<RecensioneDto> cercaPerVeterinario(Long idVeterinario);

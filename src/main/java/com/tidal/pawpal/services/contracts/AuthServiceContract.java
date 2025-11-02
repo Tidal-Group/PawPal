@@ -21,4 +21,10 @@ public abstract class AuthServiceContract {
     @PreAuthorize("permitAll")
     public abstract Veterinario registraVeterinario(List<Long> listaIdSpecie, List<Long> listaIdPrestazioni, Map<String, String> dati);
 
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public abstract void eliminaCliente(Long id, String password);
+
+    @PreAuthorize("hasRole('ADMIN') || #id == authentication.principal.id")
+    public abstract void eliminaVeterinario(Long id, String password);
+
 }

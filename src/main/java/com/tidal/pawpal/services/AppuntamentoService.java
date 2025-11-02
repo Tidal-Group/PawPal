@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tidal.pawpal.dto.AppuntamentoDto;
+import com.tidal.pawpal.events.UserDeletionEvent;
 import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.models.Cliente;
 import com.tidal.pawpal.models.Veterinario;
@@ -54,6 +55,16 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
         super.elimina(id, (appuntamento) -> {
             appuntamento.detachFromParents();
         });
+    }
+
+    @Override
+    public Integer gestisciEliminazioneCliente(UserDeletionEvent event) {
+        return appuntamentoRepository.clearClienteForeignKey(event.getUserId());
+    }
+
+    @Override
+    public Integer gestisciEliminazioneVeterinario(UserDeletionEvent event) {
+        return appuntamentoRepository.clearVeterinarioForeignKey(event.getUserId());
     }
 
     @Override
