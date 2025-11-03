@@ -240,3 +240,62 @@ select.form-control:focus {
     padding: 20px;
   }
 }
+
+/* ================================== */
+/* STILI NUOVA SEZIONE PANORAMICA   */
+/* ================================== */
+
+.dashboard-summary .summary-card {
+    background-color: #fff;
+    border-radius: 10px; /* Usa --raggio-bordi se definito in global_theme */
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    /* Usa --ombra-media se definito in global_theme */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-summary .summary-card h3 {
+    font-weight: 600;
+    color: #222; /* Usa --colore-secondario se definito */
+    border-bottom: 1px solid #eee; /* Usa --colore-bordo se definito */
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-summary .summary-content {
+    flex-grow: 1; /* Spinge il bottone in fondo alla card */
+}
+
+.dashboard-summary .summary-content.no-data p {
+    color: #777; /* Usa --colore-testo-chiaro se definito */
+    font-style: italic;
+}
+
+.dashboard-summary .rec-rating {
+    font-weight: 600;
+    color: #2563eb; /* Usa --colore-primario se definito */
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-summary .rec-text {
+    color: #555;
+    font-style: italic;
+}
+
+/* Stile per i bottoni "Vedi tutto" */
+.dashboard-summary .summary-card .btn {
+    width: 100%;
+    margin-top: 1rem;
+    /* Stile che richiama i bottoni della sidebar */
+    background-color: #f4f7fc; /* Usa --colore-bg-pagina se definito */
+    color: #2563eb; /* Usa --colore-primario se definito */
+    border: 1px solid #e5e7eb; /* Usa --colore-bordo se definito */
+}
+
+.dashboard-summary .summary-card .btn:hover {
+    background-color: #e8eef9;
+}

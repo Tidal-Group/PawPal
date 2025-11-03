@@ -1,4 +1,7 @@
-/* ==================== BODY ==================== */
+main {
+    margin-left: 0 !important;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
@@ -6,13 +9,11 @@ body {
     background-color: #f9f9f9;
 }
 
-/* ==================== HEADER ==================== */
 header {
     width: 100%;
     background-color: #ffffff;
 }
 
-/* ==================== BANNER ==================== */
 .banner-container {
     position: relative;
     width: 100%;
@@ -34,7 +35,6 @@ header {
     height: 100%;
 }
 
-/* ==================== NAVBAR ==================== */
 .navbar {
     padding: 15px 30px;
 }
@@ -90,7 +90,6 @@ header {
     gap: 15px;
 }
 
-/* ==================== SEZIONI ==================== */
 section {
     padding: 60px 20px;
     background-color: #fff;
@@ -122,7 +121,6 @@ section p {
     text-align: center;
 }
 
-/* ==================== CAROUSEL GENERALE ==================== */
 section[id^="carousel-"] h2 {
     font-weight: 700;
     color: #333;
@@ -171,7 +169,7 @@ section[id^="carousel-"] h2 {
     color: #555;
 }
 
-/* Carousel controls */
+
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     filter: invert(1);
@@ -179,7 +177,7 @@ section[id^="carousel-"] h2 {
     height: 30px;
 }
 
-/* Carousel layout */
+
 .carousel {
     display: flex;
     justify-content: center;
@@ -200,7 +198,7 @@ section[id^="carousel-"] h2 {
     margin: auto;
 }
 
-/* ==================== PULSANTI ==================== */
+
 .btn-primary {
     background-color: #2563eb;
     border: none;
@@ -210,7 +208,7 @@ section[id^="carousel-"] h2 {
     background-color: #1d4ed8;
 }
 
-/* ==================== FORM RICERCA ==================== */
+
 form .form-label {
     font-weight: 500;
 }
@@ -224,7 +222,7 @@ form button {
     margin-top: 10px;
 }
 
-/* ==================== MODALI ==================== */
+
 .modal-content {
     padding: 20px;
 }
@@ -237,3 +235,5 @@ form button {
 .modal-body .form-control {
     margin-bottom: 15px;
 }
+
+

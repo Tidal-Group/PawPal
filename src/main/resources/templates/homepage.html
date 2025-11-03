@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
@@ -174,6 +175,195 @@
         <section th:replace="fragments/auth_fragments :: registrazione_cliente"></section>
 
         <section th:replace="fragments/auth_fragments :: registrazione_veterinario"></section>
+
+    </main>
+
+    <footer th:replace="fragments/generic_fragments :: footer"></footer>
+
+    <script th:src="@{/js/registrazione.js}"></script>
+    <div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
+
+</body>
+
+</html>
+-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/generic_fragments :: head('Home - PawPal')"></head>
+<link rel="stylesheet" th:href="@{/css/fragments.css}">
+<link rel="stylesheet" th:href="@{/css/home.css}">
+
+
+<body>
+
+    <header th:replace="fragments/generic_fragments :: navbar('home')" style="position: relative; z-index: 10;"></header>
+        <div class="position-relative w-100 vh-100">
+            <img th:src="@{/img/banner.jpeg}" alt="Banner PawPal" class="img-fluid w-100 h-100"
+                style="object-fit: cover;">
+
+            <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                <h1 class="display-3">Benvenuto su PawPal</h1>
+                <p class="lead">Connettiamo proprietari di animali e veterinari in tutta Italia</p>
+            </div>
+        </div>
+    
+    <main>
+
+        <section th:replace="fragments/veterinari_fragments :: ricerca_veterinari"></section>
+
+        <section>
+            <div class="container"> 
+
+                <div class="row">
+
+                    <div class="col-12 text-center">
+                        <h2>Chi siamo</h2>
+                    </div>
+
+                    <div class="col-12">
+                        <p>
+                            PawPal è la piattaforma dedicata a connettere proprietari di animali e veterinari, offrendo
+                            un'esperienza semplice, sicura e completa per la gestione delle cure dei vostri amici a
+                            quattro
+                            zampe.
+                        </p>
+                    </div>
+
+                    <div class="col-12">
+                        <p>
+                            Il nostro obiettivo è rendere più facile ogni aspetto della vita degli animali domestici:
+                            dalla
+                            ricerca del veterinario più adatto, alla prenotazione degli appuntamenti, fino alla
+                            comunicazione
+                            diretta con i professionisti.
+                        </p>
+                    </div>
+
+                    <div class="col-12">
+                        <p>
+                            Per i veterinari, offriamo strumenti avanzati per gestire la loro attività: dalla
+                            definizione delle
+                            disponibilità alla gestione delle prestazioni e delle specie trattate, fino alla possibilità
+                            di
+                            visualizzare recensioni e interagire con i clienti.
+                        </p>
+                    </div>
+
+                    <div class="col-12">
+                        <p>
+                            La nostra missione è garantire il benessere degli animali attraverso una rete di
+                            professionisti
+                            affidabili e facilmente accessibili e dove proprietari di animali e veterinari possano
+                            incontrarsi,
+                            comunicare e collaborare nel modo più semplice possibile, offrendo cure migliori e un
+                            servizio
+                            sempre più personalizzato.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="container" style="background-color: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 40px 20px;">
+            
+            <section id="carousel-specializzazioni" class="py-5 bg-light">
+                <h2 class="text-center mb-4">Le nostre specializzazioni</h2>
+                <div id="carouselSpecializzazioni" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="card" th:each="spec : ${lista_specializzazioni}">
+                        <img th:src="@{${spec.immagine}}" class="card-img-top" th:alt="${spec.nome}" />
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${spec.nome}">Card title</h5>
+                            <p class="card-text" th:text="${spec.descrizione}">Descrizione breve...</p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselSpecializzazioni" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselSpecializzazioni" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Successivo</span>
+                </button>
+                </div>
+            </section>
+            
+            <section id="carousel-veterinari" class="py-5">
+                <h2 class="text-center mb-4">I nostri veterinari</h2>
+                <div id="carouselVeterinari" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    
+                    <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="card" th:each="vet : ${lista_veterinari}">
+                        <img th:src="@{${vet.fotoProfilo}}" class="card-img-top" th:alt="${vet.nome}" />
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${vet.nome} + ' ' + ${vet.cognome}">Nome Veterinario</h5>
+                            <p class="card-text" th:text="${vet.specializzazione}">Specializzazione</p>
+                            <a th:href="@{/veterinario/{id}(id=${vet.id})}" class="btn btn-primary">Scopri di più</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselVeterinari" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselVeterinari" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Successivo</span>
+                </button>
+                </div>
+            </section>
+            
+            <section id="carousel-recensioni" class="py-5 bg-light">
+                <h2 class="text-center mb-4">Cosa dicono di noi</h2>
+                <div id="carouselRecensioni" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="card" th:each="rec : ${lista_recensioni}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${rec.autore}">Autore</h5>
+                            <p class="card-text" th:text="${rec.testo}">Recensione</p>
+                            <p class="text-warning mb-0" th:text="'★'.repeat(${rec.voto})"></p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselRecensioni" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselRecensioni" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Successivo</span>
+                </button>
+                </div>
+            </section>
+            
+        </div> 
+        
+        <div th:replace="fragments/auth_fragments :: login"></div>
+        <div th:replace="fragments/auth_fragments :: registrazione_cliente"></div>
+        <div th:replace="fragments/auth_fragments :: registrazione_veterinario"></div>
 
     </main>
 
