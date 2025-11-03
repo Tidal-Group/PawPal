@@ -252,6 +252,16 @@
                         <label class="form-label" for="specializzazione_veterinario">Specializzazione: </label>
                         <p class="form-control profilo-testo" id="specializzazione_veterinario"></p>
                     </div>
+
+                    <div>
+                        <label class="form-label" for="specie_veterinario">Specie trattate: </label>
+                        <p class="form-control profilo-testo" id="specie_veterinario"></p>
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="prestazioni_veterinario">Prestazioni offerte: </label>
+                        <p class="form-control profilo-testo" id="prestazioni_veterinario"></p>
+                    </div>
                 
                     <div>
                         <label class="form-label" for="iscrizione_albo_veterinario">Iscrizione Albo: </label>
@@ -282,55 +292,93 @@
                         <label class="form-label" for="email_veterinario">Email: </label>
                         <p class="form-control profilo-testo" id="email_veterinario"></p>
                     </div>
-                    
-                    <hr>
-                    
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section th:fragment="modale_appuntamento_veterinario">
+
+    <div class="modal fade" id="appuntamentoVeterinarioModal" aria-hidden="true"
+        aria-labelledby="appuntamentoVeterinarioLabel" tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <div class="modal-content">
+
+                <div class="modal-header">
+                    <div class="mt-4">
+                        <h3 sec:authorize="hasRole('CLIENTE')" class="mb-3" id="appuntamentoVeterinarioLabel">Richiedi un appuntamento</h3>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" style="text-align: left;">
+
+                    <div sec:authorize="isAuthenticated()" class="mt-4">
+                        <form th:action="@{/veterinari/inserisci_appuntamento}" method="post">
+                            <input type="hidden" name="idVeterinario">
+                            <input type="hidden" name="idCliente" th:value="${#authentication.principal.id}">
+
+                            <div class="mb-3">
+                                <label for="dataOra" class="form-label">Data e Ora</label>
+                                <input type="datetime-local" class="form-control" id="dataOra" name="dataOra" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="note" class="form-label">Note</label>
+                                <textarea class="form-control" id="note" name="note" rows="3" placeholder="Scrivi qui eventuali note..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Richiedi Appuntamento</button>
+                        </form>
+                    </div>
+
+                    <div sec:authorize="isAnonymous()" class="alert alert-info mt-4" role="alert">
+                        Effettua il <a href="#" data-bs-target="#loginModal" data-bs-toggle="modal">login</a> o <a href="#" data-bs-target="#registrazioneClienteModal" data-bs-toggle="modal">registrati</a> per prenotare un appuntamento o lasciare una recensione.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section th:fragment="modale_recensione_veterinario">
+
+    <div class="modal fade" id="recensioneVeterinarioModal" aria-hidden="true"
+        aria-labelledby="recensioneVeterinarioLabel" tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <div class="modal-content">
+
+                <div class="modal-header">
+                    <div class="mt-4">
+                        <h3 class="mb-3" id="recensioneVeterinarioLabel">Recensioni</h3>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" style="text-align: left;">
+
                     <div class="mt-4">
                         <h3 class="mb-3">Recensioni</h3>
-                        <ul id="recensioni-list" class="list-unstyled">
-                            </ul>
+                        <ul id="recensioni-list" class="list-unstyled"></ul>
                     </div>
                     
                     <hr>
-                    <div sec:authorize="isAuthenticated()" class="mt-4">
-    <h3 class="mb-3">Lascia una recensione</h3>
-    <form th:action="@{/veterinari/inserisci_recensione}" method="post">
-        <input type="hidden" name="idVeterinario">
-        <input type="hidden" name="idCliente" th:value="${#authentication.principal.id}">
 
-        <div class="mb-3">
-            <label for="votoRecensione" class="form-label">Voto (da 1 a 5)</label>
-            <input type="number" class="form-control" id="votoRecensione" name="voto" min="1" max="5" required>
-        </div>
-        <div class="mb-3">
-            <label for="commentoRecensione" class="form-label">Commento</label>
-            <textarea class="form-control" id="commentoRecensione" name="commento" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Invia Recensione</button>
-    </form>
-</div>
-
-                    <!-- <div sec:authorize="isAuthenticated()" class="mt-4">
-    <h3 class="mb-3">Lascia una recensione</h3>
-    <form th:action="@{/veterinari/inserisci_recensione}" method="post">
-        <input type="hidden" name="idVeterinario">
-        <input type="hidden" name="redirectUrl" th:value="${#httpServletRequest.requestURI + '?' + #httpServletRequest.queryString}">
-
-        <div class="mb-3">
-            <label for="votoRecensione" class="form-label">Voto (da 1 a 5)</label>
-            <input type="number" class="form-control" id="votoRecensione" name="votoRecensione" min="1" max="5" required> </div>
-        <div class="mb-3">
-            <label for="commentoRecensione" class="form-label">Commento</label>
-            <textarea class="form-control" id="commentoRecensione" name="commentoRecensione" rows="3"></textarea> </div>
-        <button type="submit" class="btn btn-primary">Invia Recensione</button>
-    </form>
-</div> -->
-                    
-                    <!-- <div sec:authorize="isAuthenticated()" class="mt-4">
+                    <div sec:authorize="hasRole('CLIENTE')" class="mt-4">
                         <h3 class="mb-3">Lascia una recensione</h3>
                         <form th:action="@{/veterinari/inserisci_recensione}" method="post">
                             <input type="hidden" name="idVeterinario">
-                            
+                            <input type="hidden" name="idCliente" th:value="${#authentication.principal.id}">
+
                             <div class="mb-3">
                                 <label for="votoRecensione" class="form-label">Voto (da 1 a 5)</label>
                                 <input type="number" class="form-control" id="votoRecensione" name="voto" min="1" max="5" required>
@@ -341,61 +389,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Invia Recensione</button>
                         </form>
-                    </div> -->
-                    
-                    <hr>
-                    <div sec:authorize="isAuthenticated()" class="mt-4">
-    <h3 class="mb-3">Richiedi un appuntamento</h3>
-    <form th:action="@{/veterinari/inserisci_appuntamento}" method="post">
-        <input type="hidden" name="idVeterinario">
-        <input type="hidden" name="idCliente" th:value="${#authentication.principal.id}">
-
-        <div class="mb-3">
-            <label for="dataOra" class="form-label">Data e Ora</label>
-            <input type="datetime-local" class="form-control" id="dataOra" name="dataOra" required>
-        </div>
-        <div class="mb-3">
-            <label for="note" class="form-label">Note</label>
-            <textarea class="form-control" id="note" name="note" rows="3" placeholder="Scrivi qui eventuali note..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Richiedi Appuntamento</button>
-    </form>
-</div>
-                    <!-- <div sec:authorize="isAuthenticated()" class="mt-4">
-    <h3 class="mb-3">Richiedi un appuntamento</h3>
-    <form th:action="@{/veterinari/inserisci_appuntamento}" method="post">
-        <input type="hidden" name="idVeterinario">
-        <input type="hidden" name="redirectUrl" th:value="${#httpServletRequest.requestURI + '?' + #httpServletRequest.queryString}">
-
-        <div class="mb-3">
-            <label for="dataAppuntamento" class="form-label">Data</label>
-            <input type="date" class="form-control" id="dataAppuntamento" name="data" required> </div>
-        <div class="mb-3">
-            <label for="oraAppuntamento" class="form-label">Ora</label>
-            <input type="time" class="form-control" id="oraAppuntamento" name="ora" required> </div>
-        <div class="mb-3">
-            <label for="noteAggiuntive" class="form-label">Note</label>
-            <textarea class="form-control" id="noteAggiuntive" name="note" rows="3"></textarea> </div>
-        <button type="submit" class="btn btn-primary">Richiedi Appuntamento</button>
-    </form>
-</div> -->
-                    
-                    <!-- <div sec:authorize="isAuthenticated()" class="mt-4">
-                        <h3 class="mb-3">Richiedi un appuntamento</h3>
-                        <form th:action="@{/veterinari/inserisci_appuntamento}" method="post">
-                            <input type="hidden" name="idVeterinario">
-
-                            <div class="mb-3">
-                                <label for="dataOra" class="form-label">Data e Ora</label>
-                                <input type="datetime-local" class="form-control" id="dataOra" name="dataOra" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="note" class="form-label">Note</label>
-                                <textarea class="form-control" id="note" name="note" rows="3" placeholder="Scrivi qui eventuali note per il veterinario..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Richiedi Appuntamento</button>
-                        </form>
-                    </div> -->
+                    </div>
 
                     <div sec:authorize="isAnonymous()" class="alert alert-info mt-4" role="alert">
                         Effettua il <a href="#" data-bs-target="#loginModal" data-bs-toggle="modal">login</a> o <a href="#" data-bs-target="#registrazioneClienteModal" data-bs-toggle="modal">registrati</a> per prenotare un appuntamento o lasciare una recensione.

@@ -26,19 +26,19 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long>,
     List<Veterinario> findByCitta(String citta);
     
    @Query(value = 
-    "WITH SpecializationCounts AS (" +
-    "    SELECT v.specializzazione_nome, COUNT(v.id) AS vet_count " +
-    "    FROM veterinario v " +
-    "    WHERE v.specializzazione_nome IS NOT NULL " +
-    "    GROUP BY v.specializzazione_nome" +
-    ") " +
-    "SELECT sc.specializzazione_nome " +
-    "FROM SpecializationCounts sc " +
-    "ORDER BY sc.vet_count DESC",
-    nativeQuery = true) // <--- Fondamentale per il supporto CTE
-List<String> findPopularSpecializationNamesNative();
+        "WITH SpecializationCounts AS (" +
+        "    SELECT v.specializzazione_nome, COUNT(v.id) AS vet_count " +
+        "    FROM veterinario v " +
+        "    WHERE v.specializzazione_nome IS NOT NULL " +
+        "    GROUP BY v.specializzazione_nome" +
+        ") " +
+        "SELECT sc.specializzazione_nome " +
+        "FROM SpecializationCounts sc " +
+        "ORDER BY sc.vet_count DESC",
+        nativeQuery = true) // <--- Fondamentale per il supporto CTE
+    List<String> findPopularSpecializationNamesNative();
 
-@Query("SELECT v " +
+    @Query("SELECT v " +
            "FROM Veterinario v JOIN v.recensioni r " +
            "GROUP BY v " +
            "ORDER BY AVG(r.voto) DESC, COUNT(r) DESC")

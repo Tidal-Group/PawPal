@@ -49,6 +49,24 @@
                                         data-bs-toggle="modal">
                                         Visualizza
                                     </button>
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-primary"
+                                        th:data-veterinario="${vet.id}"
+                                        data-bs-target="#appuntamentoVeterinarioModal"
+                                        data-bs-toggle="modal">
+                                        Prenota appuntamento
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-primary"
+                                        th:data-veterinario="${vet.id}"
+                                        data-bs-target="#recensioneVeterinarioModal"
+                                        data-bs-toggle="modal">
+                                        Recensioni
+                                    </button>
                                 </div>
                             </div>
                         
@@ -67,6 +85,8 @@
     </main>
 
     <div th:replace="fragments/veterinari_fragments :: card_veterinario"></div>
+    <div th:replace="fragments/veterinari_fragments :: modale_appuntamento_veterinario"></div>
+    <div th:replace="fragments/veterinari_fragments :: modale_recensione_veterinario"></div>
     
     <section th:replace="fragments/auth_fragments :: login"></section>
     <section th:replace="fragments/auth_fragments :: registrazione_cliente"></section>
@@ -82,7 +102,6 @@
                 return response.json();
             })
             .then(data => {
-                // Leggiamo dall'oggetto "veterinario" annidato
                 const vet = data.veterinario; 
                 
                 document.getElementById('registrazioneVeterinarioLabel').textContent = vet.nome + " " + vet.cognome;
@@ -94,13 +113,17 @@
                 document.getElementById('telefono_veterinario').textContent = vet.telefono || 'N/D';
                 document.getElementById('email_veterinario').textContent = vet.email || 'N/D';
                 
-                // Popola gli ID nascosti nei form di appuntamento e recensione
                 document.getElementsByName('idVeterinario').forEach((input) => input.value = vet.id);
                 
                 const listaRecensioni = document.getElementById('recensioni-list');
-                listaRecensioni.innerHTML = ""; 
+                listaRecensioni.innerHTML = "";
 
-                // Leggiamo la lista "recensioniDto" separata
+                const listaSpecie = document.getElementById('specie_veterinario');
+                listaSpecie.textContent = "";
+
+                const listaPrestazioni = document.getElementById('prestazioni_veterinario');
+                listaPrestazioni.textContent = "";
+
                 const recensioni = data.recensioniDto;
 
                 if (recensioni && recensioni.length > 0) {
@@ -118,6 +141,20 @@
                 } else {
                     listaRecensioni.innerHTML = "<p>Nessuna recensione ancora.</p>";
                 }
+
+                const specie = data.specieDto;
+
+                if (specie && specie.length > 0) {
+                    specie.forEach((specie) => listaSpecie.textContent += specie.nomeSpecie + ", ");
+                    listaSpecie.textContent = listaSpecie.textContent.substring(0, listaSpecie.textContent.length - 2);
+                }
+
+                const prestazioni = data.prestazioniDto;
+
+                if(prestazioni && prestazioni.length > 0) {
+                    prestazioni.forEach((prestazione) => listaPrestazioni.textContent += prestazione.descrizione + ", ");
+                    listaPrestazioni.textContent = listaPrestazioni.textContent.substring(0, listaPrestazioni.textContent.length - 2);
+                }
                 
                 return data;
             })
@@ -129,7 +166,6 @@
             });
         }
     
-        /* Gestione navigazione modale */
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof injectNavigationEvents !== 'function') {
                 console.error("Errore: injectNavigationEvents non è definita. Assicurati che generic_fragments sia caricato.");
@@ -137,7 +173,11 @@
             }
     
             injectNavigationEvents(
-                document.getElementById("cardVeterinarioModal"),
+                [
+                    document.getElementById("cardVeterinarioModal"),
+                    document.getElementById("appuntamentoVeterinarioModal"),
+                    document.getElementById("recensioneVeterinarioModal")
+                ],
                 'show.bs.modal',
                 'hidden.bs.modal',
                 (event, element, elementId) => {

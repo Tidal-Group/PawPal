@@ -48,20 +48,22 @@
             }
         }
 
-        function injectNavigationEvents(element, showEvent, hideEvent, showHandler, hideHandler, popstateHandler) {
-            const elementId = element.getAttribute('id');
+        function injectNavigationEvents(elements, showEvent, hideEvent, showHandler, hideHandler, popstateHandler) {
+            elements.forEach((element) => {
+                const elementId = element.getAttribute('id');
 
-            element.addEventListener(showEvent, function (event) {
-                showHandler(event, element, elementId);
-            });
+                element.addEventListener(showEvent, function (event) {
+                    showHandler(event, element, elementId);
+                });
 
-            element.addEventListener(hideEvent, function (event) {
-                hideHandler(event, element, elementId);
-            });
+                element.addEventListener(hideEvent, function (event) {
+                    hideHandler(event, element, elementId);
+                });
 
-            window.addEventListener('popstate', function(event) {
-                popstateHandler(event, element, elementId);
-            });
+                window.addEventListener('popstate', function(event) {
+                    popstateHandler(event, element, elementId);
+                });
+            })
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -343,7 +345,7 @@
 
             function injectPageNavigation(element, showEvent, hideEvent, showCallback, hideCallback) {
                 injectNavigationEvents(
-                    element,
+                    [element],
                     showEvent,
                     hideEvent,
                     (event, element, elementId) => {

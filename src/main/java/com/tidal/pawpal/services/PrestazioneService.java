@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tidal.pawpal.dto.PrestazioneDto;
 import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.repositories.PrestazioneRepository;
 import com.tidal.pawpal.services.contracts.PrestazioneServiceContract;
@@ -23,7 +24,7 @@ public class PrestazioneService extends PrestazioneServiceContract {
     }
 
     @Override
-    public Set<Prestazione> cercaPerVeterinario(Long idVeterinario) {
+    public Set<PrestazioneDto> cercaPerVeterinario(Long idVeterinario) {
         return prestazioneRepository.findByIdVeterinario(idVeterinario);
     }
 

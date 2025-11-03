@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tidal.pawpal.dto.AppuntamentoDto;
+import com.tidal.pawpal.dto.PrestazioneDto;
 import com.tidal.pawpal.dto.RecensioneDto;
+import com.tidal.pawpal.dto.SpecieDto;
 import com.tidal.pawpal.exceptions.AuthenticationFailureException;
 import com.tidal.pawpal.exceptions.ExistingEmailException;
 import com.tidal.pawpal.exceptions.ExistingUsernameException;
-import com.tidal.pawpal.models.Prestazione;
-import com.tidal.pawpal.models.Specie;
 import com.tidal.pawpal.services.AppuntamentoService;
 import com.tidal.pawpal.services.AuthService;
 import com.tidal.pawpal.services.ClienteService;
@@ -107,8 +107,8 @@ public class DashController extends AuthenticatedController {
 
                 // passo i dati relativi alle relazioni specfiche del veterinario
                 if(isVeterinario(authentication)) {
-                    Set<Specie> listaSpecieSelezionate = specieService.cercaPerVeterinario(utente.getId());
-                    Set<Prestazione> listaPrestazioniSelezionate = prestazioneService.cercaPerVeterinario(utente.getId());
+                    Set<SpecieDto> listaSpecieSelezionate = specieService.cercaPerVeterinario(utente.getId());
+                    Set<PrestazioneDto> listaPrestazioniSelezionate = prestazioneService.cercaPerVeterinario(utente.getId());
 
                     model.addAttribute("lista_specie", specieService.elencaTutti());
                     model.addAttribute("lista_prestazioni", prestazioneService.elencaTutti());

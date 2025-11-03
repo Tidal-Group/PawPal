@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.tidal.pawpal.dto.PrestazioneDto;
 import com.tidal.pawpal.models.Prestazione;
 import com.tidal.pawpal.services.abstractions.CreateService;
 import com.tidal.pawpal.services.abstractions.DeleteService;
@@ -84,6 +85,6 @@ public abstract class PrestazioneServiceContract extends GenericService<Prestazi
     public abstract Set<Prestazione> cercaPerRangePrezzo(Double prezzoMin, Double prezzoMax);
 
     @PreAuthorize("permitAll")
-    public abstract Set<Prestazione> cercaPerVeterinario(Long idVeterinario);
+    public abstract Set<PrestazioneDto> cercaPerVeterinario(Long idVeterinario);
 
 }

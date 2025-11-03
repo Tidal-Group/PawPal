@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import com.tidal.pawpal.dto.SpecieDto;
 import com.tidal.pawpal.models.Specie;
 import com.tidal.pawpal.services.abstractions.CreateService;
 import com.tidal.pawpal.services.abstractions.DeleteService;
@@ -84,6 +85,6 @@ public abstract class SpecieServiceContract extends GenericService<Specie, Long>
     public abstract Specie cercaPerNomeSpecie(String nomeSpecie);
 
     @PreAuthorize("permitAll")
-    public abstract Set<Specie> cercaPerVeterinario(Long idVeterinario);
+    public abstract Set<SpecieDto> cercaPerVeterinario(Long idVeterinario);
 
 }
