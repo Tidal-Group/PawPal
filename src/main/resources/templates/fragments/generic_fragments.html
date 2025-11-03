@@ -303,6 +303,14 @@
 <div th:fragment="backend_message">
 
     <div
+        th:if="${param.loginSuccess}"
+        class="alert alert-success auto-close-alert"
+        role="alert"
+    >
+        Login effettuato con successo!
+    </div>
+
+    <div
         th:if="${successMessage != null and successMessage.length() > 0}"
         th:text="${successMessage}"
         class="alert alert-success auto-close-alert"
@@ -405,14 +413,33 @@
             const params = new URLSearchParams(window.location.search);
             const viewId = params.get("view");
             const modalId = params.get("modal");
-            if(viewId) {
-                const view = document.getElementById(viewId);
-                if(view) renderCallbacks.viewShowCallback(view);
+            const error = params.has("error"); // <-- Aggiunto
+
+        if (error && !modalId) { 
+            // +++ INIZIO BLOCCO AGGIUNTO +++
+            // Se c'è un errore di login E nessuna modale è già specificata,
+            // forza l'apertura della modale di login.
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                renderCallbacks.modalShowCallback(loginModal);
             }
-            if(modalId) {
-                const modal = document.getElementById(modalId);
-                if(modal) renderCallbacks.modalShowCallback(modal);
+            // +++ FINE BLOCCO AGGIUNTO +++
+        } else if (modalId) { // <-- Modificato in "else if"
+            // Altrimenti, apri la modale specificata
+            const modal = document.getElementById(modalId);
+            if(modal) renderCallbacks.modalShowCallback(modal);
+        }
+
+           if(viewId) {
+            const view = document.getElementById(viewId);
+            if(view) renderCallbacks.viewShowCallback(view);
+        } else if (!modalId && !error) { // <-- Modificato per non sovrapporsi all'errore
+            // Mostra la vista di default SOLO se non c'è né una modale né un errore
+            const defaultView = document.getElementById('modifica_dati');
+            if (defaultView) {
+                 renderCallbacks.viewShowCallback(defaultView);
             }
+        }
 
         });
 
