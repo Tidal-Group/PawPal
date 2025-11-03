@@ -2,6 +2,7 @@ package com.tidal.pawpal.utils;
 
 import java.util.Map;
 
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public final class ControllerUtils {
@@ -42,9 +43,26 @@ public final class ControllerUtils {
     }
 
     public static final String redirectToPathQueryParams(String redirectUrl, String path, Map<String, String> queryParams) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(redirectUrl);
+
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString(redirectUrl).build();
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance()
+            .scheme(uriComponents.getScheme())
+            .host(uriComponents.getHost())
+            .port(uriComponents.getPort());
+
         uriBuilder.path(path);
-        queryParams.entrySet().forEach((entry) -> uriBuilder.replaceQueryParam(entry.getKey(), entry.getValue()));
+        
+        if (uriComponents.getQueryParams() != null) {
+            uriComponents.getQueryParams().forEach((key, values) -> {
+                if (!queryParams.containsKey(key)) {
+                    uriBuilder.queryParam(key, values.toArray());
+                }
+            });
+        }
+
+        queryParams.entrySet().forEach((entry) -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
+        
         return "redirect:" + uriBuilder.build().toUriString();
     }
 

@@ -125,7 +125,7 @@ public class VeterinariController extends AuthenticatedController {
         queryParams.put("filtroPrestazione", filtroPrestazione.isPresent() ? String.valueOf(filtroPrestazione.get()) : "");
         queryParams.put("filtroSpecie", filtroSpecie.isPresent() ? String.valueOf(filtroSpecie.get()) : "");
 
-        return ControllerUtils.redirectToQueryParams(redirectUrl, queryParams);
+        return ControllerUtils.redirectToPathQueryParams(redirectUrl, "/veterinari/lista_veterinari", queryParams);
     }
 
     @GetMapping("/lista_veterinari/{idVeterinario}")
