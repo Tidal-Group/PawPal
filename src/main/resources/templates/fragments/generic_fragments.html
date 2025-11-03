@@ -47,6 +47,22 @@
             }
         }
 
+        function injectNavigationEvents(element, showEvent, hideEvent, showHandler, hideHandler, popstateHandler) {
+            const elementId = element.getAttribute('id');
+
+            element.addEventListener(showEvent, function (event) {
+                showHandler(event, element, elementId);
+            });
+
+            element.addEventListener(hideEvent, function (event) {
+                hideHandler(event, element, elementId);
+            });
+
+            window.addEventListener('popstate', function(event) {
+                popstateHandler(event, element, elementId);
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
 
             document.querySelectorAll("form[method='post']").forEach((form) => {
@@ -306,52 +322,54 @@
 
     <!-- SCRIPT TO CHANGE URL WHEN SHOWING/HIDING VIEWS (INCLUDING MODALS) -->
     <script th:inline="javascript">
+
         const isModal = (element) => element.classList.contains('modal');
 
         document.addEventListener("DOMContentLoaded", () => {
 
-            function updateUrl(element, showEvent, hideEvent, showCallback, hideCallback) {
-                const elementId = element.getAttribute('id');
+            function injectPageNavigation(element, showEvent, hideEvent, showCallback, hideCallback) {
+                injectNavigationEvents(
+                    element,
+                    showEvent,
+                    hideEvent,
+                    (event, element, elementId) => {
+                        const pathname = window.location.pathname;
+                        const params = new URLSearchParams(window.location.search);
+                        const hash = window.location.hash;
 
-                element.addEventListener(showEvent, function () {
-                    const pathname = window.location.pathname;
-                    const params = new URLSearchParams(window.location.search);
-                    const hash = window.location.hash;
+                        if(isModal(element)) params.set("modal", elementId);
+                        else params.set("view", elementId);
 
-                    if(isModal(element)) params.set("modal", elementId);
-                    else params.set("view", elementId);
-
-                    const separator = params.toString() ? '?' : '';
-                    history.pushState(null, '', `${pathname}${separator}${params}${hash}`);
-                });
-
-                element.addEventListener(hideEvent, function () {
-                    const pathname = window.location.pathname;
-                    const params = new URLSearchParams(window.location.search);   
-                    const hash = window.location.hash;
-
-                    if(isModal(element)) {
-                        params.delete("modal");
-                        // prevents the modal url from being saved in browser navigation history
                         const separator = params.toString() ? '?' : '';
-                        history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
-                    }
-                    else {
-                        params.delete("view");
                         history.pushState(null, '', `${pathname}${separator}${params}${hash}`);
-                    }
-                });
+                    },
+                    (event, element, elementId) => {
+                        const pathname = window.location.pathname;
+                        const params = new URLSearchParams(window.location.search);   
+                        const hash = window.location.hash;
 
-                window.addEventListener('popstate', function() {
-                    const params = new URLSearchParams(window.location.search);
-                    const stateKey = isModal(element) ? "modal" : "view";
-                    if(params.get(stateKey) == elementId) showCallback(element);
-                    else hideCallback(element);
-                });
-            };
+                        if(isModal(element)) {
+                            params.delete("modal");
+                            const separator = params.toString() ? '?' : '';
+                            // prevents the url from being saved in browser navigation history
+                            history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
+                        }
+                        else {
+                            params.delete("view");
+                            history.pushState(null, '', `${pathname}${separator}${params}${hash}`);
+                        }
+                    },
+                    (event, element, elementId) => {
+                        const params = new URLSearchParams(window.location.search);
+                        const stateKey = isModal(element) ? "modal" : "view";
+                        if(params.get(stateKey) == elementId) showCallback(element);
+                        else hideCallback(element);
+                    }
+                );
+            }
 
             document.querySelectorAll('.modal').forEach((modalElement) => {
-                updateUrl(
+                injectPageNavigation(
                     modalElement,
                     'show.bs.modal',
                     'hidden.bs.modal',
@@ -361,7 +379,7 @@
             });
 
             document.querySelectorAll('.showable').forEach((showableElement) => {
-                updateUrl(
+                injectPageNavigation(
                     showableElement,
                     'show.element',
                     'hidden.element',

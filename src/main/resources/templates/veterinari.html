@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link rel="stylesheet" th:href="@{/css/auth_fragments.css}">
 <link rel="stylesheet" th:href="@{/css/veterinari.css}">
 
@@ -30,7 +30,7 @@
                             <button
                                 type="button"
                                 class="btn btn-secondary showCardVeterinario"
-                                th:data-idveterinario="${vet.id}"
+                                th:data-veterinario="${vet.id}"
                                 data-bs-target="#cardVeterinarioModal"
                                 data-bs-toggle="modal"
                             >
@@ -39,37 +39,89 @@
 
                             <script>
 
-                                document.addEventListener('DOMContentLoaded', () => {
-                                    document.querySelectorAll('.showCardVeterinario').forEach(button => {
-                                        
-                                        button.addEventListener('click', (event) => {
+                                function caricaProfiloVeterinario(idVeterinario) {
+                                    return fetch(`/veterinari/lista_veterinari/${idVeterinario}`)
+                                    .then(response => {
+                                        if (!response.ok) throw new Error(`Impossibile caricare il profilo del veterinario. Stato: ${response.status}`);
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        document.getElementById('registrazioneVeterinarioLabel').textContent = data.nome + " " + data.cognome;
+                                        document.getElementById('specializzazione_veterinario').value = data.specializzazione;
+                                        document.getElementById('iscrizione_albo_veterinario').value = data.iscrizioneAlbo;
+                                        document.getElementById('descrizione_veterinario').value = data.descrizione;
+                                        document.getElementById('disponibilita_veterinario').value = data.disponibilita;
+                                        document.getElementById('indirizzo_studio_veterinario').value = data.indirizzoStudio;
+                                        document.getElementById('telefono_veterinario').value = data.telefono;
+                                        document.getElementById('email_veterinario').value = data.email;
+                                        document.getElementsByName('idVeterinario').forEach((input) => input.value = data.id);
+                                        document.getElementById('recensioni-list').innerHTML = "";
 
-                                            const idVeterinario = event.currentTarget.dataset.idveterinario;
-                                            const modalElement = document.getElementById('cardVeterinarioModal');
-                                            
-                                            fetch(`/veterinari/lista_veterinari/${idVeterinario}`)
-                                            .then(response => {
-                                                if (!response.ok) throw new Error(`Failed to fetch profile for ID: ${idVeterinario}. Status: ${response.status}`);
-                                                return response.json();
-                                            })
-                                            .then(data => {
-                                                console.log(data)
-                                                document.getElementById('registrazioneVeterinarioLabel').textContent = data.nome + " " + data.cognome;
-                                                document.getElementById('specializzazione_veterinario').value = data.specializzazione;
-                                                document.getElementById('iscrizione_albo_veterinario').value = data.iscrizioneAlbo;
-                                                document.getElementById('descrizione_veterinario').value = data.descrizione;
-                                                document.getElementById('disponibilita_veterinario').value = data.disponibilita;
-                                                document.getElementById('indirizzo_studio_veterinario').value = data.indirizzoStudio;
-                                                document.getElementById('telefono_veterinario').value = data.telefono;
-                                                document.getElementById('email_veterinario').value = data.email;
-                                            })
-                                            .catch(error => {
-                                                console.error('AJAX Error:', error);
-                                                alert("Could not load veterinarian profile.");
-                                            });
-
-                                        });
+                                        const listaRecensioni = document.getElementById('recensioni-list');
+                                        data.recensioni.forEach((recensione) => {
+                                            listaRecensioni.innerHTML += `
+                                                <li class="recensione-item">
+                                                    <div class="rec-header">
+                                                        <span class="rec-date">${recensione.dataRecensione}</span>
+                                                        <span class="rec-rating">${recensione.voto} / 5</span>
+                                                    </div>
+                                                    <p class="rec-text">${recensione.commento}</p>
+                                                </li>
+                                            `
+                                        })
+                                        return data;
+                                    })
+                                    .catch(error => {
+                                        return Promise.reject(error);
                                     });
+                                }
+
+                                document.addEventListener('DOMContentLoaded', () => {
+
+                                    injectNavigationEvents(
+                                        document.getElementById("cardVeterinarioModal"),
+                                        'show.bs.modal',
+                                        'hidden.bs.modal',
+                                        (event, element, elementId) => {
+                                            // conterrà "veterinario=" se la pagina è stata ricaricata,
+                                            // visto che il sistema di navigazione fa un dispatch di show.bs.modal
+                                            // al caricamento del DOM
+                                            const params = new URLSearchParams(window.location.search);
+
+                                            let idVeterinario;
+                                            if(params.get("veterinario")) idVeterinario = params.get("veterinario");
+                                            else idVeterinario = event.relatedTarget.dataset.veterinario;
+
+                                            if(idVeterinario) {
+                                                caricaProfiloVeterinario(idVeterinario)
+                                                .then((data) => {
+                                                    const pathname = window.location.pathname;
+                                                    // se non si ricaricano i parametri di ricerca,
+                                                    // non conterranno "modal="
+                                                    const params = new URLSearchParams(window.location.search);
+                                                    const hash = window.location.hash;
+                                                    params.set("veterinario", idVeterinario);
+                                                    const separator = params.toString() ? '?' : '';
+                                                    history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
+                                                })
+                                                .catch((error) => {
+                                                    console.error("Errore: ", error);
+                                                    history.replaceState(null, '', window.location.pathname);
+                                                });
+                                            }
+                                        },
+                                        (event, element, elementId) => {
+                                            const pathname = window.location.pathname;
+                                            const params = new URLSearchParams(window.location.search);   
+                                            const hash = window.location.hash;
+
+                                            params.delete("veterinario");
+                                            const separator = params.toString() ? '?' : '';
+                                            // prevents the url from being saved in browser navigation history
+                                            history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
+                                        }
+                                    )
+
                                 });
 
                             </script>
@@ -94,27 +146,3 @@
 
 </body>
 </html>
-
-            <!-- Prenotazione (solo cliente) -->
-            <!-- <div th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}" class="nuovo-appuntamento">
-                <h3>Prenota un nuovo appuntamento</h3>
-                <form th:action="@{/lista_veterinari/inserisci_appuntamento}" method="post">
-                    <label for="veterinario">Veterinario</label>
-                    <select name="veterinario" id="veterinario" required>
-                        <option value="">Seleziona...</option>
-                        <option th:each="v : ${veterinariDisponibili}" th:value="${v.id}" th:text="${v.nome}"></option>
-                    </select>
-
-                    <label for="data">Data</label>
-                    <input type="date" name="data" id="data" required>
-
-                    <label for="ora">Ora</label>
-                    <input type="time" name="ora" id="ora" required>
-
-                    <label for="motivo">Motivo</label>
-                    <textarea name="motivo" id="motivo" rows="3" placeholder="Descrivi il motivo..."
-                        required></textarea>
-
-                    <button type="submit" class="btn">Prenota</button>
-                </form>
-            </div> -->

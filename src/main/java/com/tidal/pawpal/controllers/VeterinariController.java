@@ -119,7 +119,7 @@ public class VeterinariController extends AuthenticatedController {
         queryParams.put("filtroPrestazione", filtroPrestazione.isPresent() ? String.valueOf(filtroPrestazione.get()) : "");
         queryParams.put("filtroSpecie", filtroSpecie.isPresent() ? String.valueOf(filtroSpecie.get()) : "");
 
-        return ControllerUtils.redirectToQueryParams(redirectUrl, queryParams);
+        return ControllerUtils.redirectToPathQueryParams(redirectUrl, "/veterinari/lista_veterinari", queryParams);
     }    
 
     @GetMapping("/lista_veterinari/{idVeterinario}")
@@ -132,16 +132,16 @@ public class VeterinariController extends AuthenticatedController {
     
     @PostMapping("/inserisci_appuntamento")
     public String sendAppuntamentoData(
-        @RequestParam Map<String, String> data,
-        Principal principal
+        Principal principal,
+        @RequestParam Map<String, String> data
     ) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
-                // nel frontend, passare l'idCliente con {#authentication.id}
-                // passare anche l'id del veterinario selezionato come idVeterinario
+                // nel frontend, vengono passati 
+                // l'idCliente ({#authentication.principal.id}) e l'idVeterinario
                 appuntamentoService.registra(data);
             });
-            return "redirect:/dash/appuntamenti";
+            return ControllerUtils.redirectToPathView("", "/dash", "appuntamenti");
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();
@@ -151,16 +151,17 @@ public class VeterinariController extends AuthenticatedController {
 
     @PostMapping("/inserisci_recensione")
     public String sendRecensioneData(
+        @RequestParam String redirectUrl,
         @RequestParam Map<String, String> data,
         Principal principal
     ) {        
         try {
             acceptAuthenticated(principal, (authentication, utente) -> {
-                // nel frontend, passare l'idCliente con {#authentication.id}
-                // passare anche l'id del veterinario selezionato come idVeterinario
+                // nel frontend, vengono passati 
+                // l'idCliente ({#authentication.principal.id}) e l'idVeterinario
                 recensioneService.registra(data);
             });
-            return "redirect:/dash/recensioni";
+            return ControllerUtils.redirectToSame(redirectUrl);
         } catch(Exception exception) {
             // IMPLEMENT CUSTOM ERROR HANDLING
             exception.printStackTrace();

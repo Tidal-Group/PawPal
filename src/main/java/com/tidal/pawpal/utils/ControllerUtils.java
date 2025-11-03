@@ -28,8 +28,22 @@ public final class ControllerUtils {
         return "redirect:" + uriBuilder.build().toUriString();
     }
 
+    public static final String redirectToPathView(String redirectUrl, String path, String viewId) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(redirectUrl);
+        uriBuilder.path(path);
+        uriBuilder.replaceQueryParam("view", viewId);
+        return "redirect:" + uriBuilder.build().toUriString();
+    }
+
     public static final String redirectToQueryParams(String redirectUrl, Map<String, String> queryParams) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(redirectUrl);
+        queryParams.entrySet().forEach((entry) -> uriBuilder.replaceQueryParam(entry.getKey(), entry.getValue()));
+        return "redirect:" + uriBuilder.build().toUriString();
+    }
+
+    public static final String redirectToPathQueryParams(String redirectUrl, String path, Map<String, String> queryParams) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(redirectUrl);
+        uriBuilder.path(path);
         queryParams.entrySet().forEach((entry) -> uriBuilder.replaceQueryParam(entry.getKey(), entry.getValue()));
         return "redirect:" + uriBuilder.build().toUriString();
     }

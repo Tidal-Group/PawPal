@@ -136,6 +136,7 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
         return entityManager.createQuery(query).getResultList();
     }
 
+    // DEBUG: dovrebbe essere una left join
     @Override
     public List<AppuntamentoDto> cercaPerClienteConFiltri(Long idCliente, Map<String, Object> filtri) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
