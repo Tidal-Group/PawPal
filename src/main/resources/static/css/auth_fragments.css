@@ -1,21 +1,19 @@
-/* ========== MODALI AUTENTICAZIONE PAWPAL ========== */
 
-/* Corpo della modale */
+
 .modal-content {
   border-radius: 12px;
   border: none;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
 
-/* Header */
 .modal-header {
   background: linear-gradient(135deg, #007bff, #00a8ff);
-  color: #fff;
+  color: white;
   border-bottom: none;
   text-align: center;
   justify-content: center;
-  padding: 1.2rem 1.5rem;
+  padding: 1.5rem;
 }
 
 .modal-header .modal-title {
@@ -28,7 +26,6 @@
   text-align: center;
 }
 
-/* Footer */
 .modal-footer {
   background-color: #f8f9fa;
   border-top: 1px solid #dee2e6;
@@ -45,12 +42,12 @@
   color: #333;
 }
 
-/* Etichette e input */
+
+
 .form-label {
   display: block;
   font-weight: 600;
-  margin-top: 1rem;
-  margin-bottom: 0.3rem;
+  margin-top: 0.8rem;
   color: #444;
   text-align: left;
 }
@@ -59,22 +56,23 @@
   border-radius: 8px;
   border: 1px solid #ccc;
   padding: 10px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
   font-size: 1rem;
 }
 
 .form-control:focus {
   border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
-/* Bottoni */
+
+
 .btn {
   border-radius: 8px;
   font-weight: 600;
   padding: 10px 18px;
-  transition: all 0.25s ease-in-out;
-  margin: 6px;
+  transition: all 0.3s ease;
+  margin: 5px;
 }
 
 .btn-secondary {
@@ -85,15 +83,16 @@
 
 .btn-secondary:hover {
   background-color: #0056b3;
-  transform: translateY(-2px);
+  transform: scale(1.05);
 }
 
-/* Checkbox gruppi (specie e prestazioni) */
+
+
 .btn-group {
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .btn-outline-primary {
@@ -104,20 +103,22 @@
 }
 
 .btn-outline-primary:hover,
-.btn-check:checked + .btn-outline-primary {
+.btn-outline-primary.active {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
 }
 
-/* Messaggi di errore */
+
+
 .alert-danger {
   font-size: 0.9rem;
   margin-top: 0.8rem;
   border-radius: 6px;
 }
 
-/* Responsive */
+
+
 @media (max-width: 576px) {
   .modal-dialog {
     margin: 1rem;
