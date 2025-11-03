@@ -24,8 +24,7 @@
         <section th:replace="fragments/veterinari_fragments :: ricerca_veterinari"></section>
 
         <section>
-
-            <div class="container-fluid">
+            <div class="container"> 
 
                 <div class="row">
 
@@ -80,125 +79,97 @@
 
         </section>
 
-        <section>
-            <div class="container">
+        <div class="container" style="background-color: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 40px 20px;">
+            
+            <section id="carousel-specializzazioni" class="py-5 bg-light">
+                <h2 class="text-center mb-4">Le nostre specializzazioni</h2>
+                <div id="carouselSpecializzazioni" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
 
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <h2>Specializzazioni in evidenza</h2>
+                    <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="card" th:each="spec : ${lista_specializzazioni}">
+                        <img th:src="@{${spec.immagine}}" class="card-img-top" th:alt="${spec.nome}" />
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${spec.nome}">Card title</h5>
+                            <p class="card-text" th:text="${spec.descrizione}">Descrizione breve...</p>
+                        </div>
+                        </div>
                     </div>
-                    <div class="col-12 text-center">
-                        <h6>Di quale specialista ha bisogno il tuo animale?</h6>
                     </div>
+
                 </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselSpecializzazioni" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselSpecializzazioni" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Successivo</span>
+                </button>
+                </div>
+            </section>
+            
+            <section id="carousel-veterinari" class="py-5">
+                <h2 class="text-center mb-4">I nostri veterinari</h2>
+                <div id="carouselVeterinari" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    
+                    <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="card" th:each="vet : ${lista_veterinari}">
+                        <img th:src="@{${vet.fotoProfilo}}" class="card-img-top" th:alt="${vet.nome}" />
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${vet.nome} + ' ' + ${vet.cognome}">Nome Veterinario</h5>
+                            <p class="card-text" th:text="${vet.specializzazione}">Specializzazione</p>
+                            <a th:href="@{/veterinario/{id}(id=${vet.id})}" class="btn btn-primary">Scopri di più</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
 
-                <div class="row">
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselVeterinari" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselVeterinari" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Successivo</span>
+                </button>
+                </div>
+            </section>
+            
+            <section id="carousel-recensioni" class="py-5 bg-light">
+                <h2 class="text-center mb-4">Cosa dicono di noi</h2>
+                <div id="carouselRecensioni" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
 
-                    <!-- ====================== -->
-<!-- SEZIONE: SPECIALIZZAZIONI -->
-<!-- ====================== -->
-<section id="carousel-specializzazioni" class="py-5 bg-light">
-  <div class="container">
-    <h2 class="text-center mb-4">Le nostre specializzazioni</h2>
-    <div id="carouselSpecializzazioni" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
+                    <div class="carousel-item active">
+                    <div class="cards-wrapper">
+                        <div class="card" th:each="rec : ${lista_recensioni}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${rec.autore}">Autore</h5>
+                            <p class="card-text" th:text="${rec.testo}">Recensione</p>
+                            <p class="text-warning mb-0" th:text="'★'.repeat(${rec.voto})"></p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
 
-        <div class="carousel-item active">
-          <div class="cards-wrapper">
-            <div class="card" th:each="spec : ${lista_specializzazioni}">
-              <img th:src="@{${spec.immagine}}" class="card-img-top" th:alt="${spec.nome}" />
-              <div class="card-body">
-                <h5 class="card-title" th:text="${spec.nome}">Card title</h5>
-                <p class="card-text" th:text="${spec.descrizione}">Descrizione breve...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselSpecializzazioni" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-        <span class="visually-hidden">Precedente</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselSpecializzazioni" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-        <span class="visually-hidden">Successivo</span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- ====================== -->
-<!-- SEZIONE: VETERINARI -->
-<!-- ====================== -->
-<section id="carousel-veterinari" class="py-5">
-  <div class="container">
-    <h2 class="text-center mb-4">I nostri veterinari</h2>
-    <div id="carouselVeterinari" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        
-        <div class="carousel-item active">
-          <div class="cards-wrapper">
-            <div class="card" th:each="vet : ${lista_veterinari}">
-              <img th:src="@{${vet.fotoProfilo}}" class="card-img-top" th:alt="${vet.nome}" />
-              <div class="card-body">
-                <h5 class="card-title" th:text="${vet.nome} + ' ' + ${vet.cognome}">Nome Veterinario</h5>
-                <p class="card-text" th:text="${vet.specializzazione}">Specializzazione</p>
-                <a th:href="@{/veterinario/{id}(id=${vet.id})}" class="btn btn-primary">Scopri di più</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselVeterinari" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-        <span class="visually-hidden">Precedente</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselVeterinari" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-        <span class="visually-hidden">Successivo</span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- ====================== -->
-<!-- SEZIONE: RECENSIONI -->
-<!-- ====================== -->
-<section id="carousel-recensioni" class="py-5 bg-light">
-  <div class="container">
-    <h2 class="text-center mb-4">Cosa dicono di noi</h2>
-    <div id="carouselRecensioni" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-
-        <div class="carousel-item active">
-          <div class="cards-wrapper">
-            <div class="card" th:each="rec : ${lista_recensioni}">
-              <div class="card-body">
-                <h5 class="card-title" th:text="${rec.autore}">Autore</h5>
-                <p class="card-text" th:text="${rec.testo}">Recensione</p>
-                <p class="text-warning mb-0" th:text="'★'.repeat(${rec.voto})"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselRecensioni" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-        <span class="visually-hidden">Precedente</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselRecensioni" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-        <span class="visually-hidden">Successivo</span>
-      </button>
-    </div>
-  </div>
-</section>
-
-
-        <section th:replace="fragments/auth_fragments :: login"></section>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselRecensioni" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Precedente</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselRecensioni" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Successivo</span>
+                </button>
+                </div>
+            </section>
+            
+            </div> <section th:replace="fragments/auth_fragments :: login"></section>
 
         <section th:replace="fragments/auth_fragments :: registrazione_cliente"></section>
 

@@ -6,6 +6,11 @@
 
 <head th:replace="fragments/generic_fragments :: head('Contatti - PawPal')">
 </head>
+<section th:replace="fragments/auth_fragments :: login"></section>
+    <section th:replace="fragments/auth_fragments :: registrazione_cliente"></section>
+    <section th:replace="fragments/auth_fragments :: registrazione_veterinario"></section>
+
+    <div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
 
 <body>
     <header th:replace="fragments/generic_fragments :: navbar('Contatti')"></header>

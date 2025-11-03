@@ -26,6 +26,7 @@ public interface IMappable {
                             case "string":
                                 m.invoke(this,valoreAssociato);
                             break;
+                            case "integer": 
                             case "int":
                                 m.invoke(this, Integer.parseInt(valoreAssociato));
                             break;

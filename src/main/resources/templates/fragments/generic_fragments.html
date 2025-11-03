@@ -14,6 +14,7 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
         crossorigin="anonymous"
     >
+    <link rel="stylesheet" th:href="@{/css/global_theme.css}">
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -172,7 +173,20 @@
                                     <hr class="dropdown-divider">
                                 </li>
 
+                                 <li>
+                                    <a class="dropdown-item" th:href="@{/dash(view='modifica_dati')}">Profilo</a>
+                                </li>
+
                                 <li>
+                                    <a class="dropdown-item" th:href="@{/dash(view='appuntamenti')}">Appuntamenti</a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/dash(view='recensioni')}">Recensioni</a>
+                                </li>
+
+
+                                <!-- <li>
                                     <a class="dropdown-item" th:href="@{/dash#modifica_dati}">Profilo</a>
                                 </li>
 
@@ -182,7 +196,7 @@
 
                                 <li>
                                     <a class="dropdown-item" th:href="@{/dash#recensioni}">Recensioni</a>
-                                </li>
+                                </li> -->
 
                                 <li th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
                                     <a class="dropdown-item" th:href="@{/dash#linee_guida}">Linee guida</a>

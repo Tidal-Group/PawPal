@@ -24,7 +24,7 @@
 
                     <form th:action="@{/dash/profilo/modifica_dati}" method="post" style="display: contents;">
 
-                        <div class="col-12">
+                        <div class="col-12 col-lg-8 mx-auto">
 
                             <fieldset>
                                 <legend>Informazioni Personali</legend>
@@ -56,7 +56,7 @@
 
                         </div>
 
-                        <div class="col-12"
+                        <div class="col-12 col-lg-8 mx-auto"
                             th:if="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')}">
 
                             <fieldset>
@@ -139,10 +139,12 @@
 
                         </div>
 
-                        <div class="form-actions">
-                            <button class="btn btn-secondary" type="submit">Salva modifiche</button>
-                            <button class="btn btn-secondary" type="reset">Annulla</button>
-                        </div>
+                       <div class="col-12 col-lg-8 mx-auto">
+    <div class="form-actions">
+        <button class="btn btn-secondary" type="submit">Salva modifiche</button>
+        <button class="btn btn-secondary" type="reset">Annulla</button>
+    </div>
+</div>
 
                     </form>
 
@@ -158,7 +160,7 @@
 
                     <form th:action="@{/dash/profilo/elimina_account}" method="post" style="display: contents;">
 
-                        <div class="col-12">
+                        <div class="col-12 col-lg-8 mx-auto">
 
                             <fieldset>
 
@@ -209,7 +211,7 @@
                         name="filtroNominativo"
                         type="text"
                         th:value="${filtroNominativo}"
-                        th:placeholder="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') ? 'Cerca per veterinario' : 'Cerca per cliente'}"
+                        th:placeholder="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') ? 'Cerca per veterinario (nome e/o cognome)' : 'Cerca per cliente (nome e/o cognome)'}"
                     >
 
                     <button type="submit" class="btn btn-primary">Filtra</button>
@@ -377,7 +379,7 @@
                                 method="post"
                                 style="display:inline"
                             >
-                                <input type="hidden" name="id" th:value="${recensione.idRecensione}" />
+                                <input type="hidden" name="idRecensione" th:value="${recensione.idRecensione}" />
                                 <button type="submit" class="btn btn-danger">Elimina</button>
                             </form>
                         </div>

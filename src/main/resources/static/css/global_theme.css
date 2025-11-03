@@ -1,0 +1,316 @@
+/* ==============================================
+   FILE: global_theme.css
+   Descrizione: Tema unificato per PawPal (v2 - con sfondo)
+   ============================================== */
+
+/* --- 1. Variabili Colore e Stile (Tema Centrale) --- */
+:root {
+    --colore-primario: #2563eb; /* Il tuo blu più usato */
+    --colore-primario-scuro: #1d4ed8; /* Per hover */
+    --colore-secondario: #222; /* Testo scuro */
+    --colore-testo-chiaro: #666;
+    
+    /* Colore di sfondo pagina (molto chiaro) */
+    --colore-bg-pagina: #f4f7fc; 
+    
+    /* Colore delle card/sezioni (bianco) */
+    --colore-card: #ffffff; 
+    
+    --colore-bordo: #e5e7eb;
+    --colore-errore: #dc2626;
+
+    --font-base: 'Inter', sans-serif;
+    --raggio-bordi: 10px; /* Bordi più arrotondati */
+    
+    /* Ombra più definita per far "galleggiare" le sezioni */
+    --ombra-media: 0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+/* --- 2. SFONDO CARINO (Corpo della Pagina) --- */
+body {
+    font-family: var(--font-base);
+    color: var(--colore-secondario);
+    
+    /* Sfondo con gradiente leggerissimo */
+    background-color: var(--colore-bg-pagina);
+    background-image: linear-gradient(170deg, #f4f7fc 0%, #e8eef9 100%);
+    
+    /* Assicura che lo sfondo copra tutta la pagina */
+    min-height: 100vh;
+}
+
+/* --- 3. Stile Sezioni e Form (per farle risaltare) --- */
+section,
+.modal-content,
+.card { /* Applichiamo lo stile a tutte le "card" */
+    background-color: var(--colore-card);
+    border-radius: var(--raggio-bordi);
+    box-shadow: var(--ombra-media);
+    border: none; /* Rimuoviamo eventuali bordi */
+}
+
+/* La sezione di ricerca veterinari è spesso su uno sfondo diverso */
+.ricerca-veterinari {
+    background-color: var(--colore-card);
+    box-shadow: var(--ombra-media);
+    border-radius: var(--raggio-bordi);
+    margin: 2rem auto; /* Centra e distanzia */
+    padding: 2.5rem; /* Più spazio interno */
+}
+
+/* --- 4. Stile Pulsanti Unificato --- */
+.btn {
+    font-weight: 600; /* Pulsanti più decisi */
+    border-radius: var(--raggio-bordi);
+    transition: all 0.2s ease-in-out;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); /* Ombra colorata su hover */
+}
+
+.btn-primary,
+.btn-secondary {
+    background-color: var(--colore-primario);
+    color: white;
+}
+.btn-primary:hover,
+.btn-secondary:hover {
+    background-color: var(--colore-primario-scuro);
+    color: white;
+}
+
+.btn-outline-primary {
+    color: var(--colore-primario);
+    border: 2px solid var(--colore-primario);
+    background-color: transparent;
+}
+.btn-outline-primary:hover,
+.btn-check:checked + .btn-outline-primary {
+    background-color: var(--colore-primario);
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--colore-errore);
+    color: white;
+}
+.btn-danger:hover {
+    background-color: #b91c1c;
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+}
+
+
+/* --- 5. Stile Header (Navbar) --- */
+header .navbar {
+    background-color: var(--colore-card);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Ombra leggera */
+}
+header .navbar-nav .nav-link.active {
+    color: var(--colore-primario);
+    font-weight: 600;
+}
+
+/* --- 6. Stile Modali (Login/Registrazione) --- */
+.modal-header {
+    background: var(--colore-primario);
+    color: white;
+}
+.modal-header .modal-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.form-control:focus {
+    border-color: var(--colore-primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* --- 7. FIX: Stile per Modale Profilo Veterinario --- */
+.profilo-testo {
+    background-color: var(--colore-bg-pagina); /* Sfondo leggero */
+    min-height: 40px;
+    text-align: left;
+    color: var(--colore-secondario);
+    border: 1px solid var(--colore-bordo);
+    padding: 0.5rem 0.75rem; /* Allineamento con input */
+    line-height: 1.5;
+    border-radius: var(--raggio-bordi);
+}
+
+.modal-body .form-label {
+    text-align: left;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+/* --- 8. Stile Dashboard --- */
+#dashboard-sidebar {
+    background-color: var(--colore-card);
+    border-right: 1px solid var(--colore-bordo);
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.05);
+    width: 220px;
+}
+#dashboard-sidebar .btn.btn-secondary {
+    background-color: transparent;
+    color: var(--colore-secondario);
+    border: 1px solid transparent;
+    text-align: left;
+    width: 100%;
+}
+#dashboard-sidebar .btn.btn-secondary:hover,
+#dashboard-sidebar .btn.btn-secondary.active {
+    background-color: var(--colore-primario);
+    color: white;
+}
+#dashboard-sidebar .card-body .btn.btn-secondary {
+    background-color: var(--colore-bg-pagina);
+    border-color: var(--colore-bordo);
+    color: #444;
+    font-size: 0.9rem;
+}
+#dashboard-sidebar .card-body .btn.btn-secondary:hover {
+    background-color: var(--colore-primario-scuro);
+}
+
+/* Adatta il main content alla nuova sidebar */
+main {
+    margin-left: 220px; 
+    /* Rimuoviamo lo sfondo bianco dal main per far vedere lo sfondo del body */
+    background-color: transparent; 
+}
+
+/* Aggiungiamo lo stile "card" alle sezioni della dashboard */
+#dashboard_utente .showable > section,
+.admin-section {
+    background-color: var(--colore-card);
+    border-radius: var(--raggio-bordi);
+    box-shadow: var(--ombra-media);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* --- 9. Messaggi di Feedback (Successo/Errore) --- */
+.alert-danger {
+    background-color: var(--colore-errore);
+    color: white;
+    border: none;
+}
+.alert-success {
+    background-color: #16a34a; /* Verde successo */
+    color: white;
+    border: none;
+}
+
+.vet-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--colore-card);
+    border-radius: var(--raggio-bordi);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* Ombra più leggera */
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    border: 1px solid var(--colore-bordo);
+}
+
+.vet-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ombra-media);
+}
+
+.vet-icon {
+    flex-shrink: 0;
+    margin-right: 1.5rem;
+    padding: 0.8rem;
+    background-color: var(--colore-bg-pagina);
+    border-radius: 50%; /* Cerchio */
+    color: var(--colore-primario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vet-info {
+    flex-grow: 1;
+}
+
+.vet-nome {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--colore-secondario);
+    margin-bottom: 0.25rem;
+}
+
+.vet-specializzazione {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--colore-primario);
+    margin-bottom: 0.25rem;
+}
+
+.vet-indirizzo {
+    font-size: 0.9rem;
+    color: var(--colore-testo-chiaro);
+    margin-bottom: 0;
+}
+
+.vet-azione {
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.vet-card-empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--colore-testo-chiaro);
+}
+
+.vet-layout-container {
+    padding: 2rem 1.5rem;
+}
+
+/* Colonna Sinistra - Lista Scorrevole */
+.vet-list-scroll-container {
+    height: 85vh; /* Altezza fissa */
+    overflow-y: auto; /* Abilita lo scroll verticale */
+    padding-right: 1.5rem; /* Spazio per la scrollbar */
+}
+
+/* Colonna Destra - Ricerca Fissa */
+.vet-search-sticky-container {
+    position: sticky;
+    top: 2rem; /* Distanza dall'alto quando scorri */
+}
+
+/* Adattamento Sezione Ricerca (da fragment) */
+.vet-search-sticky-container .ricerca-veterinari {
+    margin: 0; /* Rimuove il margine extra */
+    padding: 1.5rem; /* Padding leggermente ridotto */
+}
+
+.vet-search-sticky-container .ricerca-veterinari h2 {
+    font-size: 1.5rem; /* Titolo ricerca più piccolo */
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Scrollbar stilizzata (opzionale ma carina) */
+.vet-list-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+.vet-list-scroll-container::-webkit-scrollbar-track {
+    background: var(--colore-bg-pagina);
+    border-radius: 10px;
+}
+.vet-list-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+.vet-list-scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+}

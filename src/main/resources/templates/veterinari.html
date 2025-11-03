@@ -1,147 +1,197 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link rel="stylesheet" th:href="@{/css/auth_fragments.css}">
-<link rel="stylesheet" th:href="@{/css/veterinari.css}">
-
 <head th:replace="fragments/generic_fragments :: head('Veterinari - Pawpal')"></head>
 
 <body>
     
     <div th:replace="fragments/generic_fragments :: navbar(veterinari)"></div>
 
-    <main>
-        <div class="container">
+    <main class="vet-layout-container">
+        <div class="container-fluid">
             
-            <main>
+            <div th:replace="fragments/generic_fragments :: backend_message"></div>
 
-                <section th:replace="fragments/veterinari_fragments :: ricerca_veterinari"></section>
+            <div class="row">
 
-                <section>
-                    <h1>Lista Veterinari</h1>
-
-                    <div class="veterinari-list">
-                        <div th:each="vet : ${lista_veterinari}" class="">
-
-                            <!-- <img th:src="@{'/img/' + ${vet.foto}}" alt="Foto di [[${vet.nome}]]"> -->
-                            <h3 th:text="${vet.id}"></h3>
-                            <h3 th:text="${vet.nome + ' ' + vet.cognome}"></h3>
-                            <p th:text="${vet.specializzazione}"></p>
-                            <p th:text="${vet.indirizzoStudio}"></p>
-                            <button
-                                type="button"
-                                class="btn btn-secondary showCardVeterinario"
-                                th:data-veterinario="${vet.id}"
-                                data-bs-target="#cardVeterinarioModal"
-                                data-bs-toggle="modal"
-                            >
-                                Visualizza Profilo
-                            </button>
-
-                            <script>
-
-                                function caricaProfiloVeterinario(idVeterinario) {
-                                    return fetch(`/veterinari/lista_veterinari/${idVeterinario}`)
-                                    .then(response => {
-                                        if (!response.ok) throw new Error(`Impossibile caricare il profilo del veterinario. Stato: ${response.status}`);
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        document.getElementById('registrazioneVeterinarioLabel').textContent = data.nome + " " + data.cognome;
-                                        document.getElementById('specializzazione_veterinario').value = data.specializzazione;
-                                        document.getElementById('iscrizione_albo_veterinario').value = data.iscrizioneAlbo;
-                                        document.getElementById('descrizione_veterinario').value = data.descrizione;
-                                        document.getElementById('disponibilita_veterinario').value = data.disponibilita;
-                                        document.getElementById('indirizzo_studio_veterinario').value = data.indirizzoStudio;
-                                        document.getElementById('telefono_veterinario').value = data.telefono;
-                                        document.getElementById('email_veterinario').value = data.email;
-                                        document.getElementsByName('idVeterinario').forEach((input) => input.value = data.id);
-                                        document.getElementById('recensioni-list').innerHTML = "";
-
-                                        const listaRecensioni = document.getElementById('recensioni-list');
-                                        data.recensioni.forEach((recensione) => {
-                                            listaRecensioni.innerHTML += `
-                                                <li class="recensione-item">
-                                                    <div class="rec-header">
-                                                        <span class="rec-date">${recensione.dataRecensione}</span>
-                                                        <span class="rec-rating">${recensione.voto} / 5</span>
-                                                    </div>
-                                                    <p class="rec-text">${recensione.commento}</p>
-                                                </li>
-                                            `
-                                        })
-                                        return data;
-                                    })
-                                    .catch(error => {
-                                        return Promise.reject(error);
-                                    });
-                                }
-
-                                document.addEventListener('DOMContentLoaded', () => {
-
-                                    injectNavigationEvents(
-                                        document.getElementById("cardVeterinarioModal"),
-                                        'show.bs.modal',
-                                        'hidden.bs.modal',
-                                        (event, element, elementId) => {
-                                            // conterrà "veterinario=" se la pagina è stata ricaricata,
-                                            // visto che il sistema di navigazione fa un dispatch di show.bs.modal
-                                            // al caricamento del DOM
-                                            const params = new URLSearchParams(window.location.search);
-
-                                            let idVeterinario;
-                                            if(params.get("veterinario")) idVeterinario = params.get("veterinario");
-                                            else idVeterinario = event.relatedTarget.dataset.veterinario;
-
-                                            if(idVeterinario) {
-                                                caricaProfiloVeterinario(idVeterinario)
-                                                .then((data) => {
-                                                    const pathname = window.location.pathname;
-                                                    // se non si ricaricano i parametri di ricerca,
-                                                    // non conterranno "modal="
-                                                    const params = new URLSearchParams(window.location.search);
-                                                    const hash = window.location.hash;
-                                                    params.set("veterinario", idVeterinario);
-                                                    const separator = params.toString() ? '?' : '';
-                                                    history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
-                                                })
-                                                .catch((error) => {
-                                                    console.error("Errore: ", error);
-                                                    history.replaceState(null, '', window.location.pathname);
-                                                });
-                                            }
-                                        },
-                                        (event, element, elementId) => {
-                                            const pathname = window.location.pathname;
-                                            const params = new URLSearchParams(window.location.search);   
-                                            const hash = window.location.hash;
-
-                                            params.delete("veterinario");
-                                            const separator = params.toString() ? '?' : '';
-                                            // prevents the url from being saved in browser navigation history
-                                            history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
-                                        }
-                                    )
-
-                                });
-
-                            </script>
-
+                <div class="col-lg-7">
+                    <div class="vet-list-scroll-container">
+                        <h1 class="mb-4">Lista Veterinari</h1>
+                        
+                        <div class="veterinari-list">
+                            
+                            <div th:if="${#lists.isEmpty(lista_veterinari)}" class="vet-card-empty">
+                                <h4>Nessun veterinario trovato</h4>
+                                <p>Prova a modificare i filtri di ricerca.</p>
+                            </div>
+                        
+                            <div th:each="vet : ${lista_veterinari}" class="vet-card">
+                                
+                                <div class="vet-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                                        <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 8.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"/>
+                                    </svg>
+                                </div>
+                        
+                                <div class="vet-info">
+                                    <h3 class="vet-nome" th:text="${vet.nome + ' ' + vet.cognome}"></h3>
+                                    <p class="vet-specializzazione" th:text="${vet.specializzazione}"></p>
+                                    <p class="vet-indirizzo" th:text="${vet.indirizzoStudio}"></p>
+                                </div>
+                        
+                                <div class="vet-azione">
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-primary"
+                                        th:data-veterinario="${vet.id}"
+                                        data-bs-target="#cardVeterinarioModal"
+                                        data-bs-toggle="modal">
+                                        Visualizza
+                                    </button>
+                                </div>
+                            </div>
+                        
                         </div>
+                        </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="vet-search-sticky-container">
+                        <section th:replace="fragments/veterinari_fragments :: ricerca_veterinari"></section>
                     </div>
+                </div>
 
-                </section>
-
-            </main>
-
+            </div>
         </div>
     </main>
 
     <div th:replace="fragments/veterinari_fragments :: card_veterinario"></div>
-
     
+    <section th:replace="fragments/auth_fragments :: login"></section>
+    <section th:replace="fragments/auth_fragments :: registrazione_cliente"></section>
+    <section th:replace="fragments/auth_fragments :: registrazione_veterinario"></section>
+
     <footer th:replace="fragments/generic_fragments :: footer"></footer>
 
-    <!-- <script th:src="@{/js/script.js}"></script> -->
+    <script th:inline="javascript">
+        function caricaProfiloVeterinario(idVeterinario) {
+            return fetch(`/veterinari/lista_veterinari/${idVeterinario}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`Impossibile caricare il profilo del veterinario. Stato: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                // Leggiamo dall'oggetto "veterinario" annidato
+                const vet = data.veterinario; 
+                
+                document.getElementById('registrazioneVeterinarioLabel').textContent = vet.nome + " " + vet.cognome;
+                document.getElementById('specializzazione_veterinario').textContent = vet.specializzazione || 'N/D';
+                document.getElementById('iscrizione_albo_veterinario').textContent = vet.iscrizioneAlbo || 'N/D';
+                document.getElementById('descrizione_veterinario').textContent = vet.descrizione || 'Nessuna descrizione';
+                document.getElementById('disponibilita_veterinario').textContent = vet.disponibilita || 'N/D';
+                document.getElementById('indirizzo_studio_veterinario').textContent = vet.indirizzoStudio || 'N/D';
+                document.getElementById('telefono_veterinario').textContent = vet.telefono || 'N/D';
+                document.getElementById('email_veterinario').textContent = vet.email || 'N/D';
+                
+                // Popola gli ID nascosti nei form di appuntamento e recensione
+                document.getElementsByName('idVeterinario').forEach((input) => input.value = vet.id);
+                
+                const listaRecensioni = document.getElementById('recensioni-list');
+                listaRecensioni.innerHTML = ""; 
+
+                // Leggiamo la lista "recensioniDto" separata
+                const recensioni = data.recensioniDto;
+
+                if (recensioni && recensioni.length > 0) {
+                    recensioni.forEach((recensione) => {
+                        listaRecensioni.innerHTML += `
+                            <li class="recensione-item">
+                                <div class="rec-header">
+                                    <span class="rec-date">${recensione.dataRecensione}</span>
+                                    <span class="rec-rating">${recensione.votoRecensione} / 5</span> 
+                                </div>
+                                <p class="rec-text">${recensione.commentoRecensione}</p> 
+                            </li>
+                        `;
+                    });
+                } else {
+                    listaRecensioni.innerHTML = "<p>Nessuna recensione ancora.</p>";
+                }
+                
+                return data;
+            })
+            .catch(error => {
+                console.error("Errore nel fetch:", error);
+                document.getElementById('registrazioneVeterinarioLabel').textContent = "Errore Caricamento";
+                document.getElementById('recensioni-list').innerHTML = "<p>Impossibile caricare i dati. Riprova più tardi.</p>";
+                return Promise.reject(error);
+            });
+        }
+    
+        /* Gestione navigazione modale */
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof injectNavigationEvents !== 'function') {
+                console.error("Errore: injectNavigationEvents non è definita. Assicurati che generic_fragments sia caricato.");
+                return;
+            }
+    
+            injectNavigationEvents(
+                document.getElementById("cardVeterinarioModal"),
+                'show.bs.modal',
+                'hidden.bs.modal',
+                (event, element, elementId) => {
+                    const params = new URLSearchParams(window.location.search);
+                    let idVeterinario;
+    
+                    if(params.get("veterinario")) {
+                        idVeterinario = params.get("veterinario");
+                    } else if (event.relatedTarget) {
+                        idVeterinario = event.relatedTarget.dataset.veterinario;
+                    }
+    
+                    if(idVeterinario) {
+                        caricaProfiloVeterinario(idVeterinario)
+                        .then((data) => {
+                            const pathname = window.location.pathname;
+                            const params = new URLSearchParams(window.location.search);
+                            const hash = window.location.hash;
+                            params.set("veterinario", idVeterinario);
+                            const separator = params.toString() ? '?' : '';
+                            history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
+                        })
+                        .catch((error) => {
+                            history.replaceState(null, '', window.location.pathname);
+                        });
+                    }
+                },
+                (event, element, elementId) => {
+                    const pathname = window.location.pathname;
+                    const params = new URLSearchParams(window.location.search);   
+                    const hash = window.location.hash;
+    
+                    params.delete("veterinario");
+                    const separator = params.toString() ? '?' : '';
+                    history.replaceState(null, '', `${pathname}${separator}${params}${hash}`);
+                },
+                (event, element, elementId) => {
+                    const params = new URLSearchParams(window.location.search);
+                    if(params.get("modal") === elementId || params.get("veterinario")) {
+                        // Assicurati che la modale esista prima di provare a mostrarla
+                        const modalInstance = bootstrap.Modal.getOrCreateInstance(element);
+                        if(modalInstance) modalInstance.show();
+                    } else {
+                        const modalInstance = bootstrap.Modal.getInstance(element);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+                }
+            );
+        });
+    
+    </script>
+
     <div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
 
 </body>
