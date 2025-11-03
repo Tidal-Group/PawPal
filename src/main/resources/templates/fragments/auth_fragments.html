@@ -502,8 +502,12 @@
                                 name="specializzazione" required>
                         </div>
 
-                        <div>
-                            <label class="form-label">Specie trattate:</label>
+                        <button class="nav-link btn btn-link btn-primary text-decoration-none w-100" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#specie_submenu" aria-expanded="false" aria-controls="specie_submenu">
+                            Specie Trattate
+                        </button>
+
+                        <div class="collapse" id="specie_submenu">
                             <div class="btn-group" role="group" aria-label="specie trattate dal veterinario">
                                 <div th:each="spec : ${lista_specie}" style="display: contents;">
                                     <input type="checkbox" class="btn-check" name="specie" th:value="${spec.id}"
@@ -515,8 +519,12 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="form-label">Prestazioni offerte:</label>
+                        <button class="nav-link btn btn-link btn-primary text-decoration-none w-100" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#prestazioni_submenu" aria-expanded="false" aria-controls="prestazioni_submenu">
+                            Prestazioni Trattate
+                        </button>
+
+                        <div class="collapse" id="prestazioni_submenu">
                             <div class="btn-group" role="group" aria-label="prestazioni offerte dal veterinario">
                                 <div th:each="prest : ${lista_prestazioni}" style="display: contents;">
                                     <input type="checkbox" class="btn-check" name="prestazioni"
