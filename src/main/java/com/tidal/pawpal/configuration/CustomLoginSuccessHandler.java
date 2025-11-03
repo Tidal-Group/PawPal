@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.web.util.UriComponents; // Importa questo
-import org.springframework.web.util.UriComponentsBuilder; // Importa questo
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
