@@ -1,13 +1,9 @@
 package com.tidal.pawpal.controllers;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,20 +22,6 @@ import com.tidal.pawpal.services.UserService;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
-    private static boolean isCliente(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CLIENTE"));
-    }
-
-    private static boolean isVeterinario(Authentication authentication) {
-        return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_VETERINARIO"));
-    }
-
-    private void acceptAuthenticated(Principal principal, BiConsumer<Authentication, User> consumer) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User utente = userService.cercaPerUsername(principal.getName());
-        consumer.accept(authentication, utente);
-    }
 
     @Autowired
     public UserService userService;

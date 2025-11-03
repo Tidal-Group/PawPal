@@ -17,6 +17,9 @@
                     <form th:action="@{/auth/login}" method="post" style="display: contents;">
 
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                            Username o password non validi. Riprova.
+                        </div>
 
                         <div th:replace="fragments/generic_fragments :: backend_message"></div>
 
