@@ -3,6 +3,7 @@
    Descrizione: Tema unificato per PawPal (v2 - con sfondo)
    ============================================== */
 
+
 /* --- 1. Variabili Colore e Stile (Tema Centrale) --- */
 :root {
     --colore-primario: #2563eb; /* Il tuo blu più usato */
@@ -37,6 +38,12 @@ body {
     
     /* Assicura che lo sfondo copra tutta la pagina */
     min-height: 100vh;
+
+    cursor: url('/img/cursor.png'), auto;
+}
+
+a, button, [data-bs-toggle="modal"], .btn {
+    cursor: url('/img/cursor.png'), pointer;
 }
 
 /* --- 3. Stile Sezioni e Form (per farle risaltare) --- */
@@ -179,7 +186,6 @@ header .navbar-nav .nav-link.active {
 
 /* Adatta il main content alla nuova sidebar */
 main {
-    margin-left: 220px; 
     /* Rimuoviamo lo sfondo bianco dal main per far vedere lo sfondo del body */
     background-color: transparent; 
 }

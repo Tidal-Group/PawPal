@@ -1,3 +1,7 @@
+body {
+    margin-left: 200px;
+}
+
 /* Sidebar principale */
 #dashboard-sidebar {
     background-color: #f8f9fa;
@@ -92,9 +96,7 @@
     background-color: #999;
 }
 
-/* Spazio per sidebar */
 body {
-    margin-left: 200px;
     background-color: #fff;
 }
 

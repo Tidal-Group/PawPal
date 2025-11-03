@@ -41,32 +41,36 @@
                                 </div>
                         
                                 <div class="vet-azione">
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-primary"
-                                        th:data-veterinario="${vet.id}"
-                                        data-bs-target="#cardVeterinarioModal"
-                                        data-bs-toggle="modal">
-                                        Visualizza
-                                    </button>
+                                    <div>
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            th:data-veterinario="${vet.id}"
+                                            data-bs-target="#cardVeterinarioModal"
+                                            data-bs-toggle="modal">
+                                            Visualizza
+                                        </button>
+                                    </div>
 
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-primary"
-                                        th:data-veterinario="${vet.id}"
-                                        data-bs-target="#appuntamentoVeterinarioModal"
-                                        data-bs-toggle="modal">
-                                        Prenota appuntamento
-                                    </button>
+                                    <div sec:authorize="hasRole('CLIENTE')">
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            th:data-veterinario="${vet.id}"
+                                            data-bs-target="#appuntamentoVeterinarioModal"
+                                            data-bs-toggle="modal">
+                                            Prenota appuntamento
+                                        </button>
 
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-primary"
-                                        th:data-veterinario="${vet.id}"
-                                        data-bs-target="#recensioneVeterinarioModal"
-                                        data-bs-toggle="modal">
-                                        Recensioni
-                                    </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            th:data-veterinario="${vet.id}"
+                                            data-bs-target="#recensioneVeterinarioModal"
+                                            data-bs-toggle="modal">
+                                            Lascia una recensione
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         

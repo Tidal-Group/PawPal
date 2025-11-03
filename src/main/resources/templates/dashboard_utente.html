@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link rel="stylesheet" th:href="@{/css/dashboard_utente.css}">
@@ -17,7 +16,7 @@
 
         <div id="modifica_dati" class="showable container-fluid flex-column" style="display: none;">
 
-            <section>
+            <section class="p-3 m-4">
 
                 <h2>Modifica dati</h2>
 
@@ -75,175 +74,191 @@
                                         type="text" th:value="${#strings.defaultString(user.specializzazione,'')}" />
                                 </div>
 
-                                
-<div>
-    <label class="form-label">Specie trattate:</label>
-    <div class="btn-group" role="group" aria-label="specie trattate dal veterinario">
-        <div id="lista_specie" th:each="specie : ${lista_specie}" style="display: contents;">
-            <input type="checkbox" class="btn-check" name="specie" th:value="${specie.id}"
-                th:checked="${#lists.contains(lista_specie_selezionate, specie)}" th:id="'specie_' + ${specie.id}" />
-            <label class="btn btn-outline-primary" th:for="'specie_' + ${specie.id}">
-                <span th:text="${specie.nomeSpecie}">Nome Specie</span>
-            </label>
-        </div>
-    </div>
-</div>
+                                <button class="nav-link btn btn-link btn-primary text-decoration-none w-100" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#specie_submenu" aria-expanded="false" aria-controls="specie_submenu">
+                                    Specie Trattate
+                                </button>
 
+                                <div class="collapse" id="specie_submenu">
+                                    <div class="btn-group d-block" role="group" aria-label="specie trattate dal veterinario">
+                                        <div id="lista_specie" th:each="specie : ${lista_specie}"
+                                            style="display: contents;">
+                                            <input type="checkbox" class="btn-check" name="specie"
+                                                th:value="${specie.id}"
+                                                th:checked="${#lists.contains(lista_specie_selezionate, specie)}"
+                                                th:id="'specie_' + ${specie.id}" />
+                                            <label class="btn btn-outline-primary" th:for="'specie_' + ${specie.id}">
+                                                <span th:text="${specie.nomeSpecie}">Nome Specie</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
 
-<div>
-    <label class="form-label">Prestazioni offerte:</label>
-    <div class="btn-group" role="group" aria-label="prestazioni offerte dal veterinario">
-        <div id="lista_prestazioni" th:each="prestazione : ${lista_prestazioni}" style="display: contents;">
-            <input type="checkbox" class="btn-check" name="prestazioni" th:value="${prestazione.id}"
-                th:checked="${#lists.contains(lista_prestazioni_selezionate, prestazione)}"
-                th:id="'prestazione_' + ${prestazione.id}" />
-            <label class="btn btn-outline-primary" th:for="'prestazione_' + ${prestazione.id}">
-                <span th:text="${prestazione.descrizione}">Nome Prestazione</span>
-            </label>
-        </div>
-    </div>
-</div>
+                                <button class="nav-link btn btn-link btn-primary text-decoration-none w-100 my-2" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#prestazioni_submenu" aria-expanded="false" aria-controls="prestazioni_submenu">
+                                    Prestazioni Trattate
+                                </button>
 
-<div>
-    <label class="form-label" for="iscrizione_albo">Numero di iscrizione
-        all&#39;albo:</label>
-    <input class="form-control" type="text" id="iscrizione_albo" name="iscrizioneAlbo"
-        th:value="${#strings.defaultString(user.iscrizioneAlbo,'')}" maxlength="10">
-</div>
+                                <div class="collapse" id="prestazioni_submenu">
+                                    <div class="btn-group d-block" role="group"
+                                        aria-label="prestazioni offerte dal veterinario">
+                                        <div id="lista_prestazioni" th:each="prestazione : ${lista_prestazioni}"
+                                            style="display: contents;">
+                                            <input type="checkbox" class="btn-check" name="prestazioni"
+                                                th:value="${prestazione.id}"
+                                                th:checked="${#lists.contains(lista_prestazioni_selezionate, prestazione)}"
+                                                th:id="'prestazione_' + ${prestazione.id}" />
+                                            <label class="btn btn-outline-primary"
+                                                th:for="'prestazione_' + ${prestazione.id}">
+                                                <span th:text="${prestazione.descrizione}">Nome Prestazione</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
 
-<div>
-    <label class="form-label" for="disponibilita_veterinario">Disponibilit&#224;:</label>
-    <input class="form-control" type="text" id="disponibilita_veterinario" name="disponibilita"
-        th:value="${#strings.defaultString(user.disponibilita,'')}">
-</div>
+                                <div>
+                                    <label class="form-label" for="iscrizione_albo">Numero di iscrizione
+                                        all&#39;albo:</label>
+                                    <input class="form-control" type="text" id="iscrizione_albo" name="iscrizioneAlbo"
+                                        th:value="${#strings.defaultString(user.iscrizioneAlbo,'')}" maxlength="10">
+                                </div>
 
-<div>
-    <label class="form-label" for="descrizione">Descrizione </label>
-    <textarea class="form-control" id="descrizione" name="descrizione"
-        th:text="${#strings.defaultString(user.descrizione,'')}" placeholder="Descrivi chi sei e di cosa ti occupi"
-        maxlength="140"></textarea>
-</div>
+                                <div>
+                                    <label class="form-label"
+                                        for="disponibilita_veterinario">Disponibilit&#224;:</label>
+                                    <input class="form-control" type="text" id="disponibilita_veterinario"
+                                        name="disponibilita"
+                                        th:value="${#strings.defaultString(user.disponibilita,'')}">
+                                </div>
 
-</fieldset>
+                                <div>
+                                    <label class="form-label" for="descrizione">Descrizione </label>
+                                    <textarea class="form-control" id="descrizione" name="descrizione"
+                                        th:text="${#strings.defaultString(user.descrizione,'')}"
+                                        placeholder="Descrivi chi sei e di cosa ti occupi" maxlength="140"></textarea>
+                                </div>
 
-</div>
+                            </fieldset>
 
-<div class="col-12 col-lg-8 mx-auto">
-    <div class="form-actions">
-        <button class="btn btn-secondary" type="submit">Salva modifiche</button>
-        <button class="btn btn-secondary" type="reset">Annulla</button>
-    </div>
-</div>
+                        </div>
 
-</form>
-
-</div>
-
-</section>
-
-<section>
-
-    <h2>Elimina Account</h2>
-
-    <div class="row">
-
-        <form th:action="@{/dash/profilo/elimina_account}" method="post" style="display: contents;">
-
-            <div class="col-12 col-lg-8 mx-auto">
-
-                <fieldset>
-
-                    <legend>Attenzione: operazione irreversibile!</legend>
-
-                    <div>
-                        <label class="form-label" for="password_conferma_eliminazione_conto">Inserire password per
-                            confermare l'eliminazione:</label>
-                        <input class="form-control" type="password" id="password_conferma_eliminazione_conto"
-                            name="password" required />
-                        <button class="btn btn-danger" type="submit">Elimina</button>
-                    </div>
-
-                </fieldset>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</section>
-
-</div>
-
-<div id="appuntamenti" class="showable container-fluid flex-column" style="display: none;">
-
-    <section>
-
-        <h2>I tuoi Appuntamenti</h2>
-
-        <form th:action="@{/dash/appuntamenti/filtra}" method="post">
-            <input id="filtroData" name="filtroData" type="date" placeholder="Filtra per data"
-                th:value="${filtroData != null ? filtroData : ''}">
-
-            <input id="filtroNominativo" name="filtroNominativo" type="text" th:value="${filtroNominativo}"
-                th:placeholder="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') ? 'Cerca per veterinario (nome e/o cognome)' : 'Cerca per cliente (nome e/o cognome)'}">
-
-            <button type="submit" class="btn btn-primary">Filtra</button>
-
-        </form>
-
-        <table class="table-appuntamenti">
-            <thead>
-                <tr>
-                    <th
-                        th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
-                    </th>
-                    <th th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}">
-                        Indirizzo
-                    </th>
-                    <th>Telefono</th>
-                    <th>Data e Ora</th>
-                    <th>Note</th>
-                    <th></th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr th:each="appuntamento : ${lista_appuntamenti}">
-                    <form th:id="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
-                        th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
-                        <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="id">
-
-                        <td
-                            th:text="${(appuntamento.nomeUtente == null || appuntamento.cognomeUtente == null) ? 
-                                             'Sconosciuto' : appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}">
-                        </td>
-
-                        <td th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
-                            th:text="${appuntamento.indirizzoUtente == null ? 'Sconosciuto' : appuntamento.indirizzoUtente}">
-                        </td>
-
-                        <td
-                            th:text="${appuntamento.telefonoUtente == null ? 'Sconosciuto' : appuntamento.telefonoUtente}">
-                        </td>
-
-                        
-                        <td>
-                            <input th:id="${'dataOraAppuntamento' + appuntamento.idAppuntamento}" name="dataOra"
-                                type="datetime-local" th:value="${appuntamento.dataOraAppuntamento}" readonly>
-                        </td>
-
-                        <td>
-                            <textarea th:id="${'noteAppuntamento' + appuntamento.idAppuntamento}" name="note"
-                                th:text="${appuntamento.noteAppuntamento}" readonly></textarea>
-                        </td>
+                        <div class="col-12 col-lg-8 mx-auto">
+                            <div class="form-actions">
+                                <button class="btn btn-secondary" type="submit">Salva modifiche</button>
+                                <button class="btn btn-secondary" type="reset">Annulla</button>
+                            </div>
+                        </div>
 
                     </form>
 
-                    <td>
-                        <div>
+                </div>
 
-                            <button type="button" class="btn btn-primary" th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
+            </section>
+
+            <section class="p-3 m-4">
+
+                <h2>Elimina Account</h2>
+
+                <div class="row">
+
+                    <form th:action="@{/dash/profilo/elimina_account}" method="post" style="display: contents;">
+
+                        <div class="col-12 col-lg-8 mx-auto">
+
+                            <fieldset>
+
+                                <legend>Attenzione: operazione irreversibile!</legend>
+
+                                <div>
+                                    <label class="form-label" for="password_conferma_eliminazione_conto">Inserire
+                                        password per
+                                        confermare l'eliminazione:</label>
+                                    <input class="form-control" type="password"
+                                        id="password_conferma_eliminazione_conto" name="password" required />
+                                    <button class="btn btn-danger" type="submit">Elimina</button>
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <div id="appuntamenti" class="showable container-fluid flex-column" style="display: none;">
+
+            <section class="p-3 m-4">
+
+                <h2>I tuoi Appuntamenti</h2>
+
+                <form th:action="@{/dash/appuntamenti/filtra}" method="post">
+                    <input id="filtroData" name="filtroData" type="date" placeholder="Filtra per data"
+                        th:value="${filtroData != null ? filtroData : ''}">
+
+                    <input id="filtroNominativo" name="filtroNominativo" type="text" th:value="${filtroNominativo}"
+                        th:placeholder="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') ? 'Cerca per veterinario (nome e/o cognome)' : 'Cerca per cliente (nome e/o cognome)'}">
+
+                    <button type="submit" class="btn btn-primary">Filtra</button>
+
+                </form>
+
+                <table class="table-appuntamenti">
+                    <thead>
+                        <tr>
+                            <th
+                                th:text="${#authentication.authorities.![authority].contains('ROLE_VETERINARIO')} ? 'Cliente' : 'Veterinario'">
+                            </th>
+                            <th th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}">
+                                Indirizzo
+                            </th>
+                            <th>Telefono</th>
+                            <th>Data e Ora</th>
+                            <th>Note</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="appuntamento : ${lista_appuntamenti}">
+                            <form th:id="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
+                                th:action="@{/dash/appuntamenti/modifica_appuntamento}" method="post">
+                                <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="id">
+
+                                <td
+                                    th:text="${(appuntamento.nomeUtente == null || appuntamento.cognomeUtente == null) ? 
+                                             'Sconosciuto' : appuntamento.nomeUtente + ' ' + appuntamento.cognomeUtente}">
+                                </td>
+
+                                <td th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')}"
+                                    th:text="${appuntamento.indirizzoUtente == null ? 'Sconosciuto' : appuntamento.indirizzoUtente}">
+                                </td>
+
+                                <td
+                                    th:text="${appuntamento.telefonoUtente == null ? 'Sconosciuto' : appuntamento.telefonoUtente}">
+                                </td>
+
+
+                                <td>
+                                    <input th:id="${'dataOraAppuntamento' + appuntamento.idAppuntamento}" name="dataOra"
+                                        type="datetime-local" th:value="${appuntamento.dataOraAppuntamento}" readonly>
+                                </td>
+
+                                <td>
+                                    <textarea th:id="${'noteAppuntamento' + appuntamento.idAppuntamento}" name="note"
+                                        th:text="${appuntamento.noteAppuntamento}" readonly></textarea>
+                                </td>
+
+                            </form>
+
+                            <td>
+                                <div>
+
+                                    <button type="button" class="btn btn-primary" th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
                                                 appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()} and 
                                                 appuntamento.idUtente != null" th:onclick="
                                             |document.getElementById('submitModifica${appuntamento.idAppuntamento}').style.display = 'block';
@@ -251,118 +266,175 @@
                                              document.getElementById('dataOraAppuntamento${appuntamento.idAppuntamento}').readOnly = false
                                              document.getElementById('noteAppuntamento${appuntamento.idAppuntamento}').readOnly = false|
                                         ">
-                                Modifica
-                            </button>
+                                        Modifica
+                                    </button>
 
-                            <button th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
+                                    <button th:if="${#authentication.authorities.![authority].contains('ROLE_CLIENTE') and 
                                                 appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()}"
-                                th:id="${'submitModifica' + appuntamento.idAppuntamento}" type="submit"
-                                th:form="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
-                                class="btn btn-primary" style="display: none;">
-                                Conferma
-                            </button>
+                                        th:id="${'submitModifica' + appuntamento.idAppuntamento}" type="submit"
+                                        th:form="${'modificaAppuntamento' + appuntamento.idAppuntamento}"
+                                        class="btn btn-primary" style="display: none;">
+                                        Conferma
+                                    </button>
 
-                            <form th:if="${appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()} and 
+                                    <form th:if="${appuntamento.dataOraAppuntamento > T(java.time.LocalDateTime).now()} and 
                                                appuntamento.idUtente != null"
-                                th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
-                                <input type="hidden" th:value="${appuntamento.idAppuntamento}" name="idAppuntamento">
-                                <button type="submit" class="btn btn-danger">Elimina</button>
-                            </form>
+                                        th:action="@{/dash/appuntamenti/elimina_appuntamento}" method="post">
+                                        <input type="hidden" th:value="${appuntamento.idAppuntamento}"
+                                            name="idAppuntamento">
+                                        <button type="submit" class="btn btn-danger">Elimina</button>
+                                    </form>
 
-                        </div>
-                    </td>
-                </tr>
+                                </div>
+                            </td>
+                        </tr>
 
-            </tbody>
+                    </tbody>
 
-        </table>
+                </table>
 
-        <div th:if="${#lists.isEmpty(lista_appuntamenti)}" class="no-data">
-            <p>Nessun appuntamento trovato.</p>
+                <div th:if="${#lists.isEmpty(lista_appuntamenti)}" class="no-data">
+                    <p>Nessun appuntamento trovato.</p>
+                </div>
+
+            </section>
+
         </div>
 
-    </section>
+        <div id="recensioni" class="showable container-fluid flex-column" style="display: none;">
 
-</div>
+            <section class="recensioni-section ">
 
-<div id="recensioni" class="showable container-fluid flex-column" style="display: none;">
-
-    <section class="recensioni-section">
-
-        <h2 th:text="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')} ?
+                <h2 th:text="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')} ?
                              'Le tue recensioni' : 'Recensioni ricevute'">
-            Recensioni
-        </h2>
+                    Recensioni
+                </h2>
 
-        <div th:if="${#lists.isEmpty(lista_recensioni)}">
-            <p th:text="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')} ?
+                <div th:if="${#lists.isEmpty(lista_recensioni)}">
+                    <p th:text="${#authentication.authorities.![authority].contains('ROLE_CLIENTE')} ?
                                  'Nessuna recensione inviata' : 'Nessuna recensione ricevuta'">
-                Nessuna recensione.
-            </p>
-        </div>
+                        Nessuna recensione.
+                    </p>
+                </div>
 
-        <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
-            <li th:each="recensione : ${lista_recensioni}" class="recensione-item">
-                <div class="rec-header">
-                    <strong class="rec-vet">
-                        <span
-                            th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ? 
+                <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
+                    <li th:each="recensione : ${lista_recensioni}" class="recensione-item">
+                        <div class="rec-header">
+                            <strong class="rec-vet">
+                                <span
+                                    th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ? 
                                              ((recensione.nomeUtente == null || recensione.cognomeUtente == null) ? 'Sconosciuto' : (recensione.nomeUtente + ' ' + recensione.cognomeUtente)) : 
                                              (recensione.usernameUtente == null ? 'Sconosciuto' : recensione.usernameUtente)}"></span>
-                    </strong>
-                    <span class="rec-date"
-                        th:text="${#temporals.format(recensione.dataRecensione, 'dd/MM/yyyy')}"></span>
-                    <span class="rec-rating" th:text="${recensione.votoRecensione} + ' / 5'"></span>
-                </div>
+                            </strong>
+                            <span class="rec-date"
+                                th:text="${#temporals.format(recensione.dataRecensione, 'dd/MM/yyyy')}"></span>
+                            <span class="rec-rating" th:text="${recensione.votoRecensione} + ' / 5'"></span>
+                        </div>
 
-                <p class="rec-text" th:text="${recensione.commentoRecensione}"></p>
+                        <p class="rec-text" th:text="${recensione.commentoRecensione}"></p>
 
-                <div class="rec-actions" th:if="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE'))}">
-                    <form th:action="@{/dash/recensioni/elimina_recensione}" method="post" style="display:inline">
-                        <input type="hidden" name="idRecensione" th:value="${recensione.idRecensione}" />
-                        <button type="submit" class="btn btn-danger">Elimina</button>
-                    </form>
-                </div>
-            </li>
-        </ul>
+                        <div class="rec-actions"
+                            th:if="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE'))}">
+                            <form th:action="@{/dash/recensioni/elimina_recensione}" method="post"
+                                style="display:inline">
+                                <input type="hidden" name="idRecensione" th:value="${recensione.idRecensione}" />
+                                <button type="submit" class="btn btn-danger">Elimina</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
 
-    </section>
+            </section>
 
-</div>
-
-<div id="linee_guida" class="showable container-fluid flex-column" style="display: none;">
-    <section>
-        <h1>Linee Guida per Veterinari</h1>
-
-        <p>Qui puoi consultare le linee guida ufficiali per la gestione dei pazienti e le best practices da
-            seguire.</p>
-
-        <div>
-            <ul>
-                <li th:each="guida : ${lineeGuida}">
-                    <h3 th:text="${guida.titolo}">Titolo linea guida</h3>
-                    <p th:text="${guida.descrizione}">Descrizione della linea guida...</p>
-                    <a th:href="@{${guida.link}}" target="_blank" class="btn">Leggi completo</a>
-                </li>
-            </ul>
         </div>
 
-        <div th:if="${#lists.isEmpty(lineeGuida)}">
-            <p>Nessuna linea guida disponibile al momento.</p>
+        <div id="linee_guida" class="showable container-fluid flex-column" style="display: none;">
+
+            <section class="p-3 m-4">
+                <h1>Linee Guida per Veterinari</h1>
+
+                <div>
+                    <ol class="my-4">
+                        <strong><em>Scopo e Ambito di Applicazione</em></strong><br>
+                        Queste linee guida definiscono i requisiti minimi e le buone pratiche per la gestione, la sicurezza, l’igiene e il benessere animale all’interno delle strutture veterinarie.
+                        Sono applicabili ad ambulatori, cliniche, ospedali veterinari e centri di ricovero.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Requisiti Strutturali</em></strong><br>
+                        Locali separati per: accettazione, area di visita, sala chirurgica, area degenza e zona sporca/pulita.
+                        Materiali lavabili, disinfettabili e resistenti all’usura.
+                        Ventilazione e illuminazione adeguate per ogni ambiente.
+                        Controllo accessi per garantire sicurezza di animali, personale e visitatori.
+                        Gestione dei rifiuti sanitari conforme al D.Lgs. 152/2006 e norme regionali.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Igiene e Biosicurezza</em></strong><br>
+                        Pulizia e disinfezione regolare delle superfici e delle attrezzature.
+                        Procedure scritte per il controllo delle infezioni (incluso isolamento di animali sospetti).
+                        Lavaggio mani obbligatorio tra pazienti.
+                        DPI (guanti, camici, mascherine) obbligatori in sala chirurgica e area ricovero.
+                        Piano di derattizzazione e disinfestazione periodico.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Gestione dei Farmaci e Dispositivi</em></strong><br>
+                        Farmaci veterinari custoditi in armadi chiusi e inventariati.
+                        Catena del freddo mantenuta per i prodotti termosensibili.
+                        Antibiotici utilizzati secondo linee guida sull’uso responsabile (es. EMA, FVE).
+                        Smaltimento di farmaci scaduti tramite ditte autorizzate.
+                        Sterilizzazione di strumenti secondo protocolli documentati (autoclave, controlli periodici).
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Benessere Animale</em></strong><br>
+                        Minimizzazione dello stress: gestione separata di specie diverse.
+                        Box di ricovero di dimensioni adeguate, con lettiera e acqua sempre disponibile.
+                        Controllo ambientale: temperatura, rumore, illuminazione.
+                        Manipolazione sicura e compassionevole da parte del personale.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Gestione del Personale</em></strong><br>
+                        Tutto il personale deve essere formato in sicurezza, igiene e pronto soccorso veterinario.
+                        Aggiornamento professionale continuo (ECM veterinario).
+                        Presenza di almeno un medico veterinario responsabile sanitario.
+                        Protocollo per infortuni e malattie professionali.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Gestione Amministrativa e Documentale</em></strong><br>
+                        Registri aggiornati di ingressi, trattamenti, ricoveri e farmaci somministrati.
+                        Consenso informato scritto per ogni intervento o procedura invasiva.
+                        Archiviazione dati nel rispetto del GDPR e normativa sulla privacy.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Emergenze e Sicurezza</em></strong><br>
+                        Presenza di kit di emergenza veterinario e kit di primo soccorso umano.
+                        Piano di emergenza per incendio, blackout, fughe di gas e animali pericolosi.
+                        Estintori e uscite di sicurezza segnalate e libere.
+                        Addestramento periodico del personale alle procedure di emergenza.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Controllo Qualità e Audit Interni</em></strong><br>
+                        Revisione annuale delle procedure operative standard (SOP).
+                        Registrazione di non conformità e azioni correttive.
+                        Ispezioni interne per garantire il mantenimento degli standard igienico-sanitari.
+                    </ol>
+                    <ol class="my-4">
+                        <strong><em>Etica e Relazione con il Cliente</em></strong><br>
+                        Comunicazione chiara e rispettosa con i proprietari.
+                        Riservatezza sulle informazioni cliniche.
+                        Promozione del benessere animale come valore etico e professionale fondamentale.
+                    </ol>
+                </div>
+            </section>
         </div>
-    </section>
-</div>
 
-</main>
+    </main>
 
-div th:replace="fragments/dashboard_fragments :: modifica_conto(email, 'false')"></div>
-<div th:replace="fragments/dashboard_fragments :: modifica_conto(username, 'false')"></div>
-<div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(email, 'false')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(username, 'false')"></div>
+    <div th:replace="fragments/dashboard_fragments :: modifica_conto(password, 'true')"></div>
 
-<script th:src="@{/js/dashboard.js}" defer></script>
-<div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
+    <script th:src="@{/js/dashboard.js}" defer></script>
+    <div th:replace="fragments/generic_fragments :: show_views_scripts"></div>
 
 </body>
 
 </html>
-

@@ -187,19 +187,6 @@
                                     <a class="dropdown-item" th:href="@{/dash(view='recensioni')}">Recensioni</a>
                                 </li>
 
-
-                                <!-- <li>
-                                    <a class="dropdown-item" th:href="@{/dash#modifica_dati}">Profilo</a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/dash#appuntamenti}">Appuntamenti</a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/dash#recensioni}">Recensioni</a>
-                                </li> -->
-
                                 <li th:if="${#authorization.expression('hasRole(''VETERINARIO'')')}">
                                     <a class="dropdown-item" th:href="@{/dash#linee_guida}">Linee guida</a>
                                 </li>
