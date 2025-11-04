@@ -8,7 +8,7 @@
 
 <body>
 
-  <header th:replace="fragments/generic_fragments :: navbar('home')" style="position: relative; z-index: 10;"></header>
+  <header th:replace="fragments/generic_fragments :: navbar('home')"></header>
 
   <div class="container">
     <div th:replace="fragments/generic_fragments :: backend_message"></div>
@@ -17,8 +17,8 @@
     <img th:src="@{/img/banner.jpeg}" alt="Banner PawPal" class="img-fluid w-100 h-100" style="object-fit: cover;">
 
     <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
-      <h1 class="display-3">Benvenuto su PawPal</h1>
-      <p class="lead">Connettiamo proprietari di animali e veterinari in tutta Italia</p>
+      <h1 class="display-3 home-title">Benvenuto su PawPal</h1>
+      <p class="lead home-subtitle">Connettiamo proprietari di animali e veterinari in tutta Italia</p>
     </div>
   </div>
 

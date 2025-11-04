@@ -42,8 +42,8 @@ body {
     cursor: url('/img/cursor.png'), auto;
 }
 
-a, button, [data-bs-toggle="modal"], .btn {
-    cursor: url('/img/cursor.png'), pointer;
+*, *:hover, *:focus, *:active, *:target, *:checked {
+    cursor: url('/img/cursor.png'), pointer !important;
 }
 
 /* --- 3. Stile Sezioni e Form (per farle risaltare) --- */

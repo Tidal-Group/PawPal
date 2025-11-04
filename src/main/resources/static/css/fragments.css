@@ -5,21 +5,11 @@ header {
     font-family: 'Inter', sans-serif;
 }
 
-.navbar {
-    padding: 15px 30px;
-}
-
 .logo-img {
     height: 20px ; 
     width: auto;
     display: inline-block;
     vertical-align: middle;
-}
-.navbar-brand {
-    padding: 0;
-    margin-right: 15px; 
-    display: flex;
-    align-items: center;
 }
 
 .navbar-brand img {
