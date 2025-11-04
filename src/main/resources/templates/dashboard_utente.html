@@ -14,6 +14,10 @@
 
     <main>
 
+        <div id="panoramica_dashboard" class="showable container-fluid flex-column" style="display: none;">
+            
+        </div>
+
         <div id="modifica_dati" class="showable container-fluid flex-column" style="display: none;">
 
             <section class="p-3 m-4">
@@ -28,6 +32,8 @@
 
                             <fieldset>
                                 <legend>Informazioni Personali</legend>
+
+                                <img src="/img/anonymous.png" alt="immagine-profilo">
 
                                 <div>
                                     <label class="form-label" for="nome">Nome</label>
@@ -319,27 +325,43 @@
 
                 <ul th:if="${!#lists.isEmpty(lista_recensioni)}" class="recensioni-list">
                     <li th:each="recensione : ${lista_recensioni}" class="recensione-item">
-                        <div class="rec-header">
-                            <strong class="rec-vet">
-                                <span
-                                    th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ? 
-                                             ((recensione.nomeUtente == null || recensione.cognomeUtente == null) ? 'Sconosciuto' : (recensione.nomeUtente + ' ' + recensione.cognomeUtente)) : 
-                                             (recensione.usernameUtente == null ? 'Sconosciuto' : recensione.usernameUtente)}"></span>
-                            </strong>
-                            <span class="rec-date"
-                                th:text="${#temporals.format(recensione.dataRecensione, 'dd/MM/yyyy')}"></span>
-                            <span class="rec-rating" th:text="${recensione.votoRecensione} + ' / 5'"></span>
-                        </div>
+                        <div class="cards-wrapper">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">
 
-                        <p class="rec-text" th:text="${recensione.commentoRecensione}"></p>
+                                        <span
+                                            th:text="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE')) ? 
+                                                    ((recensione.nomeUtente == null || recensione.cognomeUtente == null) ? 'Sconosciuto' : (recensione.nomeUtente + ' ' + recensione.cognomeUtente)) : 
+                                                    (recensione.usernameUtente == null ? 'Sconosciuto' : recensione.usernameUtente)}"
+                                        ></span>
+                                        -
+                                        <span
+                                            th:text="${#temporals.format(recensione.dataRecensione, 'dd/MM/yyyy')}"
+                                        ></span>
 
-                        <div class="rec-actions"
-                            th:if="${(#authentication.authorities.![authority].contains('ROLE_CLIENTE'))}">
-                            <form th:action="@{/dash/recensioni/elimina_recensione}" method="post"
-                                style="display:inline">
-                                <input type="hidden" name="idRecensione" th:value="${recensione.idRecensione}" />
-                                <button type="submit" class="btn btn-danger">Elimina</button>
-                            </form>
+                                    </h5>
+
+                                    <p class="card-text" th:text="|“${recensione.commentoRecensione}”|"></p>
+
+                                    <div th:with="rating=${recensione.votoRecensione}">
+                                        
+                                        <span 
+                                            th:each="i : ${#numbers.sequence(1, rating)}" 
+                                            class="text-warning"
+                                            th:text="${#strings.unescapeJava('&#9733;')}"
+                                        >
+                                        </span><span 
+                                            th:if="${rating < 5}"
+                                            th:each="i : ${#numbers.sequence(1, 5 - rating)}" 
+                                            class="text-warning"
+                                            th:text="${#strings.unescapeJava('&#9734;')}"
+                                        >
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </li>
                 </ul>

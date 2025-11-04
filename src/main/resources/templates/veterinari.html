@@ -52,8 +52,9 @@
                                         </button>
                                     </div>
 
-                                    <div sec:authorize="hasRole('CLIENTE')">
+                                    <div>
                                         <button
+                                            sec:authorize="hasRole('CLIENTE') or isAnonymous()"
                                             type="button"
                                             class="btn btn-outline-primary"
                                             th:data-veterinario="${vet.id}"
@@ -130,15 +131,50 @@
 
                 const recensioni = data.recensioniDto;
 
+                function formatRecensioneDate(dateString) {
+                    const date = new Date(dateString);
+
+                    const formatter = new Intl.DateTimeFormat('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+
+                    return formatter.format(date);
+                }
+
+                function returnRecensioneStars(rating) {
+                    let stars = "";
+                    for(let i = 0; i < rating; i++) stars += "&#9733;";
+                    for(let i = 0; i < 5 - rating; i++) stars += "&#9734;";
+                    return stars;
+                }
+
                 if (recensioni && recensioni.length > 0) {
                     recensioni.forEach((recensione) => {
                         listaRecensioni.innerHTML += `
                             <li class="recensione-item">
-                                <div class="rec-header">
-                                    <span class="rec-date">${recensione.dataRecensione}</span>
-                                    <span class="rec-rating">${recensione.votoRecensione} / 5</span> 
+                                <div class="cards-wrapper">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+
+                                                <span>${recensione.usernameUtente}</span>
+                                                -
+                                                <span>${formatRecensioneDate(recensione.dataRecensione)}</span>
+
+                                            </h5>
+
+                                            <p class="card-text">“${recensione.commentoRecensione}”</p>
+
+                                            <div>
+                                                
+                                                <span class="text-warning">${returnRecensioneStars(recensione.votoRecensione)}</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="rec-text">${recensione.commentoRecensione}</p> 
                             </li>
                         `;
                     });

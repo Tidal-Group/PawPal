@@ -432,7 +432,7 @@
             if(view) renderCallbacks.viewShowCallback(view);
         } else if (!modalId && !error) { // <-- Modificato per non sovrapporsi all'errore
             // Mostra la vista di default SOLO se non c'è né una modale né un errore
-            const defaultView = document.getElementById('modifica_dati');
+            const defaultView = document.getElementById('panoramica_dashboard');
             if (defaultView) {
                  renderCallbacks.viewShowCallback(defaultView);
             }
