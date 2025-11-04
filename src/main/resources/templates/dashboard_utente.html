@@ -16,6 +16,113 @@
 
         <div id="panoramica_dashboard" class="showable container-fluid flex-column" style="display: none;">
             
+            <div sec:authorize="hasRole('CLIENTE')">
+
+                <section class="p-3 m-4">
+                    <h2 th:text="|Ciao, ${user.nome}!|">Ciao, Utente!</h2>
+                    <p>Benvenuto nella tua area personale PawPal. Ecco un riepilogo della tua attività.</p>
+                </section>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <section class="p-3 m-4">
+                                <h5>Il tuo prossimo appuntamento</h5>
+                                <hr>
+                                
+                                <div th:if="${prossimoAppuntamento != null}" class="card border-primary">
+                                    <div class="card-body">
+                                        <h4 class="card-title" th:text="${prossimoAppuntamento.nomeUtente + ' ' + prossimoAppuntamento.cognomeUtente}">Dott. Mario Rossi</h4>
+                                        <h5 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(prossimoAppuntamento.dataOraAppuntamento, 'dd MMMM yyyy, HH:mm')}"></h5>
+                                        <p class="card-text" th:text="${prossimoAppuntamento.indirizzoUtente}">Via Roma 1, 00100 Roma</p>
+                                        <button data-view-id="appuntamenti" class="btn btn-primary sidebar-view-trigger">Vedi tutti gli appuntamenti</button>
+                                    </div>
+                                </div>
+                                
+                                <div th:if="${prossimoAppuntamento == null}">
+                                    <p>Non hai nessun appuntamento in programma.</p>
+                                    <a th:href="@{/veterinari/lista_veterinari}" class="btn btn-primary">Cerca un Veterinario</a>
+                                </div>
+                            </section>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <section class="p-3 m-4">
+                                <h5>In Breve</h5>
+                                <hr>
+                                <div class="card text-center mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Appuntamenti Totali</h5>
+                                        <h1 class="display-4" th:text="${totaleAppuntamenti}">0</h1>
+                                    </div>
+                                </div>
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recensioni Scritte</h5>
+                                        <h1 class="display-4" th:text="${totaleRecensioni}">0</h1>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div sec:authorize="hasRole('VETERINARIO')">
+
+                <section class="p-3 m-4">
+                    <h2 th:text="|Buongiorno, Dott. ${user.cognome}!|">Buongiorno, Dottore!</h2>
+                    <p>Questa è la panoramica della tua attività oggi.</p>
+                </section>
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Appuntamenti di Oggi</h5>
+                                <h1 class="display-4" th:text="${#lists.size(appuntamentiDiOggi)}">0</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Totale Recensioni</h5>
+                                <h1 class="display-4" th:text="${totaleRecensioni}">0</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Voto Medio</h5>
+                                <h1 class="display-4" th:text="${votoMedio} + ' / 5'">0.0 / 5</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="p-3 m-4">
+                    <h5>I tuoi appuntamenti di oggi</h5>
+                    <hr>
+                    <ul class="list-group list-group-flush">
+                        <th:block th:each="app : ${appuntamentiDiOggi}">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span th:text="${app.nomeUtente + ' ' + app.cognomeUtente}">Nome Cliente</span><br>
+                                    <small class="text-muted" th:text="${app.noteAppuntamento}">Note appuntamento...</small>
+                                </div>
+                                <span class_badge="badge bg-primary rounded-pill" th:text="${#temporals.format(app.dataOraAppuntamento, 'HH:mm')}">14:30</span>
+                            </li>
+                        </th:block>
+
+                        <li th:if="${#lists.isEmpty(appuntamentiDiOggi)}" class="list-group-item">
+                            Nessun appuntamento in programma per oggi.
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+            
         </div>
 
         <div id="modifica_dati" class="showable container-fluid flex-column" style="display: none;">

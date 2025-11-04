@@ -1,6 +1,8 @@
 package com.tidal.pawpal.repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -37,5 +39,21 @@ public interface AppuntamentoRepository extends JpaRepository<Appuntamento, Long
     @Transactional
     @Query("UPDATE Appuntamento a SET a.veterinario = NULL WHERE a.veterinario.id = :id_veterinario")
     Integer clearVeterinarioForeignKey(@Param("id_veterinario") Long veterinarioId);
+
+    Long countByClienteId(Long clienteId);
+
+    Long countByVeterinarioId(Long clienteId);
+
+    Optional<Appuntamento> findFirstByClienteIdAndDataOraAfterOrderByDataOraAsc(Long clienteId, LocalDateTime now);
+
+    @Query(
+        "SELECT new com.tidal.pawpal.dto.AppuntamentoDto(a.id, v.id, a.dataOra, a.note, v.nome, v.cognome, v.telefono, v.indirizzoStudio) " + 
+        "FROM Appuntamento a JOIN a.veterinario v WHERE v.id = :veterinarioId AND a.dataOra >= :startOfDay AND a.dataOra <= :endOfDay ORDER BY a.dataOra ASC"
+    )
+    List<AppuntamentoDto> findAppuntamentiOdierni(
+        @Param("veterinarioId") Long veterinarioId, 
+        @Param("startOfDay") LocalDateTime startOfDay, 
+        @Param("endOfDay") LocalDateTime endOfDay
+    );
 
 }

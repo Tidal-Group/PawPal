@@ -2,6 +2,7 @@ package com.tidal.pawpal.services.contracts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.context.event.EventListener;
@@ -106,6 +107,16 @@ public abstract class AppuntamentoServiceContract extends GenericService<Appunta
     public abstract List<AppuntamentoDto> cercaPerVeterinarioConFiltri(Long idVeterinario, Map<String, Object> filtri);
 
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    public abstract List<AppuntamentoDto> cercaPerClienteConFiltri(Long idCliente, Map<String, Object> filtri);    
+    public abstract List<AppuntamentoDto> cercaPerClienteConFiltri(Long idCliente, Map<String, Object> filtri);
+    
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
+    public abstract Long contaAppuntamentiPerCliente(Long idCliente);
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
+    public abstract Optional<Appuntamento> cercaProssimoAppuntamento(Long idCliente);
+
+    // @PreAuthorize("hasRole('ADMIN') || #idVeterinario == authentication.principal.id")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VETERINARIO')")
+    public abstract List<AppuntamentoDto> cercaAppuntamentiDiOggi(Long idVeterinario);
 
 }

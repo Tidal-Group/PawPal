@@ -26,6 +26,7 @@ import com.tidal.pawpal.dto.SpecieDto;
 import com.tidal.pawpal.exceptions.AuthenticationFailureException;
 import com.tidal.pawpal.exceptions.ExistingEmailException;
 import com.tidal.pawpal.exceptions.ExistingUsernameException;
+import com.tidal.pawpal.models.Appuntamento;
 import com.tidal.pawpal.services.AppuntamentoService;
 import com.tidal.pawpal.services.AuthService;
 import com.tidal.pawpal.services.ClienteService;
@@ -83,6 +84,13 @@ public class DashController extends AuthenticatedController {
                 model.addAttribute("filtroNominativo", nominativo);
             }
 
+            // inizializzazione valori
+            model.addAttribute("totaleRecensioni", 0L);
+            model.addAttribute("totaleAppuntamenti", 0L);
+            model.addAttribute("prossimoAppuntamento", null);
+            model.addAttribute("appuntamentiDiOggi", new ArrayList<>());
+            model.addAttribute("votoMedio", 0.0);
+
             acceptAuthenticated(principal, (authentication, utente) -> {
 
                 // passo i dati dell'utente
@@ -114,6 +122,39 @@ public class DashController extends AuthenticatedController {
                     model.addAttribute("lista_prestazioni", prestazioneService.elencaTutti());
                     model.addAttribute("lista_specie_selezionate", listaSpecieSelezionate);
                     model.addAttribute("lista_prestazioni_selezionate", listaPrestazioniSelezionate);
+                }
+
+                if(isCliente(authentication)) {
+                    Long totaleRecensioni = recensioneService.contaRecensioniPerCliente(utente.getId());
+                    Long totaleAppuntamenti = appuntamentoService.contaAppuntamentiPerCliente(utente.getId());
+                    Optional<Appuntamento> prossimoAppuntamentoOpt = appuntamentoService.cercaProssimoAppuntamento(utente.getId());
+
+                    model.addAttribute("totaleRecensioni", totaleRecensioni);
+                    model.addAttribute("totaleAppuntamenti", totaleAppuntamenti);
+
+                    if (prossimoAppuntamentoOpt.isPresent()) {
+                        Appuntamento app = prossimoAppuntamentoOpt.get();
+                        AppuntamentoDto dto = new AppuntamentoDto(
+                            app.getId(),
+                            app.getVeterinario() != null ? app.getVeterinario().getId() : null,
+                            app.getDataOra(),
+                            app.getNote(),
+                            app.getVeterinario() != null ? app.getVeterinario().getNome() : "Veterinario",
+                            app.getVeterinario() != null ? app.getVeterinario().getCognome() : "Cancellato",
+                            app.getVeterinario() != null ? app.getVeterinario().getTelefono() : "-",
+                            app.getVeterinario() != null ? app.getVeterinario().getIndirizzoStudio() : "-"
+                        );
+                        model.addAttribute("prossimoAppuntamento", dto);
+                    } else {
+                        model.addAttribute("prossimoAppuntamento", null);
+                    }
+                }
+
+                if(isVeterinario(authentication)) {
+                    model.addAttribute("totaleAppuntamenti", appuntamentoService.contaAppuntamentiPerVeterinario(utente.getId()));
+                    model.addAttribute("totaleRecensioni", recensioneService.contaRecensioniPerVeterinario(utente.getId()));
+                    model.addAttribute("votoMedio", recensioneService.calcolaVotoMedioVeterinario(utente.getId()));
+                    model.addAttribute("appuntamentiDiOggi", appuntamentoService.cercaAppuntamentiDiOggi(utente.getId()));
                 }
             });
 

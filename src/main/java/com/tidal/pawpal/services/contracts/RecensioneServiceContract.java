@@ -90,4 +90,10 @@ public abstract class RecensioneServiceContract extends GenericService<Recension
     @PreAuthorize("permitAll")
     public abstract Double calcolaVotoMedioVeterinario(Long idVeterinario);
 
+    @PreAuthorize("hasRole('ADMIN') || #idCliente == authentication.principal.id")
+    public abstract Long contaRecensioniPerCliente(Long idCliente);
+
+    @PreAuthorize("permitAll")
+    public abstract Long contaRecensioniPerVeterinario(Long veterinarioId);
+
 }

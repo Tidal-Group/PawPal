@@ -40,4 +40,8 @@ public interface RecensioneRepository extends JpaRepository<Recensione, Long> {
     @Query("UPDATE Recensione r SET r.veterinario = NULL WHERE r.veterinario.id = :id_veterinario")
     Integer clearVeterinarioForeignKey(@Param("id_veterinario") Long veterinarioId);
 
+    Long countByClienteId(Long clienteId);
+
+    Long countByVeterinarioId(Long veterinarioId);
+
 }

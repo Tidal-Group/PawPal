@@ -64,8 +64,20 @@ public class RecensioneService extends RecensioneServiceContract {
     }
 
     @Override
-    public Double calcolaVotoMedioVeterinario(Long idVeterinario) {
-        return recensioneRepository.calculateAverageRatingVeterinario(idVeterinario);
+    public Long contaRecensioniPerCliente(Long idCliente) {
+        return recensioneRepository.countByClienteId(idCliente);
+    }
+
+    @Override
+    public Long contaRecensioniPerVeterinario(Long veterinarioId) {
+        return recensioneRepository.countByVeterinarioId(veterinarioId);
+    }
+
+    @Override
+    public Double calcolaVotoMedioVeterinario(Long veterinarioId) {
+        Double avg = recensioneRepository.calculateAverageRatingVeterinario(veterinarioId);
+        if (avg == null) return 0.0;
+        return Math.round(avg * 10.0) / 10.0;
     }
 
 }

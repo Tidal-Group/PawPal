@@ -1,9 +1,11 @@
 package com.tidal.pawpal.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -194,6 +196,28 @@ public class AppuntamentoService extends AppuntamentoServiceContract {
             );
 
         return entityManager.createQuery(query).getResultList();
+    }
+
+    @Override
+    public Long contaAppuntamentiPerCliente(Long idCliente) {
+        return appuntamentoRepository.countByClienteId(idCliente);
+    }
+
+    @Override
+    public Optional<Appuntamento> cercaProssimoAppuntamento(Long idCliente) {
+        return appuntamentoRepository.findFirstByClienteIdAndDataOraAfterOrderByDataOraAsc(idCliente, LocalDateTime.now());
+    }
+
+    @Override
+    public List<AppuntamentoDto> cercaAppuntamentiDiOggi(Long veterinarioId) {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(23, 59, 59);
+        List<AppuntamentoDto> appuntamenti = appuntamentoRepository.findAppuntamentiOdierni(veterinarioId, startOfDay, endOfDay);
+        return appuntamenti;
+    }
+
+    public Long contaAppuntamentiPerVeterinario(Long veterinarioId) {
+        return appuntamentoRepository.countByVeterinarioId(veterinarioId);
     }
 
 }
